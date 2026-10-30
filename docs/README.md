@@ -5,7 +5,7 @@
 ## GitHub fork 与改动汇总
 
 - 用户 fork：[RockyLOMO/Crystal](https://github.com/RockyLOMO/Crystal)，父仓库为 [Suprcode/Crystal](https://github.com/Suprcode/Crystal)。
-- 本地 `origin` 指向用户 fork，`upstream` 保留上游地址；维护分支为 `codex/zh-cn-idle-cpu`。
+- 本地 `origin` 指向用户 fork，`upstream` 保留上游地址；维护分支为 `rx-server`。
 - 改动基于上游提交 `0e315fe327192afe52c3d7357ddd1f5b7e26c5b8`，不是无源码修改的外挂配置方案。CPU 优化和显示字典接入都需要重新编译；字典译文本身是外置 JSON。
 - 本次按请求整理并执行本地 Git 提交；没有向上游提交 PR，也没有自动推送维护分支。
 
@@ -39,17 +39,29 @@ dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Rel
 
 构建仍有上游既有警告：服务端成员隐藏，以及客户端 WindowsBase 依赖版本冲突、未使用字段等；本轮构建为 0 错误，并未把这些警告描述为已修复。详细性能数值、验收范围和备份路径见后文。升级上游时应重点复核上述两个调度文件、共享名称显示与精炼判断，并重跑测试。
 
+## 目录与分支迁移（2026-10-30）
+
+按用户要求，源码目录由 `D:\projs\Mir2` 仅调整大小写为 `D:\projs\mir2`，本地维护分支由 `codex/zh-cn-idle-cpu` 重命名为 `rx-server`；完整运行根目录由 `D:\Mir2` 同盘移动到 `D:\private-server\mir2`，包括 `Server/`、启动脚本和全部历史备份。
+
+移动前确认服务端/客户端均未运行，无引用旧路径的 Windows 服务、计划任务、快捷方式或用户环境变量，目标目录没有冲突。源码通过中间目录名完成 Windows 大小写重命名；运行目录采用同盘目录移动。移动完成、修改管理脚本及启动验证之前，32,247 个文件的相对路径/大小清单一致，数据库、配置和关键程序文件 SHA-256 一致。
+
+源码和运行根目录的 `Manage-Mir2.ps1` 默认路径、`Measure-Server.ps1` 默认程序路径、当前部署清单、程序哈希记录及地图备份位置已同步更新。CMD 启动器原本按自身目录定位，无需写死新路径；管理脚本原副本保留在新运行目录的 `backups/directory-migration-20261030/`。
+
+从新源码目录 Release 构建通过，31 项调度、12 项汉化检查通过；新运行目录实际启动并监听 `127.0.0.1:7000/3000`，版本和 KeepAlive 检查通过，随后正常保存关闭，保持迁移前的停止状态。客户端运行目录及客户端 ZIP 不涉及本次移动；GitHub fork 和上游远程地址保持不变，本地迁移提交未推送。
+
+`performance-20261030.json` 中的旧程序路径是此前采样时的真实路径，作为历史证据保留，不代表当前启动位置。后文所有当前启动/备份操作使用迁移后的目录。
+
 ## 目录与选型
 
 | 用途 | 路径 |
 | --- | --- |
-| Crystal 源码、部署脚本与本说明 | `D:\projs\Mir2` |
-| Windows 运行入口 | `D:\Mir2` |
-| 实际服务端、配置与角色存档 | `D:\Mir2\Server` |
+| Crystal 源码、部署脚本与本说明 | `D:\projs\mir2` |
+| Windows 运行入口 | `D:\private-server\mir2` |
+| 实际服务端、配置与角色存档 | `D:\private-server\mir2\Server` |
 | 客户端运行程序与资源 | `D:\Program Files\Game\Mir2` |
 | 客户端打包分发 | `E:\rxdev\webhost\mir2` |
-| 停服一致性备份 | `D:\Mir2\backups` |
-| 数据库参考源码（Git 忽略） | `D:\projs\Mir2\.ai\database-source` |
+| 停服一致性备份 | `D:\private-server\mir2\backups` |
+| 数据库参考源码（Git 忽略） | `D:\projs\mir2\.ai\database-source` |
 
 采用本机 Windows。原版服务端实际入口 `Server.MirForms/Server.csproj` 为 WinForms，目标 `net8.0-windows7.0`；`Server/Server.Library.csproj` 才是可跨平台的核心库。当前未引入第三方 Linux 宿主，也未修改 Linux 虚拟机。
 
@@ -103,12 +115,12 @@ dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Rel
 统计与样本保存在 `performance-20261030.json`，程序哈希在 `binary-sha256.json`。复测无需安装诊断工具：
 
 ```powershell
-pwsh -NoProfile -File D:\projs\Mir2\scripts\Measure-Server.ps1 -Seconds 45
+pwsh -NoProfile -File D:\projs\mir2\scripts\Measure-Server.ps1 -Seconds 45
 ```
 
-本轮开始时服务端/客户端均未运行；验证后恢复为停止状态。可用 `D:\Mir2\Start-Server.cmd` 启动新版本。临时 dotnet-counters/dotnet-trace 工具已卸载，未修改 PATH 或用户环境变量。
+本轮开始时服务端/客户端均未运行；验证后恢复为停止状态。可用 `D:\private-server\mir2\Start-Server.cmd` 启动新版本。临时 dotnet-counters/dotnet-trace 工具已卸载，未修改 PATH 或用户环境变量。
 
-停服数据备份：`D:\Mir2\backups\20261030-121901Z`；原版程序备份：`D:\Mir2\backups\before-localization-cpu-20261030`；第一版汉化客户端/服务端升级前备份：`D:\Mir2\backups\before-zhCN-release2-20261030`；上一个过渡版服务端程序：`D:\Mir2\backups\before-due-queue-20261030`。回退时先正常停服并备份当前状态，再恢复成套程序与匹配的 Localization；不要用程序回退覆盖账号存档。上述备份已生成，尚未做真实恢复演练。
+停服数据备份：`D:\private-server\mir2\backups\20261030-121901Z`；原版程序备份：`D:\private-server\mir2\backups\before-localization-cpu-20261030`；第一版汉化客户端/服务端升级前备份：`D:\private-server\mir2\backups\before-zhCN-release2-20261030`；上一个过渡版服务端程序：`D:\private-server\mir2\backups\before-due-queue-20261030`。回退时先正常停服并备份当前状态，再恢复成套程序与匹配的 Localization；不要用程序回退覆盖账号存档。上述备份已生成，尚未做真实恢复演练。
 
 ## 汉化范围（2026-10-30）
 
@@ -124,21 +136,21 @@ pwsh -NoProfile -File D:\projs\Mir2\scripts\Measure-Server.ps1 -Seconds 45
 
 部分后期/韩服名称为暂定中文语义或音译，并非全部盛大标准译名；名称覆盖不代表纯 1.76 内容或游戏内显示验收。详细统计在 `../Localization/*coverage.json`，生成器在 `scripts/build-*-localization.py`。
 
-验证：`dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Release -- D:\projs\Mir2` 的 12 项检查通过，覆盖内部标识、精炼名称、宠物主人、未知项回退、NPC 跳转/色码保留与名称覆盖。新客户端本机隐藏启动 10 秒保持运行、正常关闭，新增错误日志 0 bytes；尚未登录角色验证所有窗口和对话。
+验证：`dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Release -- D:\projs\mir2` 的 12 项检查通过，覆盖内部标识、精炼名称、宠物主人、未知项回退、NPC 跳转/色码保留与名称覆盖。新客户端本机隐藏启动 10 秒保持运行、正常关闭，新增错误日志 0 bytes；尚未登录角色验证所有窗口和对话。
 
 ## 启动、停止与备份
 
-双击 `D:\Mir2\Start-Server.cmd` 启动管理窗口。若服务已在后台运行，重复启动会报告现有进程；先正常停止后再次启动可显示窗口。
+双击 `D:\private-server\mir2\Start-Server.cmd` 启动管理窗口。若服务已在后台运行，重复启动会报告现有进程；先正常停止后再次启动可显示窗口。
 
 ```powershell
 # 后台启动
-pwsh -NoProfile -File D:\Mir2\Manage-Mir2.ps1 -Action Start
+pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Start
 # 状态
-pwsh -NoProfile -File D:\Mir2\Manage-Mir2.ps1 -Action Status
+pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Status
 # 正常停止，等待原版关闭流程完成并保存存档
-pwsh -NoProfile -File D:\Mir2\Manage-Mir2.ps1 -Action Stop
+pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Stop
 # 停服后生成一致性备份（运行中会拒绝）
-pwsh -NoProfile -File D:\Mir2\Manage-Mir2.ps1 -Action Backup
+pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Backup
 ```
 
 客户端双击 `D:\Program Files\Game\Mir2\Start-Client.cmd`，或在该目录运行 `Client.exe`。正常用户可在客户端注册；没有预置测试账号或管理员账号。
@@ -153,10 +165,10 @@ pwsh -NoProfile -File D:\Mir2\Manage-Mir2.ps1 -Action Backup
 
 ## 构建与资源续传
 
-所有源码和维护脚本在 `D:\projs\Mir2`。构建先输出到新的暂存目录，不直接覆盖运行中的服务端：
+所有源码和维护脚本在 `D:\projs\mir2`。构建先输出到新的暂存目录，不直接覆盖运行中的服务端：
 
 ```powershell
-pwsh -NoProfile -File D:\projs\Mir2\scripts\Build-Mir2.ps1 -OutputDirectory "$env:TEMP\ai\20261030\mir2-rebuild"
+pwsh -NoProfile -File D:\projs\mir2\scripts\Build-Mir2.ps1 -OutputDirectory "$env:TEMP\ai\20261030\mir2-rebuild"
 ```
 
 服务端发布命令为 `dotnet publish Server.MirForms/Server.csproj -c Release -r win-x64 --self-contained false`；客户端对应 `Client/Client.csproj --self-contained true`。
@@ -164,8 +176,8 @@ pwsh -NoProfile -File D:\projs\Mir2\scripts\Build-Mir2.ps1 -OutputDirectory "$en
 客户端额外在程序目录提供 `msvcr100.dll`、`msvcp100.dll`（10.0.40219.1），以及已存在于本机、有效 Microsoft 签名的 x64 `d3dx9_43.dll`、`d3dcompiler_43.dll` 的副本。未安装系统级运行库。重新部署客户端时保留这四个应用本地依赖。
 
 ```powershell
-python D:\projs\Mir2\scripts\download-client-resources.py --destination 'D:\Program Files\Game\Mir2' --workspace D:\projs\Mir2 --temp "$env:TEMP\ai\20261030\mir2-crystal\resources" --workers 16
-python D:\projs\Mir2\scripts\probe-server.py
+python D:\projs\mir2\scripts\download-client-resources.py --destination 'D:\Program Files\Game\Mir2' --workspace D:\projs\mir2 --temp "$env:TEMP\ai\20261030\mir2-crystal\resources" --workers 16
+python D:\projs\mir2\scripts\probe-server.py
 ```
 
 下载器按上游清单核对文件长度，并记录本地 SHA-256；同长度文件会复用，不覆盖冲突的既有文件。清单不提供每文件上游校验值，本地哈希用于后续基线对比。没有把资源清单当作可执行代码运行。

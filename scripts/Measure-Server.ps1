@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidateRange(5,300)][int]$Seconds = 45,
-    [string]$ServerExe = 'D:\Mir2\Server\Server.exe',
+    [string]$ServerExe = 'D:\private-server\mir2\Server\Server.exe',
     [string]$OutputPath
 )
 $ErrorActionPreference = 'Stop'

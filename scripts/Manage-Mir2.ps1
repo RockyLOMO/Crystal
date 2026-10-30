@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidateSet('Start','Stop','Status','Backup')][string]$Action = 'Status',
-    [string]$RuntimeRoot = 'D:\Mir2',
+    [string]$RuntimeRoot = 'D:\private-server\mir2',
     [switch]$ShowWindow
 )
 $ErrorActionPreference = 'Stop'
