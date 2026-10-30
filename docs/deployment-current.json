@@ -1,0 +1,97 @@
+{
+  "CheckedAtUtc": "2026-10-30T20:23:04.3361475+08:00",
+  "Status": "local-deployment-localized-idle-cpu-fixed-stopped",
+  "Source": {
+    "Path": "D:\\projs\\Mir2",
+    "Repository": "https://github.com/Suprcode/Crystal",
+    "Commit": "0e315fe327192afe52c3d7357ddd1f5b7e26c5b8",
+    "Fork": "https://github.com/RockyLOMO/Crystal",
+    "Branch": "codex/zh-cn-idle-cpu",
+    "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history."
+  },
+  "Runtime": {
+    "Server": "D:\\Mir2\\Server",
+    "Client": "D:\\Program Files\\Game\\Mir2",
+    "Distribution": "E:\\rxdev\\webhost\\mir2",
+    "ServerHost": "Windows",
+    "ServerRuntime": "Microsoft.WindowsDesktop.App 8.0.29",
+    "ClientSelfContained": true,
+    "GameEndpoint": "127.0.0.1:7000",
+    "StatusEndpoint": "127.0.0.1:3000",
+    "HTTPAdmin": false
+  },
+  "Validation": {
+    "ServerBuild": "PASS",
+    "ClientBuild": "PASS",
+    "BuildAfterSourceMove": "PASS",
+    "DatabaseMapEntries": 463,
+    "VersionHandshake": "PASS",
+    "KeepAlive": "PASS",
+    "SlimDXDirect3DInitialization": "PASS",
+    "LoginScreen": "user-confirmed-normal",
+    "GracefulShutdown": "PASS",
+    "ConsistentBackup": "PASS",
+    "MapComparison": "PASS: 463/463 SHA-256 match",
+    "Gameplay": "NOT VERIFIED",
+    "AndroidWine": "NOT VERIFIED",
+    "RestoreDrill": "NOT VERIFIED",
+    "ClientRestartAfterResourceDownload": "PASS",
+    "PackageContent": "PASS"
+  },
+  "Content": {
+    "DatabaseRelease": "29.01.25",
+    "DatabaseOriginalVersion": 111,
+    "EnabledClasses": [
+      "Warrior",
+      "Wizard",
+      "Taoist"
+    ],
+    "AllowNewHero": false,
+    "Pure176Content": "NOT COMPLETE",
+    "LocalDropFixes": [
+      "HiGreatGhoul.txt:32",
+      "HiGreatGhoul0.txt:71"
+    ]
+  },
+  "Storage": {
+    "DVolume": "Healthy",
+    "EVolume": "Healthy",
+    "StorageSpace": "Warning/Degraded"
+  },
+  "ResourceDownload": {
+    "Files": 4698,
+    "Bytes": 8981153619,
+    "Failures": 0,
+    "Status": "PASS"
+  },
+  "Package": {
+    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261030.zip",
+    "Bytes": 8059900590,
+    "SHA256": "1e42c45c96cc26175a2f8c66fc87b2b43f2d2c6031f4bba4fdd3673850fb3209",
+    "ZipIntegrity": "PASS",
+    "DistributionCopyChecksum": "PASS",
+    "IncludesServerData": false,
+    "IncludesUserSettingsOrLogs": false,
+    "DefaultEndpoint": "127.0.0.1:7000"
+  },
+  "CurrentProcessState": {
+    "ClientRunning": false,
+    "Reason": "Restored original stopped state after verification",
+    "ServerRunning": false
+  },
+  "Localization": {
+    "DetailedReport": "README.md",
+    "NpcNarrative": "partial",
+    "Editors": "main window only",
+    "NameDictionaries": "deployed"
+  },
+  "Performance": {
+    "UpstreamDefaultsMatch": true,
+    "StockCPUPercent": 9.645244665561535,
+    "FinalCPUPercent": 1.1794007284859942,
+    "WorkingSetMB": 3333.406,
+    "SchedulingChecks": 31,
+    "Report": "performance-20261030.json",
+    "SecondRunCPUPercent": 1.3537368385243724
+  }
+}

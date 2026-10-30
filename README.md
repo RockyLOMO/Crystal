@@ -9,6 +9,12 @@ Legend of Mir 2 - Official Public Crystal Source
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
 </h3>
 
+## 本 fork 的改动
+
+本地维护分支新增空载 CPU 调度优化、中文显示字典与维护脚本。完整的改动文件说明、汉化来源及覆盖范围、性能实测、构建/测试方法和回退路径，统一记录在 [中文改动与部署说明](docs/README.md)。
+
+这是包含服务端核心及客户端接入代码修改的 fork；NPC/任务长篇正文和纯 1.76 内容裁剪尚未全部完成，实际战斗和安卓玩法尚未验收。
+
 <h2 align="center">
   
 Crystal is the most widely used open-source server and client engine for The Legend of Mir 2, developed and maintained by the LOMCN community.

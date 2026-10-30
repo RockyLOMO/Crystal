@@ -302,6 +302,7 @@ namespace Client.MirScenes.Dialogs
 
         public void NewText(List<string> lines, bool resetIndex = true)
         {
+            if (resetIndex) lines = lines.Select(DbLanguage.NpcLine).ToList();
             Size = TrueSize;
 
             if (resetIndex)
@@ -622,7 +623,7 @@ namespace Client.MirScenes.Dialogs
                         var monsterInfo = GameScene.MonsterInfoList.FirstOrDefault(x => x.Index == monsterIdx);
                         if (monsterInfo != null)
                         {
-                            string monsterName = string.IsNullOrEmpty(monsterInfo.GameName) ? monsterInfo.Name : monsterInfo.GameName;
+                            string monsterName = DbLanguage.Monster(string.IsNullOrEmpty(monsterInfo.GameName) ? monsterInfo.Name : monsterInfo.GameName);
                             title = monsterName;
                             content = GetMonsterInfo(linkName);
 
@@ -655,7 +656,7 @@ namespace Client.MirScenes.Dialogs
                         var npcInfo = GameScene.NPCInfoList.FirstOrDefault(x => x.Index == npcIdx);
                         if (npcInfo != null)
                         {
-                            title = npcInfo.Name;
+                            title = DbLanguage.Get("Npcs", npcInfo.Name);
                             content = GetNPCInfo(linkName);
 
                             // Show NPC image
@@ -936,14 +937,14 @@ namespace Client.MirScenes.Dialogs
                     case "MONSTER":
                         var monster = GameScene.MonsterInfoList.FirstOrDefault(x => x.Index == idx);
                         if (monster != null)
-                        return string.IsNullOrEmpty(monster.GameName) ? monster.Name : monster.GameName;
+                        return DbLanguage.Monster(string.IsNullOrEmpty(monster.GameName) ? monster.Name : monster.GameName);
 
                         GameScene.RequestMonsterInfo(idx);
                         return $"Monster {idx}";
                     case "NPC":
                         var npc = GameScene.NPCInfoList.FirstOrDefault(x => x.Index == idx);
                         if (npc != null)
-                        return npc.Name;
+                        return DbLanguage.Get("Npcs", npc.Name);
 
                         GameScene.RequestNPCInfo(idx);
                         return $"NPC {idx}";
@@ -1012,7 +1013,7 @@ namespace Client.MirScenes.Dialogs
             NPCObject npc = (NPCObject)MapControl.GetObject(GameScene.NPCID);
             if (npc != null)
             {
-                string[] nameSplit = npc.Name.Split('_');
+                string[] nameSplit = DbLanguage.Get("Npcs", npc.Name).Split('_');
                 NameLabel.Text = nameSplit[0];
 
                 if (npc.GetAvailableQuests().Any())

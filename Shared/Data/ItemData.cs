@@ -51,6 +51,11 @@ public class ItemInfo
 
     public string FriendlyName
     {
+        get { return DbLanguage.Get("Items", Name) is string translated && translated != Name ? translated : RawFriendlyName; }
+    }
+
+    public string RawFriendlyName
+    {
         get
         {
             string temp = Name;

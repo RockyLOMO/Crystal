@@ -1,0 +1,735 @@
+{
+  "CheckedAtUtc": "2026-10-30T12:22:34.2731239+00:00",
+  "LogicalProcessors": 16,
+  "Workload": "Zero players, same configured database and 463 maps, normal spawns retained",
+  "Settings": {
+    "Multithreaded": true,
+    "ThreadLimit": 2,
+    "MonsterProcessWhenAlone": false
+  },
+  "UpstreamDefaultsMatch": true,
+  "Reported25PercentReproduced": false,
+  "Counters": [
+    {
+      "Run": "baseline-counters",
+      "StartTime": "2026-10-30T19:59:18.7545641+08:00",
+      "Metrics": [
+        {
+          "Name": "Allocation Rate (B / 1 sec)",
+          "Samples": 45,
+          "Average": 70219.02222222222,
+          "Minimum": 24560.0,
+          "Maximum": 467368.0
+        },
+        {
+          "Name": "CPU Usage (%)",
+          "Samples": 44,
+          "Average": 9.645244665561535,
+          "Minimum": 4.81203007518797,
+          "Maximum": 10.25390625
+        },
+        {
+          "Name": "GC Heap Size (MB)",
+          "Samples": 45,
+          "Average": 3021.1891690666666,
+          "Minimum": 3019.443968,
+          "Maximum": 3023.43008
+        },
+        {
+          "Name": "Working Set (MB)",
+          "Samples": 45,
+          "Average": 3390.1282190222228,
+          "Minimum": 3389.280256,
+          "Maximum": 3392.135168
+        }
+      ],
+      "CpuSamples": [
+        9.722222222222221,
+        9.66796875,
+        4.81203007518797,
+        7.220708446866485,
+        9.623015873015873,
+        9.66796875,
+        9.807692307692308,
+        10.05859375,
+        9.821428571428571,
+        9.5703125,
+        9.5703125,
+        9.765625,
+        9.711538461538462,
+        9.722222222222221,
+        10.05859375,
+        9.807692307692308,
+        9.722222222222221,
+        10.15625,
+        9.66796875,
+        9.9609375,
+        9.66796875,
+        10,
+        10.01984126984127,
+        9.86328125,
+        9.765625,
+        9.326923076923077,
+        9.623015873015873,
+        10.25390625,
+        9.47265625,
+        9.765625,
+        9.942084942084943,
+        10.17786561264822,
+        9.922928709055876,
+        9.801980198019802,
+        9.765625,
+        9.66796875,
+        10.05859375,
+        9.784735812133073,
+        9.844054580896685,
+        9.9609375,
+        10.05859375,
+        9.9609375,
+        9.5703125,
+        10
+      ]
+    },
+    {
+      "Run": "after-cpu-counters",
+      "StartTime": "2026-10-30T20:03:18.9157122+08:00",
+      "Metrics": [
+        {
+          "Name": "Allocation Rate (B / 1 sec)",
+          "Samples": 45,
+          "Average": 76451.55555555556,
+          "Minimum": 56968.0,
+          "Maximum": 461016.0
+        },
+        {
+          "Name": "CPU Usage (%)",
+          "Samples": 44,
+          "Average": 7.781515824075888,
+          "Minimum": 7.309941520467836,
+          "Maximum": 8.243375858684985
+        },
+        {
+          "Name": "GC Heap Size (MB)",
+          "Samples": 45,
+          "Average": 3029.813483555556,
+          "Minimum": 3027.79584,
+          "Maximum": 3031.7594
+        },
+        {
+          "Name": "Working Set (MB)",
+          "Samples": 45,
+          "Average": 3366.8755911111134,
+          "Minimum": 3363.79904,
+          "Maximum": 3369.934848
+        }
+      ],
+      "CpuSamples": [
+        7.91015625,
+        7.6171875,
+        7.738095238095238,
+        7.596153846153846,
+        7.624633431085044,
+        8.027750247770069,
+        7.51953125,
+        7.788461538461538,
+        7.8125,
+        7.71484375,
+        7.71484375,
+        7.638888888888889,
+        7.596153846153846,
+        8.0078125,
+        8.243375858684985,
+        7.6162215628091,
+        8.157389635316699,
+        7.71484375,
+        7.738095238095238,
+        8.173076923076923,
+        7.8125,
+        7.8125,
+        7.639569049951028,
+        8.011869436201781,
+        7.884615384615385,
+        7.91015625,
+        8.035714285714286,
+        7.788461538461538,
+        7.71484375,
+        7.6171875,
+        7.737512242899118,
+        7.9129574678536105,
+        7.884615384615385,
+        7.51953125,
+        7.738095238095238,
+        8.0078125,
+        7.788461538461538,
+        7.71484375,
+        7.837301587301587,
+        7.6923076923076925,
+        7.8277886497064575,
+        7.309941520467836,
+        7.738095238095238,
+        7.5
+      ]
+    },
+    {
+      "Run": "after-release2-counters",
+      "StartTime": "2026-10-30T20:11:45.7851247+08:00",
+      "Metrics": [
+        {
+          "Name": "Allocation Rate (B / 1 sec)",
+          "Samples": 45,
+          "Average": 90310.04444444444,
+          "Minimum": 45016.0,
+          "Maximum": 744616.0
+        },
+        {
+          "Name": "CPU Usage (%)",
+          "Samples": 44,
+          "Average": 5.808556135704574,
+          "Minimum": 1.3888888888888888,
+          "Maximum": 8.49609375
+        },
+        {
+          "Name": "GC Heap Size (MB)",
+          "Samples": 45,
+          "Average": 3044.3005480888896,
+          "Minimum": 3042.63768,
+          "Maximum": 3045.694656
+        },
+        {
+          "Name": "Working Set (MB)",
+          "Samples": 45,
+          "Average": 3337.460849777777,
+          "Minimum": 3335.385088,
+          "Maximum": 3339.579392
+        }
+      ],
+      "CpuSamples": [
+        6.15234375,
+        7.6171875,
+        6.538461538461538,
+        5.059523809523809,
+        4.326923076923077,
+        4.067460317460317,
+        6.73828125,
+        5.95703125,
+        5.859375,
+        2.9296875,
+        6.4453125,
+        5.673076923076923,
+        4.067460317460317,
+        5.46875,
+        5.6640625,
+        5.865384615384615,
+        5.76171875,
+        1.3888888888888888,
+        5.6640625,
+        5.95703125,
+        5.46875,
+        4.8828125,
+        5.961538461538462,
+        7.638888888888889,
+        3.22265625,
+        3.90625,
+        6.25,
+        4.19921875,
+        4.423076923076923,
+        3.02734375,
+        4.9603174603174605,
+        7.51953125,
+        7.2265625,
+        5.6640625,
+        4.78515625,
+        7.51953125,
+        7.8125,
+        7.51953125,
+        8.49609375,
+        8.10546875,
+        8.3984375,
+        7.12890625,
+        6.4453125,
+        7.8125
+      ]
+    },
+    {
+      "Run": "after-due-queue-counters",
+      "StartTime": "2026-10-30T20:19:32.7784167+08:00",
+      "Metrics": [
+        {
+          "Name": "Allocation Rate (B / 1 sec)",
+          "Samples": 45,
+          "Average": 64060.8,
+          "Minimum": 49072.0,
+          "Maximum": 98344.0
+        },
+        {
+          "Name": "CPU Usage (%)",
+          "Samples": 44,
+          "Average": 1.1794007284859942,
+          "Minimum": 0.0,
+          "Maximum": 3.125
+        },
+        {
+          "Name": "GC Heap Size (MB)",
+          "Samples": 45,
+          "Average": 3047.7549336888887,
+          "Minimum": 3046.328864,
+          "Maximum": 3049.143104
+        },
+        {
+          "Name": "Working Set (MB)",
+          "Samples": 45,
+          "Average": 3331.9684778666665,
+          "Minimum": 3330.572288,
+          "Maximum": 3334.721536
+        }
+      ],
+      "CpuSamples": [
+        0.1953125,
+        1.3461538461538463,
+        1.1904761904761905,
+        0.6730769230769231,
+        2.24609375,
+        1.26953125,
+        0.09784735812133072,
+        1.364522417153996,
+        1.2896825396825398,
+        0.09615384615384616,
+        1.26953125,
+        1.5625,
+        0,
+        1.26953125,
+        2.1825396825396823,
+        0,
+        1.85546875,
+        1.953125,
+        0.28846153846153844,
+        1.3671875,
+        1.26953125,
+        0.1984126984126984,
+        1.8269230769230769,
+        3.125,
+        0,
+        0.68359375,
+        1.171875,
+        0,
+        0.8771929824561403,
+        3.0753968253968256,
+        1.26953125,
+        2.5390625,
+        1.46484375,
+        0.1953125,
+        2.05078125,
+        1.0576923076923077,
+        0,
+        1.2745098039215685,
+        2.821011673151751,
+        0.68359375,
+        0.6842619745845552,
+        2.2794846382556986,
+        0.09765625,
+        1.7307692307692308
+      ]
+    }
+  ],
+  "ProcessTimeChecks": [
+    {
+      "CheckedAtUtc": "2026-10-30T20:20:18.8272672+08:00",
+      "Executable": "D:\\Mir2\\Server\\Server.exe",
+      "ProcessId": 21468,
+      "LogicalProcessors": 16,
+      "DurationSeconds": 45.6437483,
+      "CPUPercent": {
+        "Maximum": 3.1050367869854325,
+        "Average": 1.2096069429918317,
+        "Minimum": 0.0
+      },
+      "WorkingSetMB": 3331.871266133333,
+      "Samples": [
+        {
+          "CPUPercent": 2.280178841905557,
+          "WorkingSetMB": 3331.649536
+        },
+        {
+          "CPUPercent": 0.19144072617749586,
+          "WorkingSetMB": 3331.723264
+        },
+        {
+          "CPUPercent": 1.154002615296124,
+          "WorkingSetMB": 3331.805184
+        },
+        {
+          "CPUPercent": 1.7424318795559715,
+          "WorkingSetMB": 3331.82976
+        },
+        {
+          "CPUPercent": 0.7677524512554585,
+          "WorkingSetMB": 3331.899392
+        },
+        {
+          "CPUPercent": 1.6305205605005657,
+          "WorkingSetMB": 3331.87072
+        },
+        {
+          "CPUPercent": 1.1528766307147882,
+          "WorkingSetMB": 3331.874816
+        },
+        {
+          "CPUPercent": 0.5753942067138582,
+          "WorkingSetMB": 3331.8912
+        },
+        {
+          "CPUPercent": 1.3494659088452705,
+          "WorkingSetMB": 3331.035136
+        },
+        {
+          "CPUPercent": 0.8681461857302037,
+          "WorkingSetMB": 3331.043328
+        },
+        {
+          "CPUPercent": 0.8718500190557741,
+          "WorkingSetMB": 3331.203072
+        },
+        {
+          "CPUPercent": 1.438672004365387,
+          "WorkingSetMB": 3331.44064
+        },
+        {
+          "CPUPercent": 0.4822863344060654,
+          "WorkingSetMB": 3331.489792
+        },
+        {
+          "CPUPercent": 0.9595217770483326,
+          "WorkingSetMB": 3331.497984
+        },
+        {
+          "CPUPercent": 2.108955118539292,
+          "WorkingSetMB": 3331.497984
+        },
+        {
+          "CPUPercent": 0.2891183013741293,
+          "WorkingSetMB": 3331.50208
+        },
+        {
+          "CPUPercent": 1.724438577981042,
+          "WorkingSetMB": 3330.961408
+        },
+        {
+          "CPUPercent": 1.9201974540578188,
+          "WorkingSetMB": 3330.981888
+        },
+        {
+          "CPUPercent": 0.38308932647674127,
+          "WorkingSetMB": 3330.981888
+        },
+        {
+          "CPUPercent": 1.3619008731904514,
+          "WorkingSetMB": 3330.985984
+        },
+        {
+          "CPUPercent": 1.252416848523244,
+          "WorkingSetMB": 3330.985984
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3330.985984
+        },
+        {
+          "CPUPercent": 2.013598542042352,
+          "WorkingSetMB": 3330.985984
+        },
+        {
+          "CPUPercent": 3.1050367869854325,
+          "WorkingSetMB": 3330.945024
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3330.53952
+        },
+        {
+          "CPUPercent": 0.6775850611943403,
+          "WorkingSetMB": 3332.112384
+        },
+        {
+          "CPUPercent": 1.1659327073636485,
+          "WorkingSetMB": 3332.161536
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3332.165632
+        },
+        {
+          "CPUPercent": 0.8652466870758013,
+          "WorkingSetMB": 3332.173824
+        },
+        {
+          "CPUPercent": 2.997245114832343,
+          "WorkingSetMB": 3332.231168
+        },
+        {
+          "CPUPercent": 0.7665950033215044,
+          "WorkingSetMB": 3332.272128
+        },
+        {
+          "CPUPercent": 2.890518659745518,
+          "WorkingSetMB": 3332.354048
+        },
+        {
+          "CPUPercent": 1.5383141632314263,
+          "WorkingSetMB": 3331.346432
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3331.29728
+        },
+        {
+          "CPUPercent": 2.2170549855053534,
+          "WorkingSetMB": 3334.69696
+        },
+        {
+          "CPUPercent": 1.0647298773332041,
+          "WorkingSetMB": 3334.705152
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3334.705152
+        },
+        {
+          "CPUPercent": 1.2500516944454572,
+          "WorkingSetMB": 3334.709248
+        },
+        {
+          "CPUPercent": 2.796247668585119,
+          "WorkingSetMB": 3334.71744
+        },
+        {
+          "CPUPercent": 0.6796820439009441,
+          "WorkingSetMB": 3334.71744
+        },
+        {
+          "CPUPercent": 0.6760766564795974,
+          "WorkingSetMB": 3330.838528
+        },
+        {
+          "CPUPercent": 2.2268270199407727,
+          "WorkingSetMB": 3330.84672
+        },
+        {
+          "CPUPercent": 0.0961487056002813,
+          "WorkingSetMB": 3330.850816
+        },
+        {
+          "CPUPercent": 1.7380123678999397,
+          "WorkingSetMB": 3330.854912
+        },
+        {
+          "CPUPercent": 1.1627520474358177,
+          "WorkingSetMB": 3330.842624
+        }
+      ]
+    },
+    {
+      "CheckedAtUtc": "2026-10-30T20:22:00.8723095+08:00",
+      "Executable": "D:\\Mir2\\Server\\Server.exe",
+      "ProcessId": 21468,
+      "LogicalProcessors": 16,
+      "DurationSeconds": 45.6901601,
+      "CPUPercent": {
+        "Maximum": 3.373463656025153,
+        "Average": 1.3537368385243724,
+        "Minimum": 0.0
+      },
+      "WorkingSetMB": 3333.4060828444444,
+      "Samples": [
+        {
+          "CPUPercent": 2.078407834272796,
+          "WorkingSetMB": 3332.62848
+        },
+        {
+          "CPUPercent": 0.2857778923612493,
+          "WorkingSetMB": 3332.632576
+        },
+        {
+          "CPUPercent": 2.3111439193569288,
+          "WorkingSetMB": 3332.632576
+        },
+        {
+          "CPUPercent": 1.927051035957971,
+          "WorkingSetMB": 3332.632576
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3332.79232
+        },
+        {
+          "CPUPercent": 0.8657187561870039,
+          "WorkingSetMB": 3332.79232
+        },
+        {
+          "CPUPercent": 0.6761141025180732,
+          "WorkingSetMB": 3332.780032
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3332.845568
+        },
+        {
+          "CPUPercent": 0.4805611315341302,
+          "WorkingSetMB": 3332.927488
+        },
+        {
+          "CPUPercent": 1.731041595517011,
+          "WorkingSetMB": 3332.931584
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3332.931584
+        },
+        {
+          "CPUPercent": 2.2134720417431955,
+          "WorkingSetMB": 3332.902912
+        },
+        {
+          "CPUPercent": 2.6984460010300837,
+          "WorkingSetMB": 3332.902912
+        },
+        {
+          "CPUPercent": 1.728768497730726,
+          "WorkingSetMB": 3332.907008
+        },
+        {
+          "CPUPercent": 2.233737607052828,
+          "WorkingSetMB": 3334.422528
+        },
+        {
+          "CPUPercent": 0.8695291605793953,
+          "WorkingSetMB": 3334.422528
+        },
+        {
+          "CPUPercent": 0.5769764215000405,
+          "WorkingSetMB": 3334.426624
+        },
+        {
+          "CPUPercent": 3.373463656025153,
+          "WorkingSetMB": 3334.434816
+        },
+        {
+          "CPUPercent": 3.167856140201879,
+          "WorkingSetMB": 3334.434816
+        },
+        {
+          "CPUPercent": 0.09648350267335574,
+          "WorkingSetMB": 3334.434816
+        },
+        {
+          "CPUPercent": 2.301854182214924,
+          "WorkingSetMB": 3334.434816
+        },
+        {
+          "CPUPercent": 2.80120039805884,
+          "WorkingSetMB": 3334.434816
+        },
+        {
+          "CPUPercent": 0.0,
+          "WorkingSetMB": 3334.434816
+        },
+        {
+          "CPUPercent": 2.1195062398263733,
+          "WorkingSetMB": 3333.443584
+        },
+        {
+          "CPUPercent": 1.3427937712342477,
+          "WorkingSetMB": 3333.443584
+        },
+        {
+          "CPUPercent": 0.28767902319313376,
+          "WorkingSetMB": 3333.443584
+        },
+        {
+          "CPUPercent": 2.118302737092398,
+          "WorkingSetMB": 3333.443584
+        },
+        {
+          "CPUPercent": 1.921066435432157,
+          "WorkingSetMB": 3333.443584
+        },
+        {
+          "CPUPercent": 0.5774690890498108,
+          "WorkingSetMB": 3333.414912
+        },
+        {
+          "CPUPercent": 2.03316428807667,
+          "WorkingSetMB": 3333.414912
+        },
+        {
+          "CPUPercent": 0.8660497415861557,
+          "WorkingSetMB": 3333.414912
+        },
+        {
+          "CPUPercent": 0.38875210896464096,
+          "WorkingSetMB": 3333.414912
+        },
+        {
+          "CPUPercent": 2.4046151571722367,
+          "WorkingSetMB": 3333.414912
+        },
+        {
+          "CPUPercent": 1.9199973654564126,
+          "WorkingSetMB": 3333.3248
+        },
+        {
+          "CPUPercent": 0.287226123227855,
+          "WorkingSetMB": 3333.337088
+        },
+        {
+          "CPUPercent": 2.5046375097472926,
+          "WorkingSetMB": 3333.337088
+        },
+        {
+          "CPUPercent": 2.2080134665504736,
+          "WorkingSetMB": 3333.337088
+        },
+        {
+          "CPUPercent": 0.19185296889430406,
+          "WorkingSetMB": 3333.337088
+        },
+        {
+          "CPUPercent": 1.6440050511757371,
+          "WorkingSetMB": 3333.312512
+        },
+        {
+          "CPUPercent": 1.6430221577303217,
+          "WorkingSetMB": 3333.312512
+        },
+        {
+          "CPUPercent": 0.4808520852823899,
+          "WorkingSetMB": 3333.312512
+        },
+        {
+          "CPUPercent": 1.053549168856204,
+          "WorkingSetMB": 3333.312512
+        },
+        {
+          "CPUPercent": 1.2540933607294216,
+          "WorkingSetMB": 3333.312512
+        },
+        {
+          "CPUPercent": 0.6750271825346079,
+          "WorkingSetMB": 3333.312512
+        },
+        {
+          "CPUPercent": 0.5788788252683271,
+          "WorkingSetMB": 3333.312512
+        }
+      ]
+    }
+  ],
+  "Validation": {
+    "SchedulingChecks": 31,
+    "VersionHandshake": "PASS",
+    "KeepAlive": "PASS",
+    "FinalServerRunning": false,
+    "GracefulFinalStop": "PASS",
+    "LocalizationChecks": 12,
+    "Gameplay": "NOT VERIFIED"
+  }
+}

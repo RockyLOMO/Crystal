@@ -1,0 +1,10 @@
+{
+  "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261030.zip",
+  "Bytes": 8059900590,
+  "SHA256": "1e42c45c96cc26175a2f8c66fc87b2b43f2d2c6031f4bba4fdd3673850fb3209",
+  "ZipIntegrity": "PASS",
+  "DistributionCopyChecksum": "PASS",
+  "IncludesServerData": false,
+  "IncludesUserSettingsOrLogs": false,
+  "DefaultEndpoint": "127.0.0.1:7000"
+}

@@ -3,9 +3,9 @@
     "LowLevel": "你的等级不足。",
     "LowGold": "金币不足。",
     "LevelUp": "恭喜！你升级了，生命值与魔法值已恢复。",
-    "LowDC": "你的道术值不足。",
-    "LowMC": "你的魔法值不足。",
-    "LowSC": "你的精神值不足。",
+    "LowDC": "你的攻击力不足。",
+    "LowMC": "你的魔法力不足。",
+    "LowSC": "你的道术力不足。",
     "GameName": "传奇2",
     "ExpandedStorageExpiresOn": "扩展仓库到期时间",
     "NotFemale": "你不是女性角色。",
@@ -765,7 +765,9 @@
     "IntelligentCreaturesCannotBeSummonedOnMap": "此地图无法召唤仆从。",
     "CannotSummonHeroOnMap": "你无法在此地图中召唤你的英雄。",
     "CannotFollowIntoMapWaitHere": "{0} 无法跟随你进入此地图，将在这里等待。",
-    "HasReturnedToYourSide": "{0} 已回到你身边。"
+    "HasReturnedToYourSide": "{0} 已回到你身边。",
+    "HeroDesummonCountdown": "你的英雄刚刚脱离战斗，请等待 {0} 秒后再收回。",
+    "StoragePasswordCleared": "已清除 {0} 的仓库密码。"
   },
   "Enum": {}
 }

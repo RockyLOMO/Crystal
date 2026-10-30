@@ -49,7 +49,7 @@ namespace Client.MirObjects
 
         public void Load(S.ObjectNPC info)
         {
-            Name = info.Name;
+            Name = DbLanguage.Get("Npcs", info.Name);
             NameColour = info.NameColour;
             CurrentLocation = info.Location;
             Direction = info.Direction;

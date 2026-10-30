@@ -324,6 +324,7 @@ namespace Client
                 }
                 string settingLanguageFile = Path.Combine(languageDirectory, Language + ".json");
                 GameLanguage.LoadClientLanguage(settingLanguageFile);
+                DbLanguage.Load(languageDirectory, Language);
             }
             catch (Exception ex)
             {

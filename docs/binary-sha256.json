@@ -1,0 +1,26 @@
+[
+  {
+    "Path": "D:\\Mir2\\Server\\Server.dll",
+    "Hash": "AEA6454D1EF7E1698E1A6560E7C693FACB38BE8E3A542DA045838237FA764BAF"
+  },
+  {
+    "Path": "D:\\Mir2\\Server\\Server.Library.dll",
+    "Hash": "532450AD1096830788369D754FB752BB6F4EC5A65B4663ABD6B785DF35A28A60"
+  },
+  {
+    "Path": "D:\\Mir2\\Server\\Shared.dll",
+    "Hash": "1F6198F3097E09BD2889878C83DCE354627A45DDA944C446E3A865B0583F9062"
+  },
+  {
+    "Path": "D:\\Program Files\\Game\\Mir2\\Client.exe",
+    "Hash": "6BEE12C3EFE9D8B015EF3A03ABF9B70DEA7D80BA8170480F204618F90A90ED50"
+  },
+  {
+    "Path": "D:\\Program Files\\Game\\Mir2\\Client.dll",
+    "Hash": "2ED6DDD79FF9CD2F899A50EAEF6477802E6FC717170AF021F6776A8F28CF4715"
+  },
+  {
+    "Path": "D:\\Program Files\\Game\\Mir2\\Shared.dll",
+    "Hash": "1F6198F3097E09BD2889878C83DCE354627A45DDA944C446E3A865B0583F9062"
+  }
+]

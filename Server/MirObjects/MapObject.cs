@@ -27,7 +27,7 @@ namespace Server.MirObjects
         public long ExplosionInflictedTime;
         public int ExplosionInflictedStage;
 
-        private int SpawnThread;
+        internal int SpawnThread;
 
         private Map _currentMap;
         public Map CurrentMap
@@ -147,11 +147,35 @@ namespace Server.MirObjects
         public virtual MapObject Master
         {
             get { return master; }
-            set { master = value; }
+            set
+            {
+                lock (MobThread.ScheduleLock)
+                {
+                    if (master == value) return;
+                    master = value;
+                    if (Node != null) Envir.UpdateObjectSchedule(this);
+                }
+            }
         }
 
         public MapObject LastHitter, EXPOwner, Owner;
-        public long ExpireTime, OwnerTime, OperateTime;
+        public long ExpireTime, OwnerTime;
+        internal long OperateTimeValue;
+        internal MobThread ScheduledThread;
+        internal int ScheduledIndex = -1;
+        internal long ScheduledDueTime, LastScheduledFrame = -1;
+        public long OperateTime
+        {
+            get => Interlocked.Read(ref OperateTimeValue);
+            set
+            {
+                lock (MobThread.ScheduleLock)
+                {
+                    OperateTimeValue = value;
+                    ScheduledThread?.Reschedule(this);
+                }
+            }
+        }
         public int OperateDelay = 100;
 
         public Stats Stats;
@@ -349,6 +373,7 @@ namespace Server.MirObjects
             }
 
             OperateTime = Envir.Time + Envir.Random.Next(OperateDelay);
+            Envir.UpdateObjectSchedule(this);
 
             BroadcastInfo();
             BroadcastHealthChange();
@@ -361,6 +386,7 @@ namespace Server.MirObjects
                 throw new InvalidOperationException("Node is null, Object already Despawned");
             
             Broadcast(new S.ObjectRemove { ObjectID = ObjectID });
+            Envir.RemoveObjectSchedule(this);
             Envir.Objects.Remove(Node);
             if (Settings.Multithreaded && (Race == ObjectType.Monster))
             {

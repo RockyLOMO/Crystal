@@ -21,6 +21,7 @@ namespace Server
         public SMain()
         {
             InitializeComponent();
+            LocalizeMainWindow();
 
             AutoResize();
         }
@@ -107,16 +108,21 @@ namespace Server
         {
             try
             {
-                Text = $"Total: {Envir.LastCount}, Real: {Envir.LastRealCount}";
-                PlayersLabel.Text = $"Players: {Envir.Players.Count}";
-                MonsterLabel.Text = $"Monsters: {Envir.MonsterCount}";
-                ConnectionsLabel.Text = $"Connections: {Envir.Connections.Count}";
-                BlockedIPsLabel.Text = $"Blocked IPs: {Envir.IPBlocks.Count(x => x.Value > Envir.Now)}";
-                UpTimeLabel.Text = $"Uptime: {Envir.Stopwatch.ElapsedMilliseconds / 1000 / 60 / 60 / 24}d:{Envir.Stopwatch.ElapsedMilliseconds / 1000 / 60 / 60 % 24}h:{Envir.Stopwatch.ElapsedMilliseconds / 1000 / 60 % 60}m:{Envir.Stopwatch.ElapsedMilliseconds / 1000 % 60}s";
+                bool chinese = ChineseMainWindow;
+                Text = chinese ? $"传奇 2 服务端 | 总计：{Envir.LastCount}，实际：{Envir.LastRealCount}" : $"Total: {Envir.LastCount}, Real: {Envir.LastRealCount}";
+                PlayersLabel.Text = chinese ? $"玩家：{Envir.Players.Count}" : $"Players: {Envir.Players.Count}";
+                MonsterLabel.Text = chinese ? $"怪物：{Envir.MonsterCount}" : $"Monsters: {Envir.MonsterCount}";
+                ConnectionsLabel.Text = chinese ? $"连接：{Envir.Connections.Count}" : $"Connections: {Envir.Connections.Count}";
+                int blockedIPs = Envir.IPBlocks.Count(x => x.Value > Envir.Now);
+                BlockedIPsLabel.Text = chinese ? $"封禁 IP：{blockedIPs}" : $"Blocked IPs: {blockedIPs}";
+                TimeSpan uptime = Envir.Stopwatch.Elapsed;
+                UpTimeLabel.Text = chinese
+                    ? $"运行时间：{uptime.Days}天 {uptime.Hours}时 {uptime.Minutes}分 {uptime.Seconds}秒"
+                    : $"Uptime: {uptime.Days}d:{uptime.Hours}h:{uptime.Minutes}m:{uptime.Seconds}s";
 
                 if (Settings.Multithreaded && (Envir.MobThreads != null))
                 {
-                    CycleDelayLabel.Text = $"CycleDelays: {Envir.LastRunTime:0000}";
+                    CycleDelayLabel.Text = chinese ? $"循环耗时：{Envir.LastRunTime:0000}" : $"CycleDelays: {Envir.LastRunTime:0000}";
                     for (int i = 0; i < Envir.MobThreads.Length; i++)
                     {
                         if (Envir.MobThreads[i] == null) break;
@@ -125,7 +131,7 @@ namespace Server
                     }
                 }
                 else
-                    CycleDelayLabel.Text = $"CycleDelay: {Envir.LastRunTime}";
+                    CycleDelayLabel.Text = chinese ? $"循环耗时：{Envir.LastRunTime}" : $"CycleDelay: {Envir.LastRunTime}";
 
                 while (!MessageQueue.MessageLog.IsEmpty)
                 {
@@ -169,8 +175,8 @@ namespace Server
 
             ListItem.SubItems.Add(character.Name);
             ListItem.SubItems.Add(character.Level.ToString());
-            ListItem.SubItems.Add(character.Class.ToString());
-            ListItem.SubItems.Add(character.Gender.ToString());
+            ListItem.SubItems.Add(MainText(character.Class.ToString()));
+            ListItem.SubItems.Add(MainText(character.Gender.ToString()));
 
             string mapName = MapInfo.GetMapTitleByIndex(character.CurrentMapIndex);
             ListItem.SubItems.Add($"{mapName}");
@@ -452,7 +458,7 @@ namespace Server
         {
             if (!SMain.Envir.Running)
             {
-                MessageBox.Show("Server must be running to tune monsters", "Notice",
+                MessageBox.Show(MainText("Server must be running to tune monsters"), MainText("Notice"),
                 MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
@@ -528,14 +534,14 @@ namespace Server
                     }
                     else
                     {
-                        tempItem.SubItems.Add("DELETED");
+                        tempItem.SubItems.Add(MainText("DELETED"));
                         tempItem.ForeColor = Color.Red;
                     }
 
                     tempItem.SubItems.Add($"{guild.Membercount}/{guild.MemberCap}");
                     tempItem.SubItems.Add(guild.Level.ToString());
                     tempItem.SubItems.Add($"{guild.Gold}");
-                    tempItem.SubItems.Add(guild.HasGT ? guild.GTRent.ToString() : "None");
+                    tempItem.SubItems.Add(guild.HasGT ? guild.GTRent.ToString() : MainText("None"));
 
                     GuildListView.Items.Add(tempItem);
                 }

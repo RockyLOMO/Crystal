@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Content Include="MIR2.ICO" />
+    <Content Include="..\Localization\*.zh-CN.json" Link="Localization\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

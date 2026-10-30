@@ -1,0 +1,16 @@
+{
+  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261030.zip",
+  "Files": 5199,
+  "SelectedFileHashes": "PASS",
+  "Checked": [
+    "Client.dll",
+    "Shared.dll",
+    "Localization\\Chinese.json",
+    "Localization\\DbLanguage.zh-CN.json",
+    "Localization\\ItemsMonsters.zh-CN.json",
+    "Localization\\NpcText.zh-CN.json",
+    "Map\\DogYoHyun.map"
+  ],
+  "NoServerDataOrUserPreferences": true,
+  "CleanDefaultConfig": "PASS"
+}

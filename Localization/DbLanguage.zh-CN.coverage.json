@@ -1,0 +1,55 @@
+{
+  "source": ".ai/localization-data.json",
+  "dictionary": "Localization/DbLanguage.zh-CN.json",
+  "scope": "Exact display-name keys only; Items and Monsters are delegated separately.",
+  "translationNotes": [
+    "Classic skills and well-known places use familiar Chinese names.",
+    "Later/Euro-specific names use semantic translations or phonetic names; no claim of 1.76 content conversion.",
+    "Numbered map names are generated from explicit area mappings and floor/section patterns.",
+    "NPC names combine explicit role and personal-name tables and preserve every underscore line separator.",
+    "NPC dialogue and quest descriptions are outside this name-dictionary scope.",
+    "Translations have been statically validated, not visually accepted in game."
+  ],
+  "sections": {
+    "Maps": {
+      "records": 463,
+      "uniqueKeys": 297,
+      "translated": 297,
+      "missing": [],
+      "extra": [],
+      "withoutChinese": [],
+      "latinRemainders": [],
+      "npcLineSeparatorMismatches": []
+    },
+    "Npcs": {
+      "records": 375,
+      "uniqueKeys": 271,
+      "translated": 271,
+      "missing": [],
+      "extra": [],
+      "withoutChinese": [],
+      "latinRemainders": [],
+      "npcLineSeparatorMismatches": []
+    },
+    "Magics": {
+      "records": 111,
+      "uniqueKeys": 109,
+      "translated": 109,
+      "missing": [],
+      "extra": [],
+      "withoutChinese": [],
+      "latinRemainders": [],
+      "npcLineSeparatorMismatches": []
+    },
+    "Quests": {
+      "records": 154,
+      "uniqueKeys": 141,
+      "translated": 141,
+      "missing": [],
+      "extra": [],
+      "withoutChinese": [],
+      "latinRemainders": [],
+      "npcLineSeparatorMismatches": []
+    }
+  }
+}

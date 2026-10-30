@@ -73,7 +73,7 @@ namespace Client.MirObjects
 
         public void Load(S.ObjectMonster info, bool update = false)
         {
-            Name = info.Name;
+            Name = DbLanguage.Monster(info.Name);
             NameColour = info.NameColour;
             BaseImage = info.Image;
 

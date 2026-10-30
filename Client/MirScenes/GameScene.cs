@@ -2136,7 +2136,7 @@ namespace Client.MirScenes
             {
                 Index = p.MapIndex,
                 FileName = Path.Combine(Settings.MapPath, p.FileName + ".map"),
-                Title = p.Title,
+                Title = DbLanguage.Get("Maps", p.Title),
                 MiniMap = p.MiniMap,
                 BigMap = p.BigMap,
                 Lights = p.Lights,
@@ -3977,7 +3977,7 @@ namespace Client.MirScenes
             {
                 MapControl.Index = p.MapIndex;
                 MapControl.FileName = Path.Combine(Settings.MapPath, p.FileName + ".map");
-                MapControl.Title = p.Title;
+                MapControl.Title = DbLanguage.Get("Maps", p.Title);
                 MapControl.MiniMap = p.MiniMap;
                 MapControl.BigMap = p.BigMap;
                 MapControl.Lights = p.Lights;
@@ -4949,7 +4949,13 @@ namespace Client.MirScenes
             if (p.ObjectID == User.ObjectID) return;
 
             if (MapControl.Objects.TryGetValue(p.ObjectID, out var ob))
-                ob.Name = p.Name;
+                ob.Name = ob.Race switch
+                {
+                    ObjectType.Monster => DbLanguage.Monster(p.Name),
+                    ObjectType.Merchant => DbLanguage.Get("Npcs", p.Name),
+                    ObjectType.Item => DbLanguage.Get("Items", p.Name),
+                    _ => p.Name
+                };
         }
 
         private void UserStorage(S.UserStorage p)

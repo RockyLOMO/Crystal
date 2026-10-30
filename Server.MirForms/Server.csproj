@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="3.3.0" />
+    <Content Include="..\Localization\*.zh-CN.json" Link="Localization\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

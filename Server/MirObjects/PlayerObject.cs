@@ -12741,7 +12741,7 @@ namespace Server.MirObjects
                     itemAmount++;
                 }
 
-                if (ingredient.Info.FriendlyName == Settings.RefineOreName)
+                if (ingredient.Info.RawFriendlyName == Settings.RefineOreName)
                 {
                     orePurity += (short)Math.Floor(ingredient.CurrentDura / 1000M);
                     oreAmount++;

@@ -1,0 +1,13 @@
+{
+  "source": "https://mirfiles.com/resources/mir2/crystal/patch/",
+  "manifest_sha256": "c7a1f29ab769e1ef52a257c0ccc52ab527010d4846193f41051cf2438e23248f",
+  "completed": 4698,
+  "files": 4698,
+  "bytes": 8981153619,
+  "total_bytes": 8981153619,
+  "downloaded": 1384,
+  "existing": 3314,
+  "failures": 0,
+  "seconds": 693,
+  "errors": []
+}

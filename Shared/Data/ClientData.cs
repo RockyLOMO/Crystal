@@ -18,7 +18,7 @@ public class ClientMagic
 
     public ClientMagic(BinaryReader reader)
     {
-        Name = reader.ReadString();
+        Name = DbLanguage.Get("Magics", reader.ReadString());
         Spell = (Spell)reader.ReadByte();
 
         BaseCost = reader.ReadByte();
@@ -396,7 +396,7 @@ public class ClientQuestInfo
     {
         Index = reader.ReadInt32();
         NPCIndex = reader.ReadUInt32();
-        Name = reader.ReadString();
+        Name = DbLanguage.Get("Quests", reader.ReadString());
         Group = reader.ReadString();
 
         int count = reader.ReadInt32();

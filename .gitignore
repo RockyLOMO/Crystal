@@ -364,3 +364,6 @@ FodyWeavers.xsd
 /Build
 /.idea/.idea.Legend of Mir/.idea
 /.idea/config
+
+# Local deployment reference data
+.ai/

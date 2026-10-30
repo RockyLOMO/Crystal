@@ -1,0 +1,34 @@
+{
+  "sourceCorpus": ".ai/npc-visible-text.json",
+  "dictionary": "Localization/NpcText.zh-CN.json",
+  "scope": "Conservative exact client display mappings. Unmatched narrative is left unchanged; no regex translation of player text or internal IDs.",
+  "NpcCaptions": {
+    "translated": 321,
+    "corpusUniqueLabels": 720,
+    "occurrencesCovered": 6485,
+    "corpusOccurrences": 8000
+  },
+  "NpcLines": {
+    "translated": 386,
+    "corpusUniqueExactEnglishLines": 3132,
+    "occurrencesCovered": 7751,
+    "corpusOccurrences": 16813,
+    "priorityUniqueLinesCovered": 181,
+    "priorityUniqueLinesTotal": 1126
+  },
+  "validation": {
+    "jumpTargetsChanged": 0,
+    "colorCodesChanged": 0,
+    "tokensChanged": 0,
+    "newlinesChanged": 0,
+    "dynamicServerTemplatesIncluded": 0
+  },
+  "integrationNotes": [
+    "Apply NpcLines once before NPCDialog.NewText parses buttons/colours; preserve original leading/trailing whitespace when looking up a trimmed line.",
+    "Map exact NpcCaptions on captured display text only, in both normal buttons and big buttons; keep action/click targets unchanged.",
+    "NPCSegment.ParseSay resolves <$...> variables before sending. This client pack intentionally excludes variable-containing whole-line templates.",
+    "NpcCaptions and NpcLines coverage overlap and must not be added together.",
+    "Coverage inventories archived/unreferenced script variants as well as direct NPC references; it is not live gameplay acceptance.",
+    "Quest descriptions are inventoried in the corpus but are not translated comprehensively by this NPC starter pack."
+  ]
+}

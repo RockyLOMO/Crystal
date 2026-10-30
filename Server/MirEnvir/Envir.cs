@@ -17,13 +17,122 @@ namespace Server.MirEnvir
 {
     public class MobThread
     {
+        // Queue membership, due-time changes and heap indices share one short lock.
+        // Game object Process() always runs outside this lock.
+        internal static readonly object ScheduleLock = new object();
+        private readonly List<MapObject> _scheduled = new List<MapObject>();
         public int Id = 0;
         public long LastRunTime = 0;
         public long StartTime = 0;
         public long EndTime = 0;
         public LinkedList<MapObject> ObjectsList = new LinkedList<MapObject>();
         public LinkedListNode<MapObject> _current = null;
-        public bool Stop = false;
+        public bool Stop = true;
+
+        internal void AddScheduled(MapObject obj)
+        {
+            obj.ScheduledThread = this;
+            obj.ScheduledDueTime = Math.Max(obj.OperateTimeValue, obj.LastScheduledFrame);
+            obj.ScheduledIndex = _scheduled.Count;
+            _scheduled.Add(obj);
+            MoveUp(obj.ScheduledIndex);
+        }
+
+        internal void Reschedule(MapObject obj)
+        {
+            // Index -1 means this object is currently being processed. Its latest
+            // OperateTime will be enqueued by Complete, without a stale entry.
+            if (obj.ScheduledIndex < 0) return;
+            obj.ScheduledDueTime = Math.Max(obj.OperateTimeValue, obj.LastScheduledFrame);
+            Repair(obj.ScheduledIndex);
+        }
+
+        internal void RemoveScheduled(MapObject obj)
+        {
+            if (obj.ScheduledThread != this) return;
+            if (obj.ScheduledIndex >= 0) RemoveAt(obj.ScheduledIndex);
+            obj.ScheduledThread = null;
+        }
+
+        internal MapObject TakeDue(long time)
+        {
+            if (_scheduled.Count == 0 || _scheduled[0].ScheduledDueTime >= time) return null;
+            var obj = _scheduled[0];
+            RemoveAt(0);
+            obj.LastScheduledFrame = time;
+            return obj;
+        }
+
+        internal void Complete(MapObject obj)
+        {
+            if (obj.ScheduledThread == this && obj.ScheduledIndex < 0 && obj.Node != null)
+                AddScheduled(obj);
+        }
+
+        internal void ClearScheduled()
+        {
+            foreach (var obj in _scheduled)
+            {
+                obj.ScheduledThread = null;
+                obj.ScheduledIndex = -1;
+            }
+            _scheduled.Clear();
+            ObjectsList.Clear();
+            _current = null;
+        }
+
+        private static bool Earlier(MapObject a, MapObject b) =>
+            a.ScheduledDueTime < b.ScheduledDueTime ||
+            (a.ScheduledDueTime == b.ScheduledDueTime && a.ObjectID < b.ObjectID);
+
+        private void Swap(int a, int b)
+        {
+            (_scheduled[a], _scheduled[b]) = (_scheduled[b], _scheduled[a]);
+            _scheduled[a].ScheduledIndex = a;
+            _scheduled[b].ScheduledIndex = b;
+        }
+
+        private void MoveUp(int index)
+        {
+            while (index > 0)
+            {
+                var parent = (index - 1) / 2;
+                if (!Earlier(_scheduled[index], _scheduled[parent])) break;
+                Swap(index, parent);
+                index = parent;
+            }
+        }
+
+        private void Repair(int index)
+        {
+            if (index > 0 && Earlier(_scheduled[index], _scheduled[(index - 1) / 2]))
+            {
+                MoveUp(index);
+                return;
+            }
+            while (index * 2 + 1 < _scheduled.Count)
+            {
+                var child = index * 2 + 1;
+                if (child + 1 < _scheduled.Count && Earlier(_scheduled[child + 1], _scheduled[child])) child++;
+                if (!Earlier(_scheduled[child], _scheduled[index])) break;
+                Swap(index, child);
+                index = child;
+            }
+        }
+
+        private void RemoveAt(int index)
+        {
+            var removed = _scheduled[index];
+            var last = _scheduled.Count - 1;
+            if (index != last)
+            {
+                _scheduled[index] = _scheduled[last];
+                _scheduled[index].ScheduledIndex = index;
+            }
+            _scheduled.RemoveAt(last);
+            removed.ScheduledIndex = -1;
+            if (index < _scheduled.Count) Repair(index);
+        }
     }
     public class RandomProvider
     {
@@ -85,7 +194,8 @@ namespace Server.MirEnvir
         public DateTime Now =>
             _startTime.AddMilliseconds(Time);
 
-        public bool Running { get; private set; }
+        private volatile bool _running;
+        public bool Running { get => _running; private set => _running = value; }
 
 
         private static uint _objectID;
@@ -155,9 +265,29 @@ namespace Server.MirEnvir
 
         //multithread vars
         readonly object _locker = new object();
+        private const int WorkIntervalMilliseconds = 10;
         public MobThread[] MobThreads = new MobThread[Settings.ThreadLimit];
         private readonly Thread[] MobThreading = new Thread[Settings.ThreadLimit];
         public int SpawnMultiplier = 1;//set this to 2 if you want double spawns (warning this can easily lag your server far beyond what you imagine)
+        private readonly MobThread _mainObjectSchedule = new MobThread { Id = -1 };
+
+        internal void UpdateObjectSchedule(MapObject obj)
+        {
+            lock (MobThread.ScheduleLock)
+            {
+                var destination = Settings.Multithreaded && obj.Race == ObjectType.Monster && obj.Master == null
+                    ? MobThreads[obj.SpawnThread] : _mainObjectSchedule;
+                if (obj.ScheduledThread == destination) return;
+                obj.ScheduledThread?.RemoveScheduled(obj);
+                destination.AddScheduled(obj);
+            }
+        }
+
+        internal void RemoveObjectSchedule(MapObject obj)
+        {
+            lock (MobThread.ScheduleLock)
+                obj.ScheduledThread?.RemoveScheduled(obj);
+        }
 
         public List<string> CustomCommands = new List<string>();
 
@@ -2009,8 +2139,6 @@ namespace Server.MirEnvir
                 var processCount = 0;
                 var processRealCount = 0;
 
-                LinkedListNode<MapObject> current = null;
-
                 if (Settings.Multithreaded)
                 {
                     for (var j = 0; j < MobThreads.Length; j++)
@@ -2053,6 +2181,7 @@ namespace Server.MirEnvir
                     while (Running)
                     {
                         Time = Stopwatch.ElapsedMilliseconds;
+                        var nextWorkTime = Time + WorkIntervalMilliseconds;
 
                         if (Time >= processTime)
                         {
@@ -2087,55 +2216,32 @@ namespace Server.MirEnvir
                         }
 
 
-                        if (current == null)
-                            current = Objects.First;
-
-                        if (current == Objects.First)
-                        {
-                            LastRunTime = Time - startTime;
-                            startTime = Time;
-                        }
+                        LastRunTime = Time - startTime;
+                        startTime = Time;
 
                         if (Settings.Multithreaded)
                         {
-                            for (var j = 1; j < MobThreads.Length; j++)
-                            {
-                                var Info = MobThreads[j];
-
-                                if (!Info.Stop) continue;
-                                Info.EndTime = Time + 10;
-                                Info.Stop = false;
-                            }
                             lock (_locker)
                             {
-                                Monitor.PulseAll(_locker); //changing a blocking condition. (this makes the threads wake up!)
-                            }
-                            //run the first loop in the main thread so the main thread automaticaly 'halts' until the other threads are finished
-                            ThreadLoop(MobThreads[0]);
-                        }
-
-                        var TheEnd = false;
-                        var Start = Stopwatch.ElapsedMilliseconds;
-                        while (!TheEnd && Stopwatch.ElapsedMilliseconds - Start < 20)
-                        {
-                            if (current == null)
-                            {
-                                TheEnd = true;
-                                break;
-                            }
-
-                            var next = current.Next;
-                            if (!Settings.Multithreaded || current.Value.Race != ObjectType.Monster || current.Value.Master != null)
-                            {
-                                if (Time > current.Value.OperateTime)
+                                for (var j = 0; j < MobThreads.Length; j++)
                                 {
-                                    current.Value.Process();
-                                    current.Value.SetOperateTime();
+                                    MobThreads[j].EndTime = nextWorkTime;
+                                    MobThreads[j].Stop = false;
                                 }
-                                processCount++;
+                                Monitor.PulseAll(_locker);
                             }
-                            current = next;
+                            ProcessMobBatch(MobThreads[0]);
+                            lock (_locker)
+                            {
+                                MobThreads[0].Stop = true;
+                                while (Running && MobThreads.Any(info => !info.Stop))
+                                    Monitor.Wait(_locker);
+                            }
+                            if (!Running) break;
                         }
+
+                        _mainObjectSchedule.EndTime = Stopwatch.ElapsedMilliseconds + 20;
+                        processCount += ProcessMobBatch(_mainObjectSchedule);
 
                         for (var i = 0; i < MapList.Count; i++)
                             MapList[i].Process();
@@ -2174,8 +2280,14 @@ namespace Server.MirEnvir
                             });
                         }
 
-                        //   if (Players.Count == 0) Thread.Sleep(1);
-                        //   GC.Collect();
+                        // Work due times are unchanged. Wait only for the remainder of this
+                        // tick instead of repeatedly scanning objects which are not due yet.
+                        lock (_locker)
+                        {
+                            long remaining;
+                            while (Running && (remaining = nextWorkTime - Stopwatch.ElapsedMilliseconds) > 0)
+                                Monitor.Wait(_locker, (int)remaining);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -2195,6 +2307,13 @@ namespace Server.MirEnvir
 
                     MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.InnerWorkloopErrorLine), line, ex));
                 }
+
+                // No worker may keep accessing map/object state during shutdown cleanup.
+                Running = false;
+                lock (_locker)
+                    Monitor.PulseAll(_locker);
+                for (var i = 1; i < MobThreading.Length; i++)
+                    MobThreading[i]?.Join();
 
                 StopNetwork();
                 StopEnvir();
@@ -2219,63 +2338,22 @@ namespace Server.MirEnvir
 
         private void ThreadLoop(MobThread Info)
         {
-            Info.Stop = false;
-
             try
             {
-                var stopping = false;
-                if (Info._current == null)
-                    Info._current = Info.ObjectsList.First;
-                stopping = Info._current == null;
-
                 while (Running)
                 {
-                    if (Info._current == null)
-                        Info._current = Info.ObjectsList.First;
-                    else
-                    {
-                        var next = Info._current.Next;
-
-                        //if we reach the end of our list > go back to the top (since we are running threaded, we dont want the system to sit there for xxms doing nothing)
-                        if (Info._current == Info.ObjectsList.Last)
-                        {
-                            next = Info.ObjectsList.First;
-                            Info.LastRunTime = (Info.LastRunTime + (Time - Info.StartTime)) / 2;
-                            //Info.LastRunTime = (Time - Info.StartTime) /*> 0 ? (Time - Info.StartTime) : Info.LastRunTime */;
-                            Info.StartTime = Time;
-                        }
-                        if (Time > Info._current.Value.OperateTime)
-                        {
-                            if (Info._current.Value.Master == null) //since we are running multithreaded, dont allow pets to be processed (unless you constantly move pets into their map appropriate thead)
-                            {
-                                Info._current.Value.Process();
-                                Info._current.Value.SetOperateTime();
-                            }
-                        }
-                        Info._current = next;
-                    }
-
-                    //if it's the main thread > make it loop till the subthreads are done, else make it stop after 'endtime'
-                    if (Info.Id == 0)
-                    {
-                        stopping = true;
-                        for (var x = 1; x < MobThreads.Length; x++)
-                        {
-                            if (MobThreads[x].Stop == false)
-                            {
-                                stopping = false;
-                            }
-                        }
-                        if (!stopping) continue;
-                        Info.Stop = stopping;
-                        return;
-                    }
-
-                    if (Stopwatch.ElapsedMilliseconds <= Info.EndTime || !Running) continue;
-                    Info.Stop = true;
                     lock (_locker)
                     {
-                        while (Info.Stop) Monitor.Wait(_locker);
+                        while (Running && Info.Stop)
+                            Monitor.Wait(_locker);
+                        if (!Running) return;
+                    }
+
+                    ProcessMobBatch(Info);
+                    lock (_locker)
+                    {
+                        Info.Stop = true;
+                        Monitor.PulseAll(_locker);
                     }
                 }
             }
@@ -2285,6 +2363,45 @@ namespace Server.MirEnvir
 
                 MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.ThreadLoopError), ex));
             }
+            finally
+            {
+                lock (_locker)
+                {
+                    // A failed worker must not leave the main thread waiting forever.
+                    Running = false;
+                    Info.Stop = true;
+                    Monitor.PulseAll(_locker);
+                }
+            }
+        }
+
+        private int ProcessMobBatch(MobThread info)
+        {
+            var processed = 0;
+            while (Running)
+            {
+                MapObject obj;
+                lock (MobThread.ScheduleLock)
+                    obj = info.TakeDue(Time);
+                if (obj == null) break;
+
+                try
+                {
+                    obj.Process();
+                    obj.SetOperateTime();
+                }
+                finally
+                {
+                    lock (MobThread.ScheduleLock)
+                        info.Complete(obj);
+                }
+                processed++;
+                // The heap retains unprocessed due objects when the budget expires.
+                if (Stopwatch.ElapsedMilliseconds >= info.EndTime) break;
+            }
+            info.LastRunTime = (info.LastRunTime + (Time - info.StartTime)) / 2;
+            info.StartTime = Time;
+            return processed;
         }
 
         private void AdjustLights()
@@ -3271,20 +3388,6 @@ namespace Server.MirEnvir
                 Monitor.PulseAll(_locker);
             }
 
-            //simply intterupt all the mob threads if they are running (will give an invisible error on them but fastest way of getting rid of them on shutdowns)
-            for (var i = 1; i < MobThreading.Length; i++)
-            {
-                if (MobThreads[i] != null)
-                {
-                    MobThreads[i].EndTime = Time + 9999;
-                }
-                if (MobThreading[i] != null &&
-                    MobThreading[i].ThreadState != System.Threading.ThreadState.Stopped && MobThreading[i].ThreadState != System.Threading.ThreadState.Unstarted)
-                {
-                    MobThreading[i].Interrupt();
-                }
-            }
-
             http?.Stop();
 
             while (_thread != null)
@@ -3443,6 +3546,12 @@ namespace Server.MirEnvir
             StartPoints.Clear();
             StartItems.Clear();
             Objects.Clear();
+            lock (MobThread.ScheduleLock)
+            {
+                _mainObjectSchedule.ClearScheduled();
+                foreach (var partition in MobThreads)
+                    partition?.ClearScheduled();
+            }
             Players.Clear();
             Heroes.Clear();
             GTMapList.Clear();
