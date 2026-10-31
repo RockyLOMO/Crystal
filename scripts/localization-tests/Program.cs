@@ -40,6 +40,28 @@ GameLanguage.LoadServerLanguage(Path.Combine(root, "Server.MirForms", "Localizat
 Check(GameLanguage.ServerLogTextMap.GetLocalization(ServerTextKeys.EnvirStarted) == originalLog &&
     GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.EnvirStarted) != originalLog,
     "English operational log templates remain independent from Chinese game messages");
+Check(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap) == "此地图无法召唤宠物。" &&
+    GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotRecycleFireWall) == "已有火墙暂时无法回收，请稍后再试。",
+    "new summon and firewall player messages load Chinese instead of English fallback");
+using (var clientLanguage = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "Client", "Localization", "Chinese.json"))))
+using (var worldLanguage = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "Localization", "DbLanguage.zh-CN.json"))))
+{
+    var text = clientLanguage.RootElement.GetProperty("Text");
+    Check(text.GetProperty("Durability").GetString() == "持久:" && text.GetProperty("MAC").GetString().StartsWith("魔御") &&
+        text.GetProperty("LowMC").GetString() == "你的魔法力不足。" &&
+        !text.GetProperty("TrapHexagonSkillDescription").GetString().Contains("魔魔法值"),
+        "classic durability and magic defence terms are used in tooltips");
+    var spells = worldLanguage.RootElement.GetProperty("Magics").EnumerateObject()
+        .ToDictionary(entry => entry.Name, entry => entry.Value.GetString(), StringComparer.OrdinalIgnoreCase);
+    foreach (var entry in text.EnumerateObject())
+    {
+        if (!entry.Name.EndsWith("SkillDescription")) continue;
+        if (spells.TryGetValue(entry.Name[..^"SkillDescription".Length], out var title))
+            if (entry.Value.GetString().Split('\n')[0] != title) throw new Exception($"Skill title mismatch: {entry.Name}");
+    }
+    Check(!text.GetProperty("FireballSkillDescription").GetString().Contains("ThunderboltSkillDescription"),
+        "skill tooltips match displayed skill names and contain no leaked language key");
+}
 var quest = new ClientQuestInfo
 {
     Name = "__unknown__", Group = "BichonProvince",

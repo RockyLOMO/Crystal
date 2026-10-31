@@ -176,7 +176,7 @@ namespace Client
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
 
-                Settings.Resolution = (int)eSupportedResolution.w1024h768;
+                Settings.Resolution = Settings.PreferredResolution;
                 Settings.Save();
             }
         }

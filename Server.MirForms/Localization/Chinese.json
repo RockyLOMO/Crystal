@@ -767,7 +767,9 @@
     "CannotFollowIntoMapWaitHere": "{0} 无法跟随你进入此地图，将在这里等待。",
     "HasReturnedToYourSide": "{0} 已回到你身边。",
     "HeroDesummonCountdown": "你的英雄刚刚脱离战斗，请等待 {0} 秒后再收回。",
-    "StoragePasswordCleared": "已清除 {0} 的仓库密码。"
+    "StoragePasswordCleared": "已清除 {0} 的仓库密码。",
+    "CannotSummonPetsOnMap": "此地图无法召唤宠物。",
+    "CannotRecycleFireWall": "已有火墙暂时无法回收，请稍后再试。"
   },
   "Enum": {}
 }

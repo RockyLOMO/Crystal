@@ -863,7 +863,7 @@ namespace Client.MirScenes.Dialogs
                     Parent = RankPage,
                     Location = new Point(17 + (i % 2 == 0 ? 42 : 202), i % 2 == 0 ? 118 + (i * 20) : 118 + ((i - 1) * 20)),
                     AutoSize = true,
-                    Text = Options[i]
+                    Text = DbLanguage.Get("Ui", Options[i])
                 };
             }
 
@@ -1075,7 +1075,7 @@ namespace Client.MirScenes.Dialogs
                     }
                     Buffs[i].Visible = true;
                     GuildBuff Buff = FindGuildBuff(BuffInfo.Id);
-                    Buffs[i].Name.Text = BuffInfo.Name;
+                    Buffs[i].Name.Text = DbLanguage.Get("Ui", BuffInfo.Name);
                     Buffs[i].Icon.Index = BuffInfo.Icon;
 
                     if (Buff == null)
@@ -1158,7 +1158,7 @@ namespace Client.MirScenes.Dialogs
             {
                 var c = val.Value < 0 ? GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Decreases) : GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Increases);
 
-                var txt = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ValueByOwnerPercent), c, val.Key, val.Value, val.Key.ToString().Contains("Percent") ? "%" : "");
+                var txt = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ValueByOwnerPercent), c, val.Key.ToLocalizedString(), val.Value, val.Key.ToString().Contains("Percent") ? "%" : "");
 
                 text += txt;
             }
@@ -1189,7 +1189,7 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(4, 4),
                 OutLine = true,
                 Parent = GameScene.Scene.GuildBuffLabel,
-                Text = Buff.Name
+                Text = DbLanguage.Get("Ui", Buff.Name)
             };
 
             GameScene.Scene.GuildBuffLabel.Size = new Size(Math.Max(GameScene.Scene.GuildBuffLabel.Size.Width, HintName.DisplayRectangle.Right + 4),
@@ -1480,7 +1480,7 @@ namespace Client.MirScenes.Dialogs
                     RankNames.Add(Ranks[i].Name);
                 }
                 else
-                    RankNames.Add("Missing Rank");
+                    RankNames.Add(DbLanguage.Get("Ui", "Missing Rank"));
             }
             for (int i = 0; i < MembersRanks.Length; i++)
             {
@@ -1490,7 +1490,7 @@ namespace Client.MirScenes.Dialogs
             RanksSelectBox.Items = RankNames.ToList();
             RanksSelectBox.MinimumOption = 0;
             if (RankNames.Count < 255)
-                RanksSelectBox.Items.Add("Add New");
+                RanksSelectBox.Items.Add(DbLanguage.Get("Ui", "Add New"));
             UpdateMembers();
             UpdateRanks();
         }

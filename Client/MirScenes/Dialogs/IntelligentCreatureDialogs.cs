@@ -726,8 +726,8 @@ namespace Client.MirScenes.Dialogs
 
             var rules = GameScene.User.IntelligentCreatures[selectedCreature].CreatureRules;
 
-            var semi = rules.SemiAutoPickupEnabled ? string.Format("{0}x{0} {1}{2}{3}", rules.AutoPickupRange, rules.AutoPickupEnabled ? "auto/" : "", rules.SemiAutoPickupEnabled ? "semi-auto" : "", rules.MousePickupEnabled ? ", " : "") : "";
-            var mouse = rules.SemiAutoPickupEnabled ? string.Format("{0}x{0} mouse", rules.MousePickupRange) : "";
+            var semi = rules.SemiAutoPickupEnabled ? string.Format("{0}x{0} {1}{2}{3}", rules.AutoPickupRange, rules.AutoPickupEnabled ? DbLanguage.Get("Ui", "auto/") : "", rules.SemiAutoPickupEnabled ? DbLanguage.Get("Ui", "semi-auto") : "", rules.MousePickupEnabled ? ", " : "") : "";
+            var mouse = rules.SemiAutoPickupEnabled ? string.Format(DbLanguage.Get("Ui", "{0}x{0} mouse"), rules.MousePickupRange) : "";
 
             CreatureName.Text = GameScene.User.IntelligentCreatures[selectedCreature].CustomName;
             CreatureInfo.Text = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CanPickupItems), semi, mouse);

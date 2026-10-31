@@ -68,14 +68,15 @@ namespace Client
         public static int RemainingErrorLogs = 100;
 
         //Graphics
-        public static bool FullScreen = true, Borderless = true, TopMost = true, MouseClip = false;
+        public static bool FullScreen = false, Borderless = false, TopMost = false, MouseClip = false;
         public static string FontName = "Microsoft YaHei";
         public static float FontSize = 8F;
         public static bool UseMouseCursors = true;
 
         public static bool FPSCap = true;
         public static int MaxFPS = 100;
-        public static int Resolution = 1024;
+        public const int PreferredResolution = 1366;
+        public static int Resolution = PreferredResolution;
         public static bool DebugMode = false;
 
         //Network
@@ -214,7 +215,9 @@ namespace Client
             MouseClip = Reader.ReadBoolean("Graphics", "MouseClip", MouseClip);
             TopMost = Reader.ReadBoolean("Graphics", "AlwaysOnTop", TopMost);
             FPSCap = Reader.ReadBoolean("Graphics", "FPSCap", FPSCap);
-            Resolution = Reader.ReadInt32("Graphics", "Resolution", Resolution);
+            // This distribution uses a fixed 1366x768 game viewport, including
+            // upgrades from an older config. The server's limit still applies.
+            Resolution = PreferredResolution;
             DebugMode = Reader.ReadBoolean("Graphics", "DebugMode", DebugMode);
             UseMouseCursors = Reader.ReadBoolean("Graphics", "UseMouseCursors", UseMouseCursors);
 

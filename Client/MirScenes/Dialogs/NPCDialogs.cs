@@ -2169,7 +2169,7 @@ namespace Client.MirScenes.Dialogs
             {
                 ItemCells[1].Item = new UserItem(Materials[0]);
                 ItemCells[1].Item.Count = MaterialsCount[0];
-                NeedItemLabel1.Text = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.NeedItemQuantity), Regex.Replace(ItemCells[1].Item.Info.Name, @"[\d-]", string.Empty), MaterialsCount[0].ToString());
+                NeedItemLabel1.Text = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.NeedItemQuantity), Regex.Replace(ItemCells[1].Item.Info.FriendlyName, @"[\d-]", string.Empty), MaterialsCount[0].ToString());
             }
             else
             {
@@ -2181,7 +2181,7 @@ namespace Client.MirScenes.Dialogs
             {
                 ItemCells[2].Item = new UserItem(Materials[1]);
                 ItemCells[2].Item.Count = MaterialsCount[1];
-                NeedItemLabel2.Text = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.NeedItemQuantity), Regex.Replace(ItemCells[2].Item.Info.Name, @"[\d-]", string.Empty), MaterialsCount[1].ToString());
+                NeedItemLabel2.Text = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.NeedItemQuantity), Regex.Replace(ItemCells[2].Item.Info.FriendlyName, @"[\d-]", string.Empty), MaterialsCount[1].ToString());
             }
             else
             {
@@ -2694,7 +2694,7 @@ namespace Client.MirScenes.Dialogs
             Recipe = GameScene.RecipeInfoList.SingleOrDefault(x => x.Item.ItemIndex == selectedItem.ItemIndex);
 
             RecipeLabel.Text = Recipe.Item.FriendlyName;
-            PossibilityLabel.Text = (UserObject.User.Stats[Stat.CraftRatePercent] > 0 ? $"{Math.Min(100, Recipe.Chance + UserObject.User.Stats[Stat.CraftRatePercent])}% (+{UserObject.User.Stats[Stat.CraftRatePercent]}%)" : $"{Recipe.Chance}%") + " Chance of Success";
+            PossibilityLabel.Text = (UserObject.User.Stats[Stat.CraftRatePercent] > 0 ? $"{Math.Min(100, Recipe.Chance + UserObject.User.Stats[Stat.CraftRatePercent])}% (+{UserObject.User.Stats[Stat.CraftRatePercent]}%)" : $"{Recipe.Chance}%") + DbLanguage.Get("Ui", " Chance of Success");
             GoldLabel.Text = Recipe.Gold.ToString("###,###,##0");
 
             for (int i = 0; i < Slots.Length; i++)

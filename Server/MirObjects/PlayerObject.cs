@@ -1,4 +1,4 @@
-using System.Drawing;
+﻿using System.Drawing;
 using C = ClientPackets;
 using Server.MirDatabase;
 using Server.MirEnvir;
@@ -2700,7 +2700,7 @@ namespace Server.MirObjects
                     case "MAP":
                         var mapName = CurrentMap.Info.FileName;
                         var mapTitle = CurrentMap.Info.Title;
-                        ReceiveChat((GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.YouAreInMapId), mapTitle, mapName)), ChatType.System);
+                        ReceiveChat((GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.YouAreInMapId), DbLanguage.Get("Maps", mapTitle), mapName)), ChatType.System);
                         break;
 
                     case "BACKUPPLAYER":
@@ -3215,23 +3215,23 @@ namespace Server.MirObjects
 
                             Enqueue(new S.MagicLeveled { ObjectID = ObjectID, Spell = magic.Spell, Level = magic.Level, Experience = 0 });
 
-                            string skillChangeMsg = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpellChangedByGM), player.Name, skill.ToString(), spellLevel, Name);
+                            string skillChangeMsg = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpellChangedByGM), player.Name, DbLanguage.Get("Magics", skill.ToString()), spellLevel, Name);
 
-                            player.ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpellChangedLevel), skill.ToString(), spellLevel), ChatType.Hint);
+                            player.ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpellChangedLevel), DbLanguage.Get("Magics", skill.ToString()), spellLevel), ChatType.Hint);
                             Helpers.ChatSystem.SystemMessage(chatMessage: skillChangeMsg);
 
                             return;
                         }
                         else
                         {
-                            player.ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.LearnedSkillAtLevel), skill.ToString(), spellLevel), ChatType.Hint);
+                            player.ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.LearnedSkillAtLevel), DbLanguage.Get("Magics", skill.ToString()), spellLevel), ChatType.Hint);
 
                             if (player != this)
                             {
-                                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.HasLearnedSkillAtLevel), player.Name, skill.ToString(), spellLevel), ChatType.Hint);
+                                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.HasLearnedSkillAtLevel), player.Name, DbLanguage.Get("Magics", skill.ToString()), spellLevel), ChatType.Hint);
                             }
 
-                            string skillLearnedMg = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpellLearntSetLevelByGM), player.Name, skill.ToString(), spellLevel, Name);
+                            string skillLearnedMg = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpellLearntSetLevelByGM), player.Name, DbLanguage.Get("Magics", skill.ToString()), spellLevel, Name);
                             Helpers.ChatSystem.SystemMessage(chatMessage: skillLearnedMg);
 
                             player.Info.Magics.Add(magic);
@@ -6316,7 +6316,7 @@ namespace Server.MirObjects
                         var con = CurrentMap.GetConquest(CurrentLocation);
                         if (con == null)
                         {
-                            ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpawnOnlyDuringConquest), monsterInfo.GameName), ChatType.Hint);
+                            ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SpawnOnlyDuringConquest), DbLanguage.Monster(monsterInfo.GameName)), ChatType.Hint);
                             Enqueue(p);
                             return;
                         }
@@ -11605,7 +11605,7 @@ namespace Server.MirObjects
             {
                 quest.ProcessKill(mInfo);
 
-                Enqueue(new S.SendOutputMessage { Message = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.YouKilled), mInfo.GameName), Type = OutputMessageType.Quest });
+                Enqueue(new S.SendOutputMessage { Message = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.YouKilled), DbLanguage.Monster(mInfo.GameName)), Type = OutputMessageType.Quest });
 
                 SendUpdateQuest(quest, QuestState.Update);
             }
@@ -12273,7 +12273,7 @@ namespace Server.MirObjects
                 MailInfo mail = new MailInfo(Info.Index)
                 {
                     MailID = ++Envir.NextMailID,
-                    Sender = "BlackStone",
+                    Sender = DbLanguage.Get("Ui", "BlackStone"),
                     Message = GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.PetProducedBlackStoneInventoryFull),
                     Items = new List<UserItem> { item },
                 };
@@ -12646,7 +12646,7 @@ namespace Server.MirObjects
                         MailInfo mail = new MailInfo(Info.Index)
                         {
                             MailID = ++Envir.NextMailID,
-                            Sender = "Refiner",
+                            Sender = DbLanguage.Get("Ui", "Refiner"),
                             Message = GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.RefiningCancelledItemNotReturned),
                             Items = new List<UserItem> { temp },
                         };
@@ -13922,7 +13922,7 @@ namespace Server.MirObjects
             MailInfo mail = new MailInfo(Info.Index)
             {
                 MailID = ++Envir.NextMailID,
-                Sender = "Gameshop",
+                Sender = DbLanguage.Get("Ui", "Gameshop"),
                 Message = GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.ThankYouPurchaseGameshop),
                 Items = mailItems,
             };

@@ -36,7 +36,7 @@ FullScreen=False
 Borderless=False
 AlwaysOnTop=False
 MouseClip=False
-Resolution=1024
+Resolution=1366
 FPSCap=True
 
 [Network]
@@ -61,6 +61,7 @@ Crystal Mir2 Windows x64 中文客户端
 完整解压 Mir2 文件夹后，运行 Start-Client.cmd。
 已包含 .NET 8 运行库及本地 VC++ / DirectX 依赖。
 默认连接 s.f-li.cn:7000；中文字体为 Microsoft YaHei。
+游戏视口固定 1366x768，默认窗口模式；登录和选人保留原生布局。
 更换服务端时修改 Mir2Config.ini 的 Network/IPAddress 和 Port。
 服务端也需要监听相应地址。安卓 Wine / Winlator 实际游戏和触控尚未验证。
 此包不包含服务端账号数据库或预置账号。

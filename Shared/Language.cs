@@ -1886,7 +1886,9 @@ public enum ServerTextKeys
     IntelligentCreaturesCannotBeSummonedOnMap,
     CannotSummonHeroOnMap,
     CannotFollowIntoMapWaitHere,
-    HasReturnedToYourSide
+    HasReturnedToYourSide,
+    CannotSummonPetsOnMap,
+    CannotRecycleFireWall
 }
 
 public class TextMap
@@ -2671,6 +2673,8 @@ public static class GameLanguage
             { nameof(ServerTextKeys.CannotSummonHeroOnMap), "You cannot summon your Hero on this map."},
             { nameof(ServerTextKeys.CannotFollowIntoMapWaitHere), "{0} cannot follow you into this map and will wait here."},
             { nameof(ServerTextKeys.HasReturnedToYourSide), "{0} has returned to your side."},
+            { nameof(ServerTextKeys.CannotSummonPetsOnMap), "You cannot summon pets on this map." },
+            { nameof(ServerTextKeys.CannotRecycleFireWall), "Unable to recycle an existing FireWall. Please wait a moment." },
 
         },
         Enum = new Dictionary<string, string>

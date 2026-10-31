@@ -1,6 +1,6 @@
 {
-  "CheckedAtUtc": "2026-10-31T06:16:04.417220+00:00",
-  "Status": "player-chinese-admin-english-deployed-stopped-clean",
+  "CheckedAtUtc": "2026-10-31T13:33:31.072877+00:00",
+  "Status": "code-localization-1366-windowed-deployed-stopped",
   "Source": {
     "Path": "D:\\projs\\mir2",
     "Repository": "https://github.com/Suprcode/Crystal",
@@ -8,7 +8,7 @@
     "Fork": "https://github.com/RockyLOMO/Crystal",
     "Branch": "rx-server",
     "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
-    "DeployedSourceHead": "59fc624faa781cb76cc7f6b491252957826b6067",
+    "DeployedSourceHead": "11074271",
     "IncludesUncommittedChanges": true
   },
   "Runtime": {
@@ -39,16 +39,18 @@
     "RestoreDrill": "NOT VERIFIED",
     "ClientRestartAfterResourceDownload": "PASS",
     "PackageContent": "PASS",
-    "PlayerLocalizationRegression": 26,
+    "PlayerLocalizationRegression": 29,
     "SchedulingRegression": 36,
-    "PackageRegression": 39,
-    "PlayerTextStructure": "PASS: 3303 entries",
+    "PackageRegression": 47,
+    "PlayerTextStructure": "PASS: 3340 entries",
     "LatestVersionHandshake": "PASS",
     "LatestKeepAlive": "PASS",
     "LatestClientStartup": "Responding; no new Error.txt bytes; visual acceptance not performed",
-    "StartupMapWarnings": "None (0159 Blacksmith #ELSEIF fixed and verified at 2026-10-31 14:31:11)",
+    "StartupMapWarnings": "None observed during this run",
     "LatestSoundHashCheck": "1608 unchanged",
-    "LatestEnvirTextHashCheck": "2600 unchanged"
+    "LatestEnvirTextHashCheck": "2600 unchanged",
+    "ClientSettingsIntegration": "PASS: 2 checks",
+    "LatestLibMetadataCheck": "1440 unchanged"
   },
   "Content": {
     "DatabaseRelease": "29.01.25",
@@ -80,9 +82,9 @@
     "Status": "PASS"
   },
   "Package": {
-    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261031.zip",
-    "Bytes": 8060037204,
-    "SHA256": "68c5febf4071301aec51225ef7204fc453d57b24d03eb484de7d748c580fb9a9",
+    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-1366-zhCN-20261031.zip",
+    "Bytes": 8060038144,
+    "SHA256": "379b72f08e7eef336435fbb677cbff0c34c216829c261ec62a091fdc6a2296e3",
     "ZipIntegrity": "PASS",
     "DistributionCopyChecksum": "PASS",
     "IncludesServerData": false,
@@ -92,15 +94,17 @@
   "CurrentProcessState": {
     "ServerRunning": false,
     "ClientRunning": false,
-    "Reason": "Restored original stopped state after localization verification"
+    "Reason": "Closed normally after verification; server network was stopped before this work"
   },
   "Localization": {
     "DetailedReport": "README.md",
-    "ValidationReport": "player-localization-validation.json",
+    "ValidationReport": "code-localization-validation.json",
     "NpcNarrative": "Original 3132-key corpus mapped; 4 nonprose markers preserved; supplemental 290 quest/system templates",
     "Editors": "English; operator log templates separated from Chinese player messages",
     "NameDictionaries": "deployed",
-    "RuntimeClientChineseJson": "Loader normalizes its key set on startup; one unused client HeroDesummonCountdown entry is omitted. Server countdown key remains translated."
+    "RuntimeClientChineseJson": "Loader normalizes its key set on startup; one unused client HeroDesummonCountdown entry is omitted. Server countdown key remains translated.",
+    "LatestCodeSupplement": "docs/crystal_code_level_localization_1366.md",
+    "GameResolution": "1366x768; native login/selection layout retained"
   },
   "Performance": {
     "UpstreamDefaultsMatch": true,
@@ -136,5 +140,5 @@
     "GracefulShutdown": "PASS",
     "FinalRunning": false
   },
-  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\20261031-060955Z"
+  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\20261031-132541Z"
 }

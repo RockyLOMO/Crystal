@@ -31,6 +31,7 @@ namespace Launcher
 
         public void resolutionChoice(eSupportedResolution res)
         {
+            res = (eSupportedResolution)Settings.PreferredResolution;
             Res2_pb.Image = Client.Resources.Images.Radio_Unactive;
             Res3_pb.Image = Client.Resources.Images.Radio_Unactive;
             Res4_pb.Image = Client.Resources.Images.Radio_Unactive;
@@ -219,6 +220,7 @@ namespace Launcher
 
             foreach (eSupportedResolution supportedResolution in DisplayResolutions.DisplaySupportedResolutions)
             {
+                if ((int)supportedResolution != Settings.PreferredResolution) continue;
                 switch (supportedResolution)
                 {
                     case (eSupportedResolution.w1024h768):

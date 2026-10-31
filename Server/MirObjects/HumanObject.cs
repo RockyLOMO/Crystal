@@ -4010,7 +4010,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
             
@@ -4168,7 +4168,7 @@ namespace Server.MirObjects
                 {
                     if (!TryReplaceOldestFireWallCast(activeFireWalls))
                     {
-                        ReceiveChat("Unable to recycle an existing FireWall. Please wait a moment.", ChatType.System);
+                        ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotRecycleFireWall), ChatType.System);
                         return;
                     }
 
@@ -4273,7 +4273,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
             
@@ -4401,7 +4401,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
             
@@ -4450,7 +4450,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
 
@@ -4711,7 +4711,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
 
@@ -5345,7 +5345,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
             
@@ -5741,7 +5741,7 @@ namespace Server.MirObjects
         {
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
             
@@ -5763,7 +5763,7 @@ namespace Server.MirObjects
 
             if (CurrentMap.Info.NoPets)
             {
-                ReceiveChat("You cannot summon pets on this map.", ChatType.System);
+                ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSummonPetsOnMap), ChatType.System);
                 return;
             }
             

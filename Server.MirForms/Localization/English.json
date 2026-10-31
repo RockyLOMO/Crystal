@@ -765,7 +765,9 @@
     "IntelligentCreaturesCannotBeSummonedOnMap": "Intelligent creatures cannot be summoned on this map.",
     "CannotSummonHeroOnMap": "You cannot summon your Hero on this map.",
     "CannotFollowIntoMapWaitHere": "{0} cannot follow you into this map and will wait here.",
-    "HasReturnedToYourSide": "{0} has returned to your side."
+    "HasReturnedToYourSide": "{0} has returned to your side.",
+    "CannotSummonPetsOnMap": "You cannot summon pets on this map.",
+    "CannotRecycleFireWall": "Unable to recycle an existing FireWall. Please wait a moment."
   },
   "Enum": {}
 }

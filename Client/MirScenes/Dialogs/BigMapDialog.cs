@@ -794,8 +794,8 @@ namespace Client.MirScenes.Dialogs
             Visible = false;
             Sound = SoundList.ButtonA;
 
-            string name = Info.Name;
-            if (Info.Name.Contains("_"))
+            string name = DbLanguage.Get("Npcs", Info.Name);
+            if (name.Contains("_"))
             {
                 string[] splitName = name.Split('_');
                 name=string.Empty;

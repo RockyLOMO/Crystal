@@ -1,0 +1,89 @@
+{
+  "Date": "2026-10-31",
+  "SourcePlan": "docs/crystal_code_level_localization_1366.md",
+  "Backup": "D:\\private-server\\mir2\\backups\\20261031-132541Z",
+  "PublishedFiles": 515,
+  "Build": "Server+Client Release win-x64 publish PASS",
+  "LocalizationRegression": 29,
+  "SchedulingRegression": 36,
+  "PackageRegression": 47,
+  "SettingsIntegration": "PASS: legacy 1920 config loads 1366; launcher selection persists 1366",
+  "StructureValidationEntries": 3340,
+  "NewUiEntries": 37,
+  "SkillDescriptionHeadersAligned": 97,
+  "ServerHardcodedMessagesReplaced": 9,
+  "Smoke": {
+    "Handshake": {
+      "endpoint": "127.0.0.1:7000",
+      "connected_packet": "PASS",
+      "client_version": "PASS",
+      "keepalive_roundtrip": "PASS",
+      "account_changes": false
+    },
+    "ClientResponding": true,
+    "NewClientErrorBytes": 0,
+    "ServerStartupErrors": false,
+    "FinalServerRunning": false,
+    "FinalClientRunning": false
+  },
+  "Assets": {
+    "Sound": {
+      "Files": 1608,
+      "Method": "SHA256",
+      "Changed": []
+    },
+    "Data": {
+      "Files": 1440,
+      "Method": "File set, byte lengths and last-write timestamps",
+      "Changed": []
+    }
+  },
+  "EnvirTextFilesUnchanged": 2600,
+  "DatabaseSHA256": "cd4b185ac9f896503b88b60932899f1b23baff8d81b9e395517caf6dc06a2f9a",
+  "Resolution": {
+    "Game": "1366x768",
+    "FullscreenDefault": false,
+    "LoginAndSelection": "Original 1024x768 layout",
+    "ServerLimit": "Lower server limit is still respected; current server permits 1920"
+  },
+  "Boundary": [
+    "No mutation of database Name, packet structure, file identifiers or drop/script keys.",
+    "No blanket translation of player names or chat.",
+    "Operator GUI remains English; .lib images and original audio preserved.",
+    "JSON language packs are synchronized; no Language.ini files deleted."
+  ],
+  "VisualGameplayAcceptance": "NOT VERIFIED",
+  "KnownIssue": "No startup error observed in this run; full in-game UI acceptance remains manual.",
+  "Package": {
+    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-1366-zhCN-20261031.zip",
+    "Bytes": 8060038144,
+    "SHA256": "379b72f08e7eef336435fbb677cbff0c34c216829c261ec62a091fdc6a2296e3",
+    "ZipIntegrity": "PASS",
+    "DistributionCopyChecksum": "PASS",
+    "IncludesServerData": false,
+    "IncludesUserSettingsOrLogs": false,
+    "DefaultEndpoint": "s.f-li.cn:7000"
+  },
+  "PackageContent": {
+    "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-1366-zhCN-20261031.zip",
+    "Files": 5200,
+    "SelectedFileHashes": "PASS",
+    "Checked": [
+      "Client.exe",
+      "Client.dll",
+      "Shared.dll",
+      "Localization/Chinese.json",
+      "Localization/DbLanguage.zh-CN.json",
+      "Localization/ItemsMonsters.zh-CN.json",
+      "Localization/NpcText.zh-CN.json",
+      "Localization/NpcNarrative.zh-CN.json",
+      "Map/DogYoHyun.map"
+    ],
+    "NoServerDataOrUserPreferences": true,
+    "CleanDefaultConfig": "PASS",
+    "DefaultEndpoint": "s.f-li.cn:7000",
+    "DefaultResolution": "1366x768",
+    "FullScreen": false
+  },
+  "CheckedAt": "2026-10-31T21:33:31.058166+08:00"
+}

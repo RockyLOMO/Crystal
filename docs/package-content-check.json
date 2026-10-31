@@ -1,5 +1,5 @@
 {
-  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261031.zip",
+  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-1366-zhCN-20261031.zip",
   "Files": 5200,
   "SelectedFileHashes": "PASS",
   "Checked": [
@@ -15,5 +15,7 @@
   ],
   "NoServerDataOrUserPreferences": true,
   "CleanDefaultConfig": "PASS",
-  "DefaultEndpoint": "s.f-li.cn:7000"
+  "DefaultEndpoint": "s.f-li.cn:7000",
+  "DefaultResolution": "1366x768",
+  "FullScreen": false
 }

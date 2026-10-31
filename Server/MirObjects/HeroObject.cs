@@ -1,4 +1,4 @@
-using System.Drawing;
+﻿using System.Drawing;
 ﻿using Server.MirDatabase;
 using Server.MirEnvir;
 using Server.MirNetwork;
@@ -584,7 +584,7 @@ namespace Server.MirObjects
                         var con = CurrentMap.GetConquest(CurrentLocation);
                         if (con == null)
                         {
-                            ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.MonsterOnlySpawnDuringConquest), monsterInfo.GameName), ChatType.Hint);
+                            ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.MonsterOnlySpawnDuringConquest), DbLanguage.Monster(monsterInfo.GameName)), ChatType.Hint);
                             Owner.Enqueue(p);
                             return;
                         }

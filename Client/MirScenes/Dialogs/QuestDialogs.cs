@@ -982,7 +982,7 @@ namespace Client.MirScenes.Dialogs
             IconImage.Visible = true;
 
             NameLabel.Text = Quest.QuestInfo.Name;
-            RequirementLabel.Text = Quest.QuestInfo.MinLevelNeeded > 0 ? "Lv " + Quest.QuestInfo.MinLevelNeeded : "";
+            RequirementLabel.Text = Quest.QuestInfo.MinLevelNeeded > 0 ? DbLanguage.Get("Ui", "Lv ") + Quest.QuestInfo.MinLevelNeeded : "";
 
             SelectedImage.Visible = Selected;
         }

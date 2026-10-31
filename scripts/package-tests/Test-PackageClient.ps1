@@ -62,6 +62,7 @@ foreach ($leaf in @('mir2-client', '自定义 客户端', 'Mir2', '-client')) {
     foreach ($ini in @('Mir2Config.ini', 'Mir2Test.ini')) {
         $configuration = Get-Content -LiteralPath (Join-Path $packagedClient $ini) -Raw
         Assert-True ($configuration.Contains('UseConfig=True') -and $configuration.Contains('IPAddress=s.f-li.cn') -and $configuration.Contains('Port=7000')) "$leaf inserts clean $ini"
+        Assert-True ($configuration.Contains('Resolution=1366') -and $configuration.Contains('FullScreen=False') -and $configuration.Contains('FontName=Microsoft YaHei')) "$leaf inserts widescreen Chinese defaults in $ini"
     }
     $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
     $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
