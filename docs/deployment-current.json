@@ -1,13 +1,15 @@
 {
-  "CheckedAtUtc": "2026-10-30T13:30:10.5468232+00:00",
-  "Status": "local-deployment-localized-idle-cpu-fixed-stopped",
+  "CheckedAtUtc": "2026-10-31T06:16:04.417220+00:00",
+  "Status": "player-chinese-admin-english-deployed-stopped-clean",
   "Source": {
     "Path": "D:\\projs\\mir2",
     "Repository": "https://github.com/Suprcode/Crystal",
     "Commit": "0e315fe327192afe52c3d7357ddd1f5b7e26c5b8",
     "Fork": "https://github.com/RockyLOMO/Crystal",
     "Branch": "rx-server",
-    "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history."
+    "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
+    "DeployedSourceHead": "59fc624faa781cb76cc7f6b491252957826b6067",
+    "IncludesUncommittedChanges": true
   },
   "Runtime": {
     "Server": "D:\\private-server\\mir2\\Server",
@@ -36,7 +38,17 @@
     "AndroidWine": "NOT VERIFIED",
     "RestoreDrill": "NOT VERIFIED",
     "ClientRestartAfterResourceDownload": "PASS",
-    "PackageContent": "PASS"
+    "PackageContent": "PASS",
+    "PlayerLocalizationRegression": 26,
+    "SchedulingRegression": 36,
+    "PackageRegression": 39,
+    "PlayerTextStructure": "PASS: 3303 entries",
+    "LatestVersionHandshake": "PASS",
+    "LatestKeepAlive": "PASS",
+    "LatestClientStartup": "Responding; no new Error.txt bytes; visual acceptance not performed",
+    "StartupMapWarnings": "None (0159 Blacksmith #ELSEIF fixed and verified at 2026-10-31 14:31:11)",
+    "LatestSoundHashCheck": "1608 unchanged",
+    "LatestEnvirTextHashCheck": "2600 unchanged"
   },
   "Content": {
     "DatabaseRelease": "29.01.25",
@@ -44,14 +56,17 @@
     "EnabledClasses": [
       "Warrior",
       "Wizard",
-      "Taoist"
+      "Taoist",
+      "Assassin",
+      "Archer"
     ],
-    "AllowNewHero": false,
+    "AllowNewHero": true,
     "Pure176Content": "NOT COMPLETE",
     "LocalDropFixes": [
       "HiGreatGhoul.txt:32",
       "HiGreatGhoul0.txt:71"
-    ]
+    ],
+    "HeroMinimumLevel": 22
   },
   "Storage": {
     "DVolume": "Healthy",
@@ -65,34 +80,40 @@
     "Status": "PASS"
   },
   "Package": {
-    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261030.zip",
-    "Bytes": 8059900590,
-    "SHA256": "1e42c45c96cc26175a2f8c66fc87b2b43f2d2c6031f4bba4fdd3673850fb3209",
+    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261031.zip",
+    "Bytes": 8060037204,
+    "SHA256": "68c5febf4071301aec51225ef7204fc453d57b24d03eb484de7d748c580fb9a9",
     "ZipIntegrity": "PASS",
     "DistributionCopyChecksum": "PASS",
     "IncludesServerData": false,
     "IncludesUserSettingsOrLogs": false,
-    "DefaultEndpoint": "127.0.0.1:7000"
+    "DefaultEndpoint": "s.f-li.cn:7000"
   },
   "CurrentProcessState": {
+    "ServerRunning": false,
     "ClientRunning": false,
-    "Reason": "Restored original stopped state after verification",
-    "ServerRunning": false
+    "Reason": "Restored original stopped state after localization verification"
   },
   "Localization": {
     "DetailedReport": "README.md",
-    "NpcNarrative": "partial",
-    "Editors": "main window only",
-    "NameDictionaries": "deployed"
+    "ValidationReport": "player-localization-validation.json",
+    "NpcNarrative": "Original 3132-key corpus mapped; 4 nonprose markers preserved; supplemental 290 quest/system templates",
+    "Editors": "English; operator log templates separated from Chinese player messages",
+    "NameDictionaries": "deployed",
+    "RuntimeClientChineseJson": "Loader normalizes its key set on startup; one unused client HeroDesummonCountdown entry is omitted. Server countdown key remains translated."
   },
   "Performance": {
     "UpstreamDefaultsMatch": true,
     "StockCPUPercent": 9.645244665561535,
     "FinalCPUPercent": 1.1794007284859942,
     "WorkingSetMB": 3333.406,
-    "SchedulingChecks": 31,
+    "SchedulingChecks": 35,
     "Report": "performance-20261030.json",
-    "SecondRunCPUPercent": 1.3537368385243724
+    "SecondRunCPUPercent": 1.3537368385243724,
+    "LatestCPUPercent": 1.2119018227747314,
+    "LatestWorkingSetMB": 3350.710954666667,
+    "LatestDurationSeconds": 30.4279801,
+    "LatestReport": "player-localization-validation.json"
   },
   "DirectoryMigration": {
     "Date": "2026-10-30",
@@ -114,5 +135,6 @@
     "MigratedKeepAlive": "PASS",
     "GracefulShutdown": "PASS",
     "FinalRunning": false
-  }
+  },
+  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\20261031-060955Z"
 }

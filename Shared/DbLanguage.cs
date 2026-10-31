@@ -14,7 +14,7 @@ public static class DbLanguage
         Chinese = string.Equals(language, "Chinese", StringComparison.OrdinalIgnoreCase);
         if (Chinese)
         {
-            foreach (string file in new[] { "DbLanguage.zh-CN.json", "ItemsMonsters.zh-CN.json", "NpcText.zh-CN.json" })
+            foreach (string file in new[] { "DbLanguage.zh-CN.json", "ItemsMonsters.zh-CN.json", "NpcText.zh-CN.json", "NpcNarrative.zh-CN.json" })
             {
                 string path = Path.Combine(directory, file);
                 if (!File.Exists(path)) continue;

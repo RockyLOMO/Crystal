@@ -69,7 +69,7 @@ namespace Client.MirControls
                 NotControl = true,
                 ForeColour = Color.Gray,
                 Font = new Font(Settings.FontName, 7F),
-                Text = "STOCK:"
+                Text = DbLanguage.Get("Ui", "STOCK:")
             };
 
             stockLabel = new MirLabel

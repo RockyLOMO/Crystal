@@ -127,7 +127,7 @@ namespace Client.MirControls
 
                         _label.Text = Items[SelectedIndex];
                 else
-                    _label.Text = "None";
+                    _label.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.None);
             };
             for (int i = 0; i < _Option.Length; i++)
             {

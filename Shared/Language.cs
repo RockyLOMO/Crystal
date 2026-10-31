@@ -2678,6 +2678,13 @@ public static class GameLanguage
         }
     };
 
+    // Operational messages remain English when the player language is Chinese.
+    public static readonly TextMap ServerLogTextMap = new TextMap
+    {
+        Text = new Dictionary<string, string>(ServerTextMap.Text),
+        Enum = new Dictionary<string, string>(ServerTextMap.Enum)
+    };
+
     public static TextMap ClientTextMap = new TextMap
     {
         Text = new Dictionary<string, string>

@@ -52,10 +52,10 @@ namespace Server.MirObjects
             Direction = (MirDirection)Envir.Random.Next(3);
             TurnTime = Envir.Time + Envir.Random.Next(100);
 
+            LoadScript();
             Envir.NPCs.Add(this);
 
             Spawned();
-            LoadScript();
         }
 
         private void LoadScript()
@@ -70,6 +70,7 @@ namespace Server.MirObjects
             if (!Settings.GoodsOn) return;
 
             var script = NPCScript.Get(ScriptID);
+            if (script == null) return;
 
             List<UserItem> deleteList = new List<UserItem>();
             List<string> emptyBuyBackKeys = null;

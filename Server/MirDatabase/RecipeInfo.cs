@@ -33,7 +33,7 @@ namespace Server.MirDatabase
             ItemInfo itemInfo = Envir.GetItemInfo(name);
             if (itemInfo == null)
             {
-                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotFindItem), name));
+                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotFindItem), name));
                 return;
             }
 
@@ -98,7 +98,7 @@ namespace Server.MirDatabase
 
                             if (info == null)
                             {
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotFindToolRecipe), lines[i], recipe));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotFindToolRecipe), lines[i], recipe));
                                 continue;
                             }
 
@@ -115,7 +115,7 @@ namespace Server.MirDatabase
 
                             if (info == null)
                             {
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotFindIngredientRecipe), lines[i], recipe));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotFindIngredientRecipe), lines[i], recipe));
                                 continue;
                             }
 
@@ -176,7 +176,7 @@ namespace Server.MirDatabase
                             }
                             catch
                             {
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotParseOption), data[0], data[1]));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotParseOption), data[0], data[1]));
                                 continue;
                             }
                         }

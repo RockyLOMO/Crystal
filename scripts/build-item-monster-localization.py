@@ -23,6 +23,7 @@ def pairs(text):
 
 
 ITEM = pairs('''
+MysteryWater=神水
 WoodenSword=木剑
 BronzeSword=青铜剑
 IronSword=铁剑

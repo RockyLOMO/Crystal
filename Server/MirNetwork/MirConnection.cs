@@ -82,7 +82,7 @@ namespace Server.MirNetwork
 
             Envir.UpdateIPBlock(IPAddress, TimeSpan.FromSeconds(Settings.IPBlockSeconds));
 
-            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.IPAddressConnected), IPAddress));
+            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.IPAddressConnected), IPAddress));
 
             _client = client;
             _client.NoDelay = true;
@@ -174,7 +174,7 @@ namespace Server.MirNetwork
             {
                 Envir.UpdateIPBlock(IPAddress, TimeSpan.FromHours(24));
 
-                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.IPAddressDisconnectedInvalidPacket), IPAddress));
+                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.IPAddressDisconnectedInvalidPacket), IPAddress));
 
                 Disconnecting = true;
                 return;
@@ -195,7 +195,7 @@ namespace Server.MirNetwork
                     packetList.Add(cPacket.ToString());
                 }
 
-                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.IPAddressDisconnectedLargePackets), IPAddress, String.Join(",", packetList.Distinct())));
+                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.IPAddressDisconnectedLargePackets), IPAddress, String.Join(",", packetList.Distinct())));
 
                 Disconnecting = true;
                 return;
@@ -752,7 +752,7 @@ namespace Server.MirNetwork
                     DeleteItem((C.DeleteItem)p);
                     break;
                 default:
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.InvalidPacketReceived), p.Index));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.InvalidPacketReceived), p.Index));
                     break;
             }
         }
@@ -860,12 +860,12 @@ namespace Server.MirNetwork
 
                     BeginSend(data);
                     SoftDisconnect(10);
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerDisconnectedWrongClientVersion), SessionID));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerDisconnectedWrongClientVersion), SessionID));
                     return;
                 }
             }
 
-            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.ClientVersionMatched), SessionID, IPAddress));
+            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.ClientVersionMatched), SessionID, IPAddress));
             Enqueue(new S.ClientVersion { Result = 1 });
 
             Stage = GameStage.Login;
@@ -881,14 +881,14 @@ namespace Server.MirNetwork
         {
             if (Stage != GameStage.Login) return;
 
-            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.NewAccountBeingCreated), SessionID, IPAddress));
+            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.NewAccountBeingCreated), SessionID, IPAddress));
             Envir.NewAccount(p, this);
         }
         private void ChangePassword(C.ChangePassword p)
         {
             if (Stage != GameStage.Login) return;
 
-            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PasswordBeingChanged), SessionID, IPAddress));
+            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PasswordBeingChanged), SessionID, IPAddress));
             Envir.ChangePassword(p, this);
         }
         private void UnlockStorage(C.UnlockStorage p)
@@ -1025,7 +1025,7 @@ namespace Server.MirNetwork
         {
             if (Stage != GameStage.Login) return;
 
-            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.UserLoggingIn), SessionID, IPAddress));
+            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.UserLoggingIn), SessionID, IPAddress));
             Envir.Login(p, this);
         }
         private void NewCharacter(C.NewCharacter p)

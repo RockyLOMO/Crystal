@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-31",
+  "dictionary": "Localization/NpcNarrative.zh-CN.json",
+  "corpusUniqueLines": 3132,
+  "corpusMissing": [],
+  "sourceFilesRehashed": 795,
+  "sourceFilesChanged": [
+    "NPCs/MongchonProvince/MudWall/Blacksmith-0159.txt",
+    "NPCs/MongchonProvince/MudWall/Blacksmith.txt",
+    "NPCs/MongchonProvince/MudWall/Mongchon_Transport-3.txt",
+    "NPCs/MongchonProvince/MudWall/Transport.txt"
+  ],
+  "additionalLines": {
+    "SystemScripts": 152,
+    "QuestTaskMessages": 138
+  },
+  "curatedCategories": {
+    "NpcLines": 3036,
+    "NpcCaptions": 509,
+    "Tooltips": 202,
+    "Ui": 53,
+    "QuestGroups": 12
+  },
+  "preservedNonProse": [
+    "MOVE 11 176 327",
+    "MOVE 3 330 330",
+    "SET [526] 1",
+    "[@before1>"
+  ],
+  "limits": [
+    "Corpus includes archived and unreferenced NPC variants; coverage is not gameplay acceptance.",
+    "Exact dictionaries preserve internal IDs, action targets and player names. New custom text falls back to its original value.",
+    "Colours can move with their nouns for natural Chinese word order.",
+    "English texture text, web content, and future plugin-provided strings are not asserted to be translated.",
+    "Names follow familiar Chinese Mir terminology where known; expanded content is not claimed as original 1.76."
+  ]
+}

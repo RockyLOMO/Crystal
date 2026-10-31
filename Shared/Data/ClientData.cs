@@ -397,23 +397,23 @@ public class ClientQuestInfo
         Index = reader.ReadInt32();
         NPCIndex = reader.ReadUInt32();
         Name = DbLanguage.Get("Quests", reader.ReadString());
-        Group = reader.ReadString();
+        Group = DbLanguage.Get("QuestGroups", reader.ReadString());
 
         int count = reader.ReadInt32();
         for (int i = 0; i < count; i++)
-            Description.Add(reader.ReadString());
+            Description.Add(DbLanguage.NpcLine(reader.ReadString()));
 
         count = reader.ReadInt32();
         for (int i = 0; i < count; i++)
-            TaskDescription.Add(reader.ReadString());
+            TaskDescription.Add(DbLanguage.NpcLine(reader.ReadString()));
 
         count = reader.ReadInt32();
         for (int i = 0; i < count; i++)
-            ReturnDescription.Add(reader.ReadString());
+            ReturnDescription.Add(DbLanguage.NpcLine(reader.ReadString()));
 
         count = reader.ReadInt32();
         for (int i = 0; i < count; i++)
-            CompletionDescription.Add(reader.ReadString());
+            CompletionDescription.Add(DbLanguage.NpcLine(reader.ReadString()));
 
         MinLevelNeeded = reader.ReadInt32();
         MaxLevelNeeded = reader.ReadInt32();

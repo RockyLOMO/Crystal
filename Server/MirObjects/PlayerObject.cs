@@ -224,7 +224,7 @@ namespace Server.MirObjects
             if (Account.AdminAccount)
             {
                 IsGM = true;
-                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.NowGM), Name));
+                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.NowGM), Name));
             }
 
             if (Level == 0) NewCharacter();
@@ -1351,7 +1351,7 @@ namespace Server.MirObjects
 
             Report.Connected(Connection.IPAddress);
 
-            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.HasConnected), Info.Name));
+            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.HasConnected), Info.Name));
 
             if (IsGM)
             {
@@ -1917,13 +1917,13 @@ namespace Server.MirObjects
                 {
                     IsGM = true;
                     UpdateGMBuff();
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.UserIsNowGM), Name));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.UserIsNowGM), Name));
                     ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.YouHaveBeenMadeGM), ChatType.System);
                     Envir.RemoveRank(Info);//remove gm chars from ranking to avoid causing bugs in rank list
                 }
                 else
                 {
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.AttemptedGmLogin), Name));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.AttemptedGmLogin), Name));
                     ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.LoginPasswordInvalid), ChatType.System);
                 }
                 GMLogin = false;
@@ -2268,7 +2268,7 @@ namespace Server.MirObjects
                         }
 
                         ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerChangedTo), data.Name, data.Gender), ChatType.System);
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerChangedBy), data.Name, data.Gender, Name));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerChangedBy), data.Name, data.Gender, Name));
 
                         Helpers.ChatSystem.SystemMessage(chatMessage: GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerGenderChangedByGM), data.Player.Name, data.Gender.ToString(), Name));
 
@@ -2296,7 +2296,7 @@ namespace Server.MirObjects
                                 player.LevelUp();
 
                                 ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHasBeenLevelled), player.Name, old, player.Level), ChatType.System);
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerLevelChangedBy), player.Name, old, player.Level, Name));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerLevelChangedBy), player.Name, old, player.Level, Name));
                                 Helpers.ChatSystem.SystemMessage(chatMessage: GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerLevelledByGM), player.Name, old, player.Level, Name));
 
                                 return;
@@ -2317,7 +2317,7 @@ namespace Server.MirObjects
                                 LevelUp();
 
                                 ReceiveChat(string.Format("{0} {1} -> {2}.", GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.LevelUp), old, Level), ChatType.System);
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerLevelChangedBy), Name, old, Level, Name));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerLevelChangedBy), Name, old, Level, Name));
                                 return;
                             }
                         }
@@ -2344,7 +2344,7 @@ namespace Server.MirObjects
                                 hero.LevelUp();
 
                                 ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHeroLevelled), player.Name, old, hero.Level), ChatType.System);
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHeroLevelledBy), player.Name, old, hero.Level, Name));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerHeroLevelledBy), player.Name, old, hero.Level, Name));
                                 Helpers.ChatSystem.SystemMessage(chatMessage: GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHeroLevelledByGM), player.Name, old, hero.Level, Name));
                                 return;
                             }
@@ -2367,7 +2367,7 @@ namespace Server.MirObjects
                                 hero.LevelUp();
 
                                 ReceiveChat(string.Format("{0} {1} -> {2}.", GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.LevelUp), old, hero.Level), ChatType.System);
-                                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHeroLeveledBy), Name, old, hero.Level, Name));
+                                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerHeroLeveledBy), Name, old, hero.Level, Name));
                                 return;
                             }
                         }
@@ -2421,7 +2421,7 @@ namespace Server.MirObjects
                             }
 
                             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.ItemHasBeenCreated), iInfo.FriendlyName, tempCount), ChatType.System);
-                            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerAttemptCreateItem), Name, iInfo.FriendlyName, tempCount));
+                            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerAttemptCreateItem), Name, iInfo.FriendlyName, tempCount));
                         }
                         break;
                     case "CLEARBUFFS":
@@ -2718,7 +2718,7 @@ namespace Server.MirObjects
                             Envir.SaveArchivedCharacter(info);
 
                             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHasBeenBackedUp), info.Name), ChatType.System);
-                            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBackedUpBy), info.Name, Name));
+                            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBackedUpBy), info.Name, Name));
                         }
                         break;
 
@@ -2754,7 +2754,7 @@ namespace Server.MirObjects
                             account.Characters.Remove(data);
 
                             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHasBeenArchived), data.Name), ChatType.System);
-                            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerArchivedBy), data.Name, Name));
+                            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerArchivedBy), data.Name, Name));
                         }
                         break;
 
@@ -2789,7 +2789,7 @@ namespace Server.MirObjects
                             info = bak;
 
                             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerHasBeenLoaded), info.Name), ChatType.System);
-                            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerLoadedBy), info.Name, Name));
+                            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerLoadedBy), info.Name, Name));
                         }
                         break;
 
@@ -2854,7 +2854,7 @@ namespace Server.MirObjects
                             }
 
                             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerRestoredBy), data.Name, Name), ChatType.System);
-                            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerRestoredBy), data.Name, Name));
+                            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerRestoredBy), data.Name, Name));
                         }
                         break;
 
@@ -3176,7 +3176,7 @@ namespace Server.MirObjects
 
                         string creditMsg = GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerGivenCreditByGM), player.Name, count, Name);
 
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerGivenCredit), player.Name, count));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerGivenCredit), player.Name, count));
                         Helpers.ChatSystem.SystemMessage(chatMessage: creditMsg);
 
                         break;
@@ -3459,7 +3459,7 @@ namespace Server.MirObjects
                         data.Class = mirClass;
 
                         ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerChangedTo), data.Name, data.Class), ChatType.System);
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerChangedBy), data.Name, data.Class, Name));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerChangedBy), data.Name, data.Class, Name));
 
                         Helpers.ChatSystem.SystemMessage(chatMessage: GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.ClassChangedByGM), data.Player.Name, data.Class.ToString(), Name));
 
@@ -3896,7 +3896,7 @@ namespace Server.MirObjects
                             }
                             else return;
                             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.WarStarted), tempConq.Info.Name), ChatType.System);
-                            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.WarStarted), tempConq.Info.Name));
+                            MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.WarStarted), tempConq.Info.Name));
 
                             foreach (var pl in Envir.Players)
                             {
@@ -4418,7 +4418,7 @@ namespace Server.MirObjects
             if (page.Length > 0)
             {
                 var script = NPCScript.Get(scriptid);
-                script.Call(this, npcid, page.ToUpper());
+                script?.Call(this, npcid, page.ToUpper());
             }
         }
         private UserItem GetBait(int count)
@@ -7908,7 +7908,7 @@ namespace Server.MirObjects
             if (NPCObjectID != Envir.DefaultNPC.LoadedObjectID) return;
 
             var script = NPCScript.Get(NPCScriptID);
-            script.Call(this, NPCObjectID, key.ToUpper());
+            script?.Call(this, NPCObjectID, key.ToUpper());
 
             CallNPCNextPage();
         }
@@ -7936,7 +7936,7 @@ namespace Server.MirObjects
                 }
 
                 var script = NPCScript.Get(scriptID);
-                script.Call(this, objectID, key);
+                script?.Call(this, objectID, key);
 
                 break;
             }
@@ -7951,7 +7951,7 @@ namespace Server.MirObjects
                 if (ActionList[i].Type != DelayedType.NPC || ActionList[i].Time != -1) continue;
                 var action = ActionList[i];
 
-                ActionList.RemoveAt(i);
+                ActionList.RemoveAt(i--);
 
                 CompleteNPC(action.Params);
             }
@@ -7979,7 +7979,7 @@ namespace Server.MirObjects
                 if (type == PanelType.Buy)
                 {
                     NPCScript script = NPCScript.Get(NPCScriptID);
-                    script.Buy(this, index, count);
+                    script?.Buy(this, index, count);
                 }
             }
         }
@@ -7996,7 +7996,7 @@ namespace Server.MirObjects
                 if (!Functions.InRange(ob.CurrentLocation, CurrentLocation, Globals.DataRange)) return;
 
                 NPCScript script = NPCScript.Get(NPCScriptID);
-                script.Craft(this, index, count, slots);
+                script?.Craft(this, index, count, slots);
             }
         }
 
@@ -8053,6 +8053,11 @@ namespace Server.MirObjects
                 }
 
                 NPCScript script = NPCScript.Get(NPCScriptID);
+                if (script == null)
+                {
+                    Enqueue(p);
+                    return;
+                }
 
                 if (script.Types.Count != 0 && !script.Types.Contains(temp.Info.Type))
                 {
@@ -8139,6 +8144,7 @@ namespace Server.MirObjects
                 }
 
                 NPCScript script = NPCScript.Get(NPCScriptID);
+                if (script == null) return;
 
                 if (script.Types.Count != 0 && !script.Types.Contains(temp.Info.Type))
                 {
@@ -8434,7 +8440,7 @@ namespace Server.MirObjects
 
             Enqueue(new S.NPCMarket { Listings = clientListings, Pages = (Search.Count - 1) / 10 + 1, UserMode = UserMatch });
 
-            MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.MsToMatchItems), Envir.Stopwatch.ElapsedMilliseconds - start, MarketPanelType == MarketPanelType.GameShop ? Envir.GameShopList.Count : (UserMatch ? Account.Auctions.Count : Envir.Auctions.Count)));
+            MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.MsToMatchItems), Envir.Stopwatch.ElapsedMilliseconds - start, MarketPanelType == MarketPanelType.GameShop ? Envir.GameShopList.Count : (UserMatch ? Account.Auctions.Count : Envir.Auctions.Count)));
         }
 
         public void MarketSearch(string match, ItemType type)
@@ -8641,7 +8647,7 @@ namespace Server.MirObjects
 
                     if (auction.Sold && auction.Expired)
                     {
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.AuctionSoldAndExpired), Account.AccountID));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.AuctionSoldAndExpired), Account.AccountID));
                         return;
                     }
 
@@ -8697,7 +8703,7 @@ namespace Server.MirObjects
             {
                 if (auction.Sold && auction.Expired)
                 {
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.AuctionSoldExpired), Account.AccountID));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.AuctionSoldExpired), Account.AccountID));
                     return false;
                 }
 
@@ -12216,7 +12222,7 @@ namespace Server.MirObjects
 
             if (!petFound)
             {
-                MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.SummonedCreatureNotExist), Name, SummonedCreatureType.ToString()));
+                MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.SummonedCreatureNotExist), Name, SummonedCreatureType.ToString()));
                 CreatureSummoned = false;
                 SummonedCreatureType = IntelligentCreatureType.None;
             }
@@ -13447,7 +13453,7 @@ namespace Server.MirObjects
 
             if (lover == null)
             {
-                MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerMarriedIdNotFound), Name, Info.Married));
+                MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerMarriedIdNotFound), Name, Info.Married));
                 return;
             }
 
@@ -13694,7 +13700,7 @@ namespace Server.MirObjects
 
             if (mentor == null)
             {
-                MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerMentorIdNotFound), Name, Info.Mentor));
+                MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerMentorIdNotFound), Name, Info.Mentor));
                 return;
             }
 
@@ -13765,7 +13771,7 @@ namespace Server.MirObjects
             if (Product == null)
             {
                 ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.YouBuyItemNotInShop), ChatType.System);
-                MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBuyNonexistentItem), Info.Name));
+                MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBuyNonexistentItem), Info.Name));
                 return;
             }
 
@@ -13791,7 +13797,7 @@ namespace Server.MirObjects
                 {
                     ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.YouBuyMoreThanAvailable), ChatType.System);
                     GameShopStock(Product);
-                    MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemStockUnavailable), Info.Name, Product.Info.FriendlyName, Quantity));
+                    MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemStockUnavailable), Info.Name, Product.Info.FriendlyName, Quantity));
                     return;
                 }
             }
@@ -13802,7 +13808,7 @@ namespace Server.MirObjects
 
             if (stockAvailable)
             {
-                MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemStockAvailable), Info.Name, Product.Info.FriendlyName, Quantity));
+                MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemStockAvailable), Info.Name, Product.Info.FriendlyName, Quantity));
 
                 if (PType == 0)
                 {
@@ -13825,7 +13831,7 @@ namespace Server.MirObjects
                 else
                 {
                     ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.YouDontHaveEnoughCurrency), ChatType.System);
-                    MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemNotEnoughCurrency), Info.Name, Product.Info.FriendlyName, Quantity));
+                    MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemNotEnoughCurrency), Info.Name, Product.Info.FriendlyName, Quantity));
                     return;
                 }
             }
@@ -13836,7 +13842,7 @@ namespace Server.MirObjects
 
             if (canAfford)
             {
-                MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemEnoughCurrency), Info.Name, Product.Info.FriendlyName, Quantity, PType));
+                MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBuyItemEnoughCurrency), Info.Name, Product.Info.FriendlyName, Quantity, PType));
                 if (PType == 0)
                 {
                     Account.Credit -= CreditCost;
@@ -13922,7 +13928,7 @@ namespace Server.MirObjects
             };
             mail.Send();
 
-            MessageQueue.EnqueueDebugging(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerBuyingItemsSent), Info.Name, Product.Info.FriendlyName, Quantity));
+            MessageQueue.EnqueueDebugging(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerBuyingItemsSent), Info.Name, Product.Info.FriendlyName, Quantity));
             ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.PurchasesSentMailbox), ChatType.Hint);
         }
 

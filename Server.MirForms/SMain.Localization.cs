@@ -2,8 +2,10 @@ namespace Server
 {
     public partial class SMain
     {
-        private static bool ChineseMainWindow =>
-            string.Equals(Settings.Language, "Chinese", StringComparison.OrdinalIgnoreCase);
+        // Operator UI stays English independently of Chinese game messages.
+        // Keep this gate separate from Settings.Language, which controls text
+        // sent to players and must remain available for Chinese localization.
+        private static bool ChineseMainWindow => false;
 
         // Presentation only. Never translate database keys or editable record names.
         private static readonly Dictionary<string, string> MainWindowChinese = new(StringComparer.Ordinal)

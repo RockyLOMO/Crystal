@@ -56,17 +56,16 @@ foreach ($name in @('Mir2Config.ini','Mir2Test.ini')) {
     [IO.File]::WriteAllText((Join-Path $seed $name),$config,[Text.UTF8Encoding]::new($false))
 }
 @'
-Crystal Mir2 Windows x64 client / 2026-10-30
+Crystal Mir2 Windows x64 中文客户端
 
-Extract the entire Mir2 directory, then run Start-Client.cmd.
-This package includes the .NET 8 runtime and application-local VC++/DirectX dependencies.
-Default server: s.f-li.cn:7000.
-For another PC or Android Wine environment, set Network/IPAddress in Mir2Config.ini
-to your server's reachable address. The server must also listen on that address.
-Android/Winlator gameplay and touch controls have not been validated.
-This package contains no server account database or preconfigured account.
-Game resources: Crystal community guide / MirFiles; content is a baseline,
-not a completed pure-1.76 ruleset. Extra classes and new heroes are disabled server-side.
+完整解压 Mir2 文件夹后，运行 Start-Client.cmd。
+已包含 .NET 8 运行库及本地 VC++ / DirectX 依赖。
+默认连接 s.f-li.cn:7000；中文字体为 Microsoft YaHei。
+更换服务端时修改 Mir2Config.ini 的 Network/IPAddress 和 Port。
+服务端也需要监听相应地址。安卓 Wine / Winlator 实际游戏和触控尚未验证。
+此包不包含服务端账号数据库或预置账号。
+游戏资源来源：Crystal 社区指南 / MirFiles；经典译名向盛大 1.76 靠拢。
+具体职业、英雄及玩法由服务端配置决定，当前内容包含后续版本扩展。
 '@ | Set-Content -LiteralPath (Join-Path $seed 'README.txt') -Encoding utf8
 Push-Location (Split-Path $client -Parent)
 try {

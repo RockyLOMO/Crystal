@@ -1,6 +1,27 @@
 # Crystal Mir2 改动、汉化与本机部署记录
 
-日期：2026-10-30（Asia/Singapore）。当前为本机试验部署，安卓兼容环境适配另行验证。
+日期：2026-10-31（Asia/Singapore）。当前为本机试验部署，安卓兼容环境适配另行验证。
+
+## 玩家视野汉化执行结果（2026-10-31）
+
+按 `crystal_crystalm2_ingame_localization.md` 执行，译名尽量靠拢盛大 1.76。实际版本使用 JSON：沿用 `Shared/DbLanguage.cs` 的显示字典，没有照抄文档中不存在的 `Language.ini` 接口、只读属性赋值或 `ChineseNames.txt` 注入。没有采购或导入第三方汉化整包；新增正文由本轮翻译整理，上游 `Chinese.json` 仍是基础界面语言包。
+
+- 新增 `Localization/NpcNarrative.zh-CN.json`：3,036 条完整行（2,746 个原语料补充条目、138 条任务目标消息、152 条 SystemScripts 对话/公告），509 条菜单 caption、202 条物品说明、53 条客户端 UI 文案、12 个任务分组。其中 3 条纯指令与 1 条残缺标记原样保留，不计作自然语言翻译。
+- 原 795 文件语料的 3,132 个英文原文键已全部有映射；覆盖范围包含未直接引用的历史脚本，不能据此宣称所有游戏画面已经人工验收。原语料后已有 4 个 NPC 文件加入中文重铸/传送内容，详见覆盖 JSON 的变更清单。
+- NPC 对话、Local/Global 提示先翻原模板，再逐个展开 `<$...>`，支持没有空格的中文相邻变量。玩家姓名、菜单跳转、对象链接和脚本条件/动作所用的内部地图、物品、职业名保持原值。四段任务正文在客户端读取时翻译，任务目标在服务端拼接前翻译，物品 ToolTip 只在绘制时查表。
+- 默认 `Chinese` / `Microsoft YaHei`。补齐登录器、配置窗口、商城分类与师徒等级等显示；商城点击仍回传英文分类键，中文标签不会破坏筛选。
+- 经典名称统一为苍月岛、牛魔寺庙、骨魔洞、兽人古墓、神水等；技能书与技能面板中的流星火雨、开天斩、召唤月灵保持同名。后续版本扩展只统一术语，不声称它们属于 1.76 原版。苍月相关传统地图用词可参照[热血传奇官网资料](https://mir2.sdo.com/web7/articleDetail.html?id=15723)。
+- 服务端主窗口中文开关关闭，后台模板使用独立 `ServerLogTextMap` 英文快照；玩家系统消息继续使用中文 `ServerTextMap`。玩家姓名、聊天与自定义数据本身可以包含中文。
+
+**构建与验证**：Server/Client Release publish 成功（既有编译警告保留）；26 项汉化回归、35 项调度回归、39 项打包检查通过；`python scripts/validate-player-localization.py` 验证 3,303 条正文/UI/分组条目的跳转、变量、色码、链接、格式与转义。颜色随其名词移动，允许中文调整语序。独立只读代码复核未发现 P1/P2。版本握手与心跳通过，客户端进程正常响应且启动未新增 Error.txt 内容；未完成逐画面和实际游戏验收，图片内英文及新增插件内容不在已确认范围内。
+
+本机程序已更新到 `D:\private-server\mir2\Server` 与 `D:\private-server\mir2-client`，515 个发布文件逐个校验哈希。升级前一致备份及原程序在 `D:\private-server\mir2\backups\20261031-060955Z`（`Programs/` 和 `program-manifest.json`）。对照备份，2,600 个 Envir 文本文件与 1,608 个 Sound 文件均未改变；Server.MirDB 的 SHA-256 保持 `a6f316133f58576a81b9fe7c27f627eb187548fece6121fea041077588a81098`。回退时先正常停服，恢复 `Programs/Server`、`Programs/Client` 和 `Programs/ClientVersion` 对应文件；本轮新加的 `NpcNarrative.zh-CN.json` 可保留，旧版本不会加载它，不必覆盖账号数据。未做真实回滚演练。
+
+最新完整客户端包：`E:\rxdev\webhost\mir2\Crystal-Mir2-Client-win-x64-zhCN-20261031.zip`（8060037204 字节，SHA-256 `68c5febf4071301aec51225ef7204fc453d57b24d03eb484de7d748c580fb9a9`）。ZIP 完整性、分发副本哈希、9 个关键内容文件和干净中文默认配置均通过校验；旧包保留。
+
+30 秒空载采样平均 CPU **1.21%**、工作集 **3,350.71 MB**。测试后服务端和客户端均正常关闭，恢复本轮开始时的停止状态。详细证据：[player-localization-validation.json](player-localization-validation.json)、[覆盖记录](../Localization/NpcNarrative.zh-CN.coverage.json)。
+
+**启动发现的既有问题（已修复）**：此前自定义铁匠脚本含解析器未实现的 `#ELSEIF`，`NPCScript.ParseSegment` 抛 `NotImplementedException`，导致 `0159 / Blacksmith` 地图加载失败及 `ScriptID=0` 隔离重试。现已在 `NPCScript.ParsePage` / `ParseSegment` 中补齐 `#ELSEIF` 分段与自动 `Break` 支持，并将 `NPCObject` 的 `LoadScript()` 前置于对象注册与调度入队之前、对 `NPCScript.Get` 做空安全保护；重新发布服务端并实测启动后，463 张地图（含 `0159 / Blacksmith`）全部零报错加载，协议握手与心跳通过。实际游戏画面仍待进图人工验收。
 
 ## GitHub fork 与改动汇总
 
@@ -18,9 +39,9 @@
 | 精炼逻辑兼容 | `Server/MirObjects/PlayerObject.cs` | 黑铁矿石判断改用原始名称，不使用中文显示名 |
 | 世界物件、地图与 NPC 文字 | `Client/MirObjects/{Item,Monster,NPC}Object.cs`、`Client/MirScenes/GameScene.cs`、`Client/MirScenes/Dialogs/NPCDialogs.cs` | 显示名称和精确菜单文字翻译，玩家姓名、脚本跳转、颜色和变量不作全文替换 |
 | 上游中文语言包补漏纠错 | `Client/Localization/Chinese.json`、`Server.MirForms/Localization/Chinese.json` | 在上游自带中文基础上补齐缺键、纠正属性提示，移除客户端已无对应键的旧条目 |
-| 服务端主窗口中文化 | `Server.MirForms/SMain.cs`、`SMain.Localization.cs` | 菜单、页签、列头与动态状态；不是全数据库编辑器汉化 |
+| 服务端主窗口英文 | `Server.MirForms/SMain.Localization.cs`、`Shared/Language.cs` | 中文界面开关关闭；后台日志模板与玩家中文消息分开 |
 | 新增译文与覆盖记录 | `Localization/` | 本地整理的名称、菜单和短句；无第三方汉化整包，具体来源与未译范围见下文 |
-| 回归检查 | `scripts/performance-tests/`、`scripts/localization-tests/`、`scripts/package-tests/` | 35 项调度检查、13 项汉化检查及 39 项小样本打包检查，不启动实际游戏服；不依赖本机 `.ai` 或运行数据库 |
+| 回归检查 | `scripts/performance-tests/`、`scripts/localization-tests/`、`scripts/package-tests/` | 35 项调度检查、26 项汉化检查及 39 项小样本打包检查，不启动实际游戏服；不依赖本机 `.ai` 或运行数据库 |
 | 构建、运行与分发维护 | `scripts/` 内 PowerShell、CMD、Python 脚本 | 独立暂存构建、正常启停/备份、资源下载、干净客户端打包、协议检查与 CPU 测量；不会自行创建计划任务或修改防火墙 |
 | 本地文件边界与证据 | `.gitignore`、`docs/`、根 `README.md` | 忽略 `.ai/`；记录测试、哈希、分发信息和部署边界，不提交运行存档、密钥、资源大文件及缓存 |
 
@@ -35,6 +56,7 @@ dotnet build Server.MirForms/Server.csproj -c Release
 dotnet build Client/Client.csproj -c Release
 dotnet run --project scripts/performance-tests/PerformanceTests.csproj -c Release
 dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Release -- "$PWD"
+python scripts/validate-player-localization.py
 ```
 
 构建仍有上游既有警告：服务端成员隐藏，以及客户端 WindowsBase 依赖版本冲突、未使用字段等；本轮构建为 0 错误，并未把这些警告描述为已修复。详细性能数值、验收范围和备份路径见后文。升级上游时应重点复核上述两个调度文件、共享名称显示与精炼判断，并重跑测试。
@@ -167,7 +189,7 @@ pwsh -NoProfile -File D:\projs\mir2\scripts\Measure-Server.ps1 -Seconds 45
 
 停服数据备份：`D:\private-server\mir2\backups\20261030-121901Z`；原版程序备份：`D:\private-server\mir2\backups\before-localization-cpu-20261030`；第一版汉化客户端/服务端升级前备份：`D:\private-server\mir2\backups\before-zhCN-release2-20261030`；上一个过渡版服务端程序：`D:\private-server\mir2\backups\before-due-queue-20261030`。回退时先正常停服并备份当前状态，再恢复成套程序与匹配的 Localization；不要用程序回退覆盖账号存档。上述备份已生成，尚未做真实恢复演练。
 
-## 汉化范围（2026-10-30）
+## 历史汉化起步范围（2026-10-30；当前结果见文首）
 
 采用显示层字典，内部英文数据库名称、地图文件名、掉落文件名、任务和 NPC 命令参数保持原样。原讨论文档 `crystal_crystalm2_1_76.md` 的 `Language.ini`、直接重命名和删除后期地图步骤没有执行；当前代码实际使用 JSON 语言包。
 
@@ -176,7 +198,7 @@ pwsh -NoProfile -File D:\projs\mir2\scripts\Measure-Server.ps1 -Seconds 45
 - 物品唯一名称 1,626/1,626；怪物非空显示名 371/371，原始名称及显示名联合 561/562（只跳过 `Name=00, GameName=空` 的占位记录）。
 - 地图标题 297/297、NPC 名称 271/271、技能名称 109/109、任务标题 141/141；NPC 名称中的下划线换行保持原数。
 - 怪物名字、宠物名字中的怪物部分、物品栏/地面物品、地图标题、技能和任务标题已接入。玩家和宠物主人的姓名不参与翻译。精炼黑铁矿石判断继续使用原始名称，避免中文显示影响逻辑。
-- 服务端主窗口菜单、日志/在线/行会页签、列头、职业性别及动态状态已中文化；数据库编辑器内的内部名称和其他编辑窗口尚未完整汉化。
+- 当时曾启用服务端主窗口中文；2026-10-31 按新要求关闭该开关，后台恢复英文。
 - NPC 文本起步包有 321 条菜单 caption、386 条完整行。语料中菜单出现次数覆盖 6,485/8,000（81.1%），完整行覆盖 7,751/16,813（46.1%）；两项重叠，不能相加。比奇/盟重优先正文仅 181/1,126 个唯一行，长篇对话、任务正文和动态变量句仍有英文。只改精确可见文字，跳转目标、色码、变量标记和命令不改。
 
 部分后期/韩服名称为暂定中文语义或音译，并非全部盛大标准译名；名称覆盖不代表纯 1.76 内容或游戏内显示验收。详细统计在 `../Localization/*coverage.json`，生成器在 `scripts/build-*-localization.py`。

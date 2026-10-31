@@ -93,7 +93,7 @@ namespace Launcher
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error");
+                MessageBox.Show(ex.ToString(), DbLanguage.Get("Ui", "Error"));
                 Completed = true;
                 SaveError(ex.ToString());
             }
@@ -399,7 +399,7 @@ namespace Launcher
             Launch_pb.Enabled = false;
             ProgressCurrent_pb.Width = 5;
             TotalProg_pb.Width = 5;
-            Version_label.Text = string.Format("Build: {0}.{1}.{2}", Globals.ProductCodename, Settings.UseTestConfig ? "Debug" : "Release", Application.ProductVersion);
+            Version_label.Text = string.Format(DbLanguage.Get("Ui", "Build: {0}.{1}.{2}"), Globals.ProductCodename, Settings.UseTestConfig ? "Debug" : "Release", Application.ProductVersion);
 
             if (Settings.P_ServerName != String.Empty)
             {
@@ -619,7 +619,7 @@ namespace Launcher
 
                 if (Settings.P_Concurrency > 1)
                 {
-                    CurrentFile_label.Text = string.Format("<Concurrent> {0}", ActiveDownloads.Count);
+                    CurrentFile_label.Text = string.Format(DbLanguage.Get("Ui", "<Concurrent> {0}"), ActiveDownloads.Count);
                     SpeedLabel.Text = ToSize(currentBytes / _stopwatch.Elapsed.TotalSeconds);
                 }
                 else
@@ -659,8 +659,8 @@ namespace Launcher
 
         private void Credit_label_Click(object sender, EventArgs e)
         {
-            if (Credit_label.Text == "Powered by Crystal M2") Credit_label.Text = "Designed by Breezer";
-            else Credit_label.Text = "Powered by Crystal M2";
+            if (Credit_label.Text == DbLanguage.Get("Ui", "Powered by Crystal M2")) Credit_label.Text = DbLanguage.Get("Ui", "Designed by Breezer");
+            else Credit_label.Text = DbLanguage.Get("Ui", "Powered by Crystal M2");
         }
 
         private void AMain_FormClosed(object sender, FormClosedEventArgs e)

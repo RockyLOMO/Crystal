@@ -9737,7 +9737,7 @@ namespace Client.MirScenes
                     Location = new Point(4, ItemLabel.DisplayRectangle.Bottom),
                     OutLine = true,
                     Parent = ItemLabel,
-                    Text = HoverItem.Info.ToolTip
+                    Text = DbLanguage.Get("Tooltips", HoverItem.Info.ToolTip)
                 };
 
                 ItemLabel.Size = new Size(Math.Max(ItemLabel.Size.Width, TOOLTIPLabel.DisplayRectangle.Right + 4),

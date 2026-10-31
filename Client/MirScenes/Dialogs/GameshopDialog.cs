@@ -17,6 +17,8 @@ namespace Client.MirScenes.Dialogs
 
         public GameShopCell[] Grid;
         public MirLabel[] Filters = new MirLabel[22];
+        // Keep server category keys separate from their translated labels.
+        private readonly string[] filterCategoryKeys = new string[22];
         List<String> CategoryList = new List<String>();
         List<GameShopItem> filteredShop = new List<GameShopItem>();
         List<GameShopItem> SearchResult = new List<GameShopItem>();
@@ -430,20 +432,22 @@ namespace Client.MirScenes.Dialogs
                     Parent = this,
                     Size = new Size(90, 20),
                     Location = new Point(15, 103 + (15 * i)),
-                    Text = "Testing - " + i.ToString(),
+                    Text = string.Format(DbLanguage.Get("Ui", "Testing - {0}"), i),
                     ForeColour = Color.Gray,
                     Font = new Font(Settings.FontName, 7F),
                 };
                 Filters[i].Click += (o, e) =>
                 {
                     MirLabel lab = (MirLabel)o;
-                    TypeFilter = lab.Text;
+                    int filterIndex = Array.IndexOf(Filters, lab);
+                    if (filterIndex < 0 || filterCategoryKeys[filterIndex] == null) return;
+                    TypeFilter = filterCategoryKeys[filterIndex];
                     Page = 0;
                     StartIndex = 0;
                     UpdateShop();
                     for (int p = 0; p < Filters.Length; p++)
                     {
-                        if (Filters[p].Text == lab.Text) Filters[p].ForeColour = Color.FromArgb(230, 200, 160);
+                        if (Filters[p] == lab) Filters[p].ForeColour = Color.FromArgb(230, 200, 160);
                         else Filters[p].ForeColour = Color.Gray;
                     }
 
@@ -453,7 +457,7 @@ namespace Client.MirScenes.Dialogs
                     MirLabel lab = (MirLabel)o;
                     for (int p = 0; p < Filters.Length; p++)
                     {
-                        if (Filters[p].Text == lab.Text && Filters[p].ForeColour != Color.FromArgb(230, 200, 160)) Filters[p].ForeColour = Color.FromArgb(160, 140, 110);
+                        if (Filters[p] == lab && Filters[p].ForeColour != Color.FromArgb(230, 200, 160)) Filters[p].ForeColour = Color.FromArgb(160, 140, 110);
                     }
                 };
                 Filters[i].MouseLeave += (o, e) =>
@@ -461,7 +465,7 @@ namespace Client.MirScenes.Dialogs
                     MirLabel lab = (MirLabel)o;
                     for (int p = 0; p < Filters.Length; p++)
                     {
-                        if (Filters[p].Text == lab.Text && Filters[p].ForeColour != Color.FromArgb(230, 200, 160)) Filters[p].ForeColour = Color.Gray;
+                        if (Filters[p] == lab && Filters[p].ForeColour != Color.FromArgb(230, 200, 160)) Filters[p].ForeColour = Color.Gray;
                     }
                 };
                 Filters[i].MouseWheel += FilterScrolling;
@@ -683,14 +687,17 @@ namespace Client.MirScenes.Dialogs
         {
             for (int i = 0; i < Filters.Length; i++)
             {
-                if (i < CategoryList.Count)
+                if (i + CStartIndex < CategoryList.Count)
                 {
-                    Filters[i].Text = CategoryList[i + CStartIndex];
-                    Filters[i].ForeColour = Filters[i].Text == TypeFilter ? Color.FromArgb(230, 200, 160) : Color.Gray;
+                    string categoryKey = CategoryList[i + CStartIndex];
+                    filterCategoryKeys[i] = categoryKey;
+                    Filters[i].Text = DbLanguage.Get("Ui", categoryKey);
+                    Filters[i].ForeColour = categoryKey == TypeFilter ? Color.FromArgb(230, 200, 160) : Color.Gray;
                     Filters[i].NotControl = false;
                 }
                 else
                 {
+                    filterCategoryKeys[i] = null;
                     Filters[i].Text = "";
                     Filters[i].NotControl = true;
                 }

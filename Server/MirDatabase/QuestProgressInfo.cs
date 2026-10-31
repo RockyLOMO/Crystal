@@ -447,7 +447,7 @@ namespace Server.MirDatabase
                     allComplete = false;
                 }
 
-                TaskList.Add(string.Format("{0} {1}", Info.KillMessage, allComplete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
+                TaskList.Add(string.Format("{0} {1}", DbLanguage.NpcLine(Info.KillMessage), allComplete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 return;
             }
 
@@ -455,12 +455,12 @@ namespace Server.MirDatabase
             {
                 if (string.IsNullOrEmpty(Info.KillTasks[i].Message))
                 {
-                    TaskList.Add(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.KillCountProgress), KillTaskCount[i].Info.Monster.GameName, KillTaskCount[i].Count,
+                    TaskList.Add(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.KillCountProgress), DbLanguage.Monster(KillTaskCount[i].Info.Monster.GameName), KillTaskCount[i].Count,
                         KillTaskCount[i].Info.Count, KillTaskCount[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 }
                 else
                 {
-                    TaskList.Add(string.Format("{0} {1}", Info.KillTasks[i].Message, KillTaskCount[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
+                    TaskList.Add(string.Format("{0} {1}", DbLanguage.NpcLine(Info.KillTasks[i].Message), KillTaskCount[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 }
             }
         }
@@ -477,7 +477,7 @@ namespace Server.MirDatabase
                     allComplete = false;
                 }
                 
-                TaskList.Add(string.Format("{0} {1}", Info.ItemMessage, allComplete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
+                TaskList.Add(string.Format("{0} {1}", DbLanguage.NpcLine(Info.ItemMessage), allComplete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 return;
             }
 
@@ -490,7 +490,7 @@ namespace Server.MirDatabase
                 }
                 else
                 {
-                    TaskList.Add(string.Format("{0} {1}", Info.ItemTasks[i].Message, ItemTaskCount[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
+                    TaskList.Add(string.Format("{0} {1}", DbLanguage.NpcLine(Info.ItemTasks[i].Message), ItemTaskCount[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 }
             }
         }
@@ -507,7 +507,7 @@ namespace Server.MirDatabase
                     allComplete = false;
                 }
                 
-                TaskList.Add(string.Format("{0} {1}", Info.FlagMessage, allComplete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
+                TaskList.Add(string.Format("{0} {1}", DbLanguage.NpcLine(Info.FlagMessage), allComplete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 return;
             }
 
@@ -519,7 +519,7 @@ namespace Server.MirDatabase
                 }
                 else
                 {
-                    TaskList.Add(string.Format("{0} {1}", Info.FlagTasks[i].Message, FlagTaskSet[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
+                    TaskList.Add(string.Format("{0} {1}", DbLanguage.NpcLine(Info.FlagTasks[i].Message), FlagTaskSet[i].Complete ? GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.TaskCompleted) : ""));
                 }
             }
         }
@@ -528,7 +528,7 @@ namespace Server.MirDatabase
         {
             if (Info.GotoMessage.Length <= 0 || !Completed) return;
             
-            TaskList.Add(Info.GotoMessage);
+            TaskList.Add(DbLanguage.NpcLine(Info.GotoMessage));
         }
 
         #endregion

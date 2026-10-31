@@ -1,0 +1,163 @@
+{
+  "Date": "2026-10-31",
+  "Build": "Server+Client publish PASS",
+  "LocalizationRegression": 26,
+  "SchedulingRegression": 35,
+  "PackageRegression": 39,
+  "DictionaryStructureEntries": 3303,
+  "Handshake": "PASS",
+  "KeepAlive": "PASS",
+  "ClientStartup": "Process responding; no new Error.txt bytes; no visual/gameplay acceptance",
+  "SoundFilesChecked": 1608,
+  "SoundFilesChanged": [],
+  "ScriptFilesChecked": 2600,
+  "ScriptFilesChanged": [],
+  "DatabaseSHA256": "a6f316133f58576a81b9fe7c27f627eb187548fece6121fea041077588a81098",
+  "CPU": {
+    "CheckedAtUtc": "2026-10-31T06:11:21.4732190+00:00",
+    "Executable": "D:\\private-server\\mir2\\Server\\Server.exe",
+    "ProcessId": 24272,
+    "LogicalProcessors": 16,
+    "DurationSeconds": 30.4279801,
+    "CPUPercent": {
+      "Average": 1.2119018227747314,
+      "Minimum": 0.0,
+      "Maximum": 3.090465897870833
+    },
+    "WorkingSetMB": 3350.710954666667,
+    "Samples": [
+      {
+        "CPUPercent": 1.9904217115958558,
+        "WorkingSetMB": 3349.110784
+      },
+      {
+        "CPUPercent": 0.47451569212612854,
+        "WorkingSetMB": 3349.168128
+      },
+      {
+        "CPUPercent": 1.7304482299603452,
+        "WorkingSetMB": 3349.233664
+      },
+      {
+        "CPUPercent": 2.3269163887687307,
+        "WorkingSetMB": 3349.282816
+      },
+      {
+        "CPUPercent": 0.2878387439853215,
+        "WorkingSetMB": 3349.295104
+      },
+      {
+        "CPUPercent": 1.2460467575510836,
+        "WorkingSetMB": 3349.393408
+      },
+      {
+        "CPUPercent": 1.1507740615747473,
+        "WorkingSetMB": 3349.450752
+      },
+      {
+        "CPUPercent": 0.19347474147316865,
+        "WorkingSetMB": 3350.892544
+      },
+      {
+        "CPUPercent": 1.1637408009237828,
+        "WorkingSetMB": 3350.962176
+      },
+      {
+        "CPUPercent": 2.1239666431146826,
+        "WorkingSetMB": 3351.035904
+      },
+      {
+        "CPUPercent": 0.19409087263852587,
+        "WorkingSetMB": 3351.089152
+      },
+      {
+        "CPUPercent": 3.090465897870833,
+        "WorkingSetMB": 3349.786624
+      },
+      {
+        "CPUPercent": 0.9710010912498673,
+        "WorkingSetMB": 3349.87264
+      },
+      {
+        "CPUPercent": 0.09645500896386487,
+        "WorkingSetMB": 3349.925888
+      },
+      {
+        "CPUPercent": 1.6489044557746857,
+        "WorkingSetMB": 3350.257664
+      },
+      {
+        "CPUPercent": 1.4466663868492362,
+        "WorkingSetMB": 3350.257664
+      },
+      {
+        "CPUPercent": 0.0,
+        "WorkingSetMB": 3350.257664
+      },
+      {
+        "CPUPercent": 2.407410246938876,
+        "WorkingSetMB": 3350.208512
+      },
+      {
+        "CPUPercent": 1.9252895487619122,
+        "WorkingSetMB": 3353.72288
+      },
+      {
+        "CPUPercent": 0.0,
+        "WorkingSetMB": 3353.726976
+      },
+      {
+        "CPUPercent": 1.6397453557102584,
+        "WorkingSetMB": 3353.726976
+      },
+      {
+        "CPUPercent": 1.539168514079331,
+        "WorkingSetMB": 3353.731072
+      },
+      {
+        "CPUPercent": 0.0,
+        "WorkingSetMB": 3353.735168
+      },
+      {
+        "CPUPercent": 2.2350174505187166,
+        "WorkingSetMB": 3350.007808
+      },
+      {
+        "CPUPercent": 1.2594631019629083,
+        "WorkingSetMB": 3349.991424
+      },
+      {
+        "CPUPercent": 0.0,
+        "WorkingSetMB": 3349.991424
+      },
+      {
+        "CPUPercent": 1.6445188491670422,
+        "WorkingSetMB": 3349.991424
+      },
+      {
+        "CPUPercent": 1.353638793947503,
+        "WorkingSetMB": 3349.991424
+      },
+      {
+        "CPUPercent": 0.0,
+        "WorkingSetMB": 3350.781952
+      },
+      {
+        "CPUPercent": 2.2170753377345287,
+        "WorkingSetMB": 3352.449024
+      }
+    ]
+  },
+  "Backup": "D:\\private-server\\mir2\\backups\\20261031-060955Z",
+  "RuntimeStoppedAfterValidation": true,
+  "StartupIssue": {
+    "AffectedMapFile": "0159",
+    "AffectedMapTitle": "Blacksmith",
+    "NPC": "Merchant_Bruce",
+    "Cause": "Custom script contained #ELSEIF; fixed in NPCScript.ParsePage/ParseSegment and hardened NPCObject.LoadScript ordering + NPCScript.Get lookup.",
+    "IntroducedByThisLocalization": false,
+    "Fixed": true,
+    "VerifiedAtLocal": "2026-10-31T14:31:11+08:00"
+  },
+  "Gameplay": "NOT VERIFIED"
+}

@@ -211,7 +211,7 @@ namespace Client.MirScenes.Dialogs
                 Font = new Font(Settings.FontName, 8F),
                 NotControl = true,
                 BackColour = Color.Transparent,
-                Text = "GT #"
+                Text = DbLanguage.Get("Ui", "GT #")
             };
 
             var __gtguildLabel = new MirLabel

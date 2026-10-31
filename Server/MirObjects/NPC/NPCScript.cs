@@ -20,7 +20,7 @@ namespace Server.MirObjects
 
         public static NPCScript Get(int index)
         {
-            return Envir.Scripts[index];
+            return Envir.Scripts.TryGetValue(index, out var script) ? script : null;
         }
 
         public static NPCScript GetOrAdd(uint loadedObjectID, string fileName, NPCScriptType type)
@@ -162,7 +162,7 @@ namespace Server.MirObjects
                 }
             }
             else
-                MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.ScriptNotFound), FileName));
+                MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.ScriptNotFound), FileName));
         }
         public void ClearInfo()
         {
@@ -315,7 +315,7 @@ namespace Server.MirObjects
                 string path = Path.Combine(Settings.EnvirPath, split[1].Substring(1, split[1].Length - 2));
 
                 if (!File.Exists(path))
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.InsertScriptNotFound), path));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.InsertScriptNotFound), path));
                 else
                     newLines = File.ReadAllLines(path).ToList();
 
@@ -344,7 +344,7 @@ namespace Server.MirObjects
 
                 if (!File.Exists(path))
                 {
-                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.IncludeScriptNotFound), path));
+                    MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.IncludeScriptNotFound), path));
                     return parsedLines;
                 }
 
@@ -446,12 +446,14 @@ namespace Server.MirObjects
                     else
                         nextLine = "";
 
+                    bool isElseIf = nextLine.StartsWith("#ELSEIF", StringComparison.OrdinalIgnoreCase);
+
                     if (nextLine.StartsWith("[") && nextLine.EndsWith("]"))
                     {
                         nextPage = true;
                     }
 
-                    else if (nextLine.StartsWith("#IF"))
+                    else if (nextLine.StartsWith("#IF", StringComparison.OrdinalIgnoreCase) || isElseIf)
                     {
                         nextSection = true;
                     }
@@ -464,6 +466,10 @@ namespace Server.MirObjects
                         if (segmentLines.Count > 0)
                         {
                             NPCSegment segment = ParseSegment(Page, segmentLines);
+                            if (isElseIf && (segment.ActList.Count == 0 || segment.ActList[^1].Type != ActionType.Break))
+                            {
+                                segment.ActList.Add(new NPCActions(ActionType.Break));
+                            }
 
                             List<string> currentButtons = new List<string>();
                             currentButtons.AddRange(segment.Buttons);
@@ -535,6 +541,7 @@ namespace Server.MirObjects
                     switch (action[0])
                     {
                         case "IF":
+                        case "ELSEIF":
                             currentSay = checks;
                             currentButtons = null;
                             continue;
@@ -668,7 +675,7 @@ namespace Server.MirObjects
 
                     if (goods == null || Goods.Contains(goods))
                     {
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotFindItemFile), lines[i], FileName));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotFindItemFile), lines[i], FileName));
                         continue;
                     }
 
@@ -767,13 +774,13 @@ namespace Server.MirObjects
 
                     if (recipe == null)
                     {
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotFindRecipe), lines[i], FileName));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotFindRecipe), lines[i], FileName));
                         continue;
                     }
 
                     if (recipe.Ingredients.Count == 0)
                     {
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotFindIngredients), lines[i], FileName));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.CouldNotFindIngredients), lines[i], FileName));
                         continue;
                     }
 
@@ -850,7 +857,7 @@ namespace Server.MirObjects
                     {
                         var npc = NPCObject.Get(objectID);
                         string npcName = npc?.Info?.GameName ?? npc?.Name ?? "Unknown";
-                        MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PlayerPreventedNpcAccess), player.Name, key, npcName));
+                        MessageQueue.Enqueue(GameLanguage.ServerLogTextMap.GetLocalization((ServerTextKeys.PlayerPreventedNpcAccess), player.Name, key, npcName));
                         return;
                     }
                 }

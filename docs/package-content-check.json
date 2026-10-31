@@ -1,16 +1,19 @@
 {
-  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261030.zip",
-  "Files": 5199,
+  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-zhCN-20261031.zip",
+  "Files": 5200,
   "SelectedFileHashes": "PASS",
   "Checked": [
+    "Client.exe",
     "Client.dll",
     "Shared.dll",
-    "Localization\\Chinese.json",
-    "Localization\\DbLanguage.zh-CN.json",
-    "Localization\\ItemsMonsters.zh-CN.json",
-    "Localization\\NpcText.zh-CN.json",
-    "Map\\DogYoHyun.map"
+    "Localization/Chinese.json",
+    "Localization/DbLanguage.zh-CN.json",
+    "Localization/ItemsMonsters.zh-CN.json",
+    "Localization/NpcText.zh-CN.json",
+    "Localization/NpcNarrative.zh-CN.json",
+    "Map/DogYoHyun.map"
   ],
   "NoServerDataOrUserPreferences": true,
-  "CleanDefaultConfig": "PASS"
+  "CleanDefaultConfig": "PASS",
+  "DefaultEndpoint": "s.f-li.cn:7000"
 }

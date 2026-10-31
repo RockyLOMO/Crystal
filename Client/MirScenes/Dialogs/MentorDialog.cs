@@ -282,11 +282,11 @@ namespace Client.MirScenes.Dialogs
             if (GameScene.User.Level > MentorLevel)
             {
                 MentorNameLabel.Text = GameScene.User.Name;
-                MentorLevelLabel.Text = "Lv " + GameScene.User.Level.ToString();
+                MentorLevelLabel.Text = DbLanguage.Get("Ui", "Lv ") + GameScene.User.Level.ToString();
                 MentorOnlineLabel.Visible = false;
 
                 StudentNameLabel.Text = MentorName;
-                StudentLevelLabel.Text = "Lv " + MentorLevel.ToString();
+                StudentLevelLabel.Text = DbLanguage.Get("Ui", "Lv ") + MentorLevel.ToString();
                 if (MentorOnline)
                     StudentOnlineLabel.Visible = true;
                 else
@@ -298,14 +298,14 @@ namespace Client.MirScenes.Dialogs
             else
             {
                 MentorNameLabel.Text = MentorName;
-                MentorLevelLabel.Text = "Lv " + MentorLevel.ToString();
+                MentorLevelLabel.Text = DbLanguage.Get("Ui", "Lv ") + MentorLevel.ToString();
                 if (MentorOnline)
                     MentorOnlineLabel.Visible = true;
                 else
                     MentorOnlineLabel.Visible = false;
 
                 StudentNameLabel.Text = GameScene.User.Name;
-                StudentLevelLabel.Text = "Lv " + GameScene.User.Level.ToString();
+                StudentLevelLabel.Text = DbLanguage.Get("Ui", "Lv ") + GameScene.User.Level.ToString();
                 StudentOnlineLabel.Visible = false;
             }
         }

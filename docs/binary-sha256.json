@@ -1,26 +1,62 @@
 [
   {
+    "Path": "D:\\private-server\\mir2\\Server\\Server.exe",
+    "Hash": "5D66D638BCDE6F36AF4B5BDC73EC665DBDD7D91BF8A98BFC705C1146A6F5B033"
+  },
+  {
     "Path": "D:\\private-server\\mir2\\Server\\Server.dll",
-    "Hash": "AEA6454D1EF7E1698E1A6560E7C693FACB38BE8E3A542DA045838237FA764BAF"
+    "Hash": "F35F15B3290078C7EA5FCBE438582FA6E688712B541C76F895E7C865753D81C4"
   },
   {
     "Path": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
-    "Hash": "532450AD1096830788369D754FB752BB6F4EC5A65B4663ABD6B785DF35A28A60"
+    "Hash": "82833CA1861C233C068EA181ACAD8D3B1AC70213035AA74CCFBADEF4A867028E"
   },
   {
     "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
-    "Hash": "1F6198F3097E09BD2889878C83DCE354627A45DDA944C446E3A865B0583F9062"
+    "Hash": "F25D7BE211D904021F5F7FBBAC0CE2544731B841A06DCE91C054C6B4B18D9FF6"
   },
   {
-    "Path": "D:\\Program Files\\Game\\Mir2\\Client.exe",
-    "Hash": "6BEE12C3EFE9D8B015EF3A03ABF9B70DEA7D80BA8170480F204618F90A90ED50"
+    "Path": "D:\\private-server\\mir2-client\\Client.exe",
+    "Hash": "171E3D136D163A157D37161DC02C922BB4B8A513350A03333E101587BFAF7276"
   },
   {
-    "Path": "D:\\Program Files\\Game\\Mir2\\Client.dll",
-    "Hash": "2ED6DDD79FF9CD2F899A50EAEF6477802E6FC717170AF021F6776A8F28CF4715"
+    "Path": "D:\\private-server\\mir2-client\\Client.dll",
+    "Hash": "1DDA20E0213988694F29286827F0192FC381653750C756A2749BB05CA01602BF"
   },
   {
-    "Path": "D:\\Program Files\\Game\\Mir2\\Shared.dll",
-    "Hash": "1F6198F3097E09BD2889878C83DCE354627A45DDA944C446E3A865B0583F9062"
+    "Path": "D:\\private-server\\mir2-client\\Shared.dll",
+    "Hash": "F25D7BE211D904021F5F7FBBAC0CE2544731B841A06DCE91C054C6B4B18D9FF6"
+  },
+  {
+    "Path": "D:\\private-server\\mir2\\Server\\Localization\\DbLanguage.zh-CN.json",
+    "Hash": "75C78A99FB1803554664B9F0EDED3363099753AB57AFE09BCF79B9CB672B74BC"
+  },
+  {
+    "Path": "D:\\private-server\\mir2\\Server\\Localization\\ItemsMonsters.zh-CN.json",
+    "Hash": "BCA5892AB5C35ABA56EF15DEC1EE52CB07656E58A9BF0172490706A28830C3F3"
+  },
+  {
+    "Path": "D:\\private-server\\mir2\\Server\\Localization\\NpcNarrative.zh-CN.json",
+    "Hash": "CBF6204B5776EB09342DD7A8858F0B4C78201FF7CE7005FCC1A209A81A715A60"
+  },
+  {
+    "Path": "D:\\private-server\\mir2\\Server\\Localization\\NpcText.zh-CN.json",
+    "Hash": "8982A89A0AC7B6AE731AFB398D0C6B9C61033B185DFE6DB8ED1F6EC5729667A3"
+  },
+  {
+    "Path": "D:\\private-server\\mir2-client\\Localization\\DbLanguage.zh-CN.json",
+    "Hash": "75C78A99FB1803554664B9F0EDED3363099753AB57AFE09BCF79B9CB672B74BC"
+  },
+  {
+    "Path": "D:\\private-server\\mir2-client\\Localization\\ItemsMonsters.zh-CN.json",
+    "Hash": "BCA5892AB5C35ABA56EF15DEC1EE52CB07656E58A9BF0172490706A28830C3F3"
+  },
+  {
+    "Path": "D:\\private-server\\mir2-client\\Localization\\NpcNarrative.zh-CN.json",
+    "Hash": "CBF6204B5776EB09342DD7A8858F0B4C78201FF7CE7005FCC1A209A81A715A60"
+  },
+  {
+    "Path": "D:\\private-server\\mir2-client\\Localization\\NpcText.zh-CN.json",
+    "Hash": "8982A89A0AC7B6AE731AFB398D0C6B9C61033B185DFE6DB8ED1F6EC5729667A3"
   }
 ]

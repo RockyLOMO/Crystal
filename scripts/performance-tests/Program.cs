@@ -245,6 +245,32 @@ try
     processObject.Invoke(env, [player]);
     Check(player.Account.Gold == 121 && player.ActionList.Count == 0,
         "multiple delayed actions due in the same tick are all processed without skipping adjacent entries");
+
+    var parsePage = typeof(NPCScript).GetMethod("ParsePage", Private)!;
+    var elseIfLines = new List<string>
+    {
+        "[@ELSEIF_TEST]",
+        "#IF",
+        "CHECKGOLD >= 999999",
+        "#ACT",
+        "GIVEGOLD 50",
+        "#ELSEIF",
+        "CHECKGOLD >= 100",
+        "#ACT",
+        "GIVEGOLD 9",
+        "#ELSEIF",
+        "CHECKGOLD >= 1",
+        "#ACT",
+        "GIVEGOLD 99",
+        "#ELSESAY",
+        "No gold"
+    };
+    var parsedElseIfPage = (NPCPage)parsePage.Invoke(rewardScript, [elseIfLines, "[@ELSEIF_TEST]"])!;
+    rewardScript.NPCPages.Add(parsedElseIfPage);
+    player.NPCDelayed = true;
+    rewardScript.Call(player, 1, "[@ELSEIF_TEST]");
+    Check(parsedElseIfPage.SegmentList.Count == 3 && player.Account.Gold == 130 && player.NPCSpeech.Count == 0,
+        "#ELSEIF parses into chained segments, executes matching branch once, and skips subsequent branches");
 }
 finally
 {
