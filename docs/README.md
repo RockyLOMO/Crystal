@@ -4,7 +4,7 @@
 
 ## 图片英文遮罩汉化与角色面板补漏（2026-10-31）
 
-按 `crystal_ui_overlay_localization.md` 的黑金铭牌方式实现，译名继续向盛大 1.76 靠拢。覆盖角色与英雄的装备/属性/状态/技能页签、25 项属性标题、背包页签、登录/选人/注册/改密、设置、邮件、觉醒，以及通用窗口标题和确认/取消等按钮。共 **93 条配置、166 个文字区域、215 个贴图索引/上下文映射**。只覆盖确认含有英文的区域，职业、性别、菜单等纯图标保留。
+按 [localization.md](localization.md) 的黑金铭牌方式实现，译名继续向盛大 1.76 靠拢。覆盖角色与英雄的装备/属性/状态/技能页签、25 项属性标题、背包页签、登录/选人/注册/改密、设置、邮件、觉醒，以及通用窗口标题和确认/取消等按钮。共 **93 条配置、166 个文字区域、215 个贴图索引/上下文映射**。只覆盖确认含有英文的区域，职业、性别、菜单等纯图标保留。
 
 实际代码集中接入 `MirImageControl.DrawControl()`，兼容延迟创建窗口与动态按钮换图；无需逐个修改 Dialog。配置位于 `Client/Localization/Overlay.zh-CN.json`，修改后需重启客户端。角色和英雄保留人物名、公会名、属性数值及原有点击区域；铭牌与文字均鼠标穿透，按钮仍跟随按下、悬停、选中、禁用状态。中文关闭时恢复原图。坐标尺默认关闭，仅排版调试时在客户端 INI 的 `[Game]` 中设置 `ChineseOverlayInspector=True` 后重启，按 Alt 移动查看游戏聊天坐标。
 
@@ -18,7 +18,7 @@
 
 ## 代码显示补漏与 1366 视口（2026-10-31 晚间）
 
-以完整方案 `crystal_code_level_localization_1366.md` 为准，译名尽量向盛大 1.76 靠拢。该方案的代码示例与本分支不完全相符，实际处理如下：
+以完整方案 [localization.md](localization.md) 为准，译名尽量向盛大 1.76 靠拢。该方案的代码示例与本分支不完全相符，实际处理如下：
 
 - 固定本发行版的游戏视口为 **1366×768**，旧 INI 的 1024/1920 设定在加载时归一为 1366，登录器也不能改成其他游戏分辨率；默认窗口化。原生登录/选人仍使用 1024×768 布局；远端服务端设置了更低上限时仍遵从服务端约束。当前服务端允许 1920，无需修改视野格子或 `DataRange`。1366 是本次发行设定，不能据此称它是源码支持的最大尺寸（原代码还支持 1920）。
 - 客户端补齐觉醒 MAX/Level、租期届满、材料名、合成成功率、行会权限/职位/增益、宠物控制模式、任务等级、大地图 NPC 等显示；材料只改显示处读取 `FriendlyName`。新增 37 项 `Ui` 词条，包含 3 个系统邮件署名。未知自定义名称仍回退原文。
@@ -36,7 +36,7 @@
 
 ## 玩家视野汉化执行结果（2026-10-31，早期记录）
 
-按 `crystal_crystalm2_ingame_localization.md` 执行，译名尽量靠拢盛大 1.76。实际版本使用 JSON：沿用 `Shared/DbLanguage.cs` 的显示字典，没有照抄文档中不存在的 `Language.ini` 接口、只读属性赋值或 `ChineseNames.txt` 注入。没有采购或导入第三方汉化整包；新增正文由本轮翻译整理，上游 `Chinese.json` 仍是基础界面语言包。
+按早期汉化规划（已整合至 [localization.md](localization.md)）执行，译名尽量靠拢盛大 1.76。实际版本使用 JSON：沿用 `Shared/DbLanguage.cs` 的显示字典，没有照抄文档中不存在的 `Language.ini` 接口、只读属性赋值或 `ChineseNames.txt` 注入。没有采购或导入第三方汉化整包；新增正文由本轮翻译整理，上游 `Chinese.json` 仍是基础界面语言包。
 
 - 新增 `Localization/NpcNarrative.zh-CN.json`：3,036 条完整行（2,746 个原语料补充条目、138 条任务目标消息、152 条 SystemScripts 对话/公告），509 条菜单 caption、202 条物品说明、53 条客户端 UI 文案、12 个任务分组。其中 3 条纯指令与 1 条残缺标记原样保留，不计作自然语言翻译。
 - 原 795 文件语料的 3,132 个英文原文键已全部有映射；覆盖范围包含未直接引用的历史脚本，不能据此宣称所有游戏画面已经人工验收。原语料后已有 4 个 NPC 文件加入中文重铸/传送内容，详见覆盖 JSON 的变更清单。
@@ -223,7 +223,7 @@ pwsh -NoProfile -File D:\projs\mir2\scripts\Measure-Server.ps1 -Seconds 45
 
 ## 历史汉化起步范围（2026-10-30；当前结果见文首）
 
-采用显示层字典，内部英文数据库名称、地图文件名、掉落文件名、任务和 NPC 命令参数保持原样。原讨论文档 `crystal_crystalm2_1_76.md` 的 `Language.ini`、直接重命名和删除后期地图步骤没有执行；当前代码实际使用 JSON 语言包。
+采用显示层字典，内部英文数据库名称、地图文件名、掉落文件名、任务和 NPC 命令参数保持原样。实际架构与配置详见 [localization.md](localization.md)。
 
 - 补齐客户端仓库密码、删除确认等 19 个语言键和服务端 2 个语言键，修正攻击/魔法/道术不足提示。
 - `Shared/DbLanguage.cs` 在启动时加载 `Localization/*.zh-CN.json`，Chinese 启用，未知名称回退原文；English 恢复原显示。字典不会写回内容数据库。
@@ -264,7 +264,7 @@ pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Backup
 
 ## 全版本全特性开启・单人 + 原生 Hero 慢节奏肉鸽化改造
 
-按 `docs/crystal_crystalm2_hero_roguelike.md` 完成服务端源码、NPC 脚本与爆率表的全量落地：
+按 [extensions.md](extensions.md) 完成服务端源码、NPC 脚本与爆率表的全量落地：
 
 1. **核心配置与全职业/英雄解锁（`Server/Settings.cs`、`Setup.ini`、`HeroSettings.ini`）**
    - 开放主号与英雄全五职业（战/法/道/刺/弓，`AllowCreateAssassin=True`、`AllowCreateArcher=True`、`AllowNewHero=True`、`MinimumLevel=22`）。

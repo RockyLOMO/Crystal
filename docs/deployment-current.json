@@ -106,7 +106,7 @@
     "Editors": "English; operator log templates separated from Chinese player messages",
     "NameDictionaries": "deployed",
     "RuntimeClientChineseJson": "Loader normalizes its key set on startup; one unused client HeroDesummonCountdown entry is omitted. Server countdown key remains translated.",
-    "LatestCodeSupplement": "docs/crystal_code_level_localization_1366.md",
+    "LatestCodeSupplement": "docs/localization.md",
     "GameResolution": "1366x768; native login/selection layout retained"
   },
   "Performance": {

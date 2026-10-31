@@ -1,6 +1,6 @@
 {
   "Date": "2026-10-31",
-  "SourcePlan": "docs/crystal_code_level_localization_1366.md",
+  "SourcePlan": "docs/localization.md",
   "Backup": "D:\\private-server\\mir2\\backups\\20261031-132541Z",
   "PublishedFiles": 515,
   "Build": "Server+Client Release win-x64 publish PASS",
