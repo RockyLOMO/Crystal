@@ -57,12 +57,19 @@ public static class DbLanguage
 
     public static string Monster(string original)
     {
+        if (original == null) return null;
+        string prefix = string.Empty;
+        if (original.StartsWith("[领主]", StringComparison.Ordinal) || original.StartsWith("[精英]", StringComparison.Ordinal))
+        {
+            prefix = original[..4];
+            original = original[4..];
+        }
         string translated = Get("Monsters", original);
-        if (translated != original || original == null) return translated;
+        if (translated != original) return prefix + translated;
         // The server appends a player-owned pet's owner; never translate the player's name.
         int owner = original.LastIndexOf('(');
-        return owner > 0 && original.EndsWith(')')
-            ? Get("Monsters", original[..owner]) + original[owner..] : original;
+        return prefix + (owner > 0 && original.EndsWith(')')
+            ? Get("Monsters", original[..owner]) + original[owner..] : original);
     }
 
     public static string NpcLine(string original)

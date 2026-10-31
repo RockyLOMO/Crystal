@@ -667,7 +667,7 @@ namespace Server.MirObjects
         }
         private void RedDeathDrop(MapObject killer)
         {
-            if (killer == null || killer.Race != ObjectType.Player)
+            if (Settings.DropEquippedItems && (killer == null || killer.Race != ObjectType.Player))
             {
                 for (var i = 0; i < Info.Equipment.Length; i++)
                 {
@@ -835,13 +835,6 @@ namespace Server.MirObjects
             {
                 GainExp((uint)expPoint);
             }
-
-            if (HeroSpawned && !Hero.Dead)
-            {
-                expPoint = Hero.ReduceExp(amount, targetLevel);
-                expPoint = (int)(expPoint * Settings.ExpRate);
-                Hero.GainExp((uint)expPoint);
-            }
         }
         public override void GainExp(uint amount)
         {
@@ -850,6 +843,22 @@ namespace Server.MirObjects
             if (amount == 0) return;
 
             if (CurrentMap?.Info?.NoExperience == true) return;
+
+            float stageMultiplier;
+            if (Level < 22)
+                stageMultiplier = 2.5f;   // [第1段] 1~21级: 新手筑基与英雄解锁期 (实际 5.0x)
+            else if (Level < 35)
+                stageMultiplier = 1.5f;   // [第2段] 22~34级: 沃玛/蜈蚣洞成型期 (实际 3.0x)
+            else if (Level < 42)
+                stageMultiplier = 1.0f;   // [第3段] 35~41级: 祖玛/赤月攻坚期 (实际 2.0x)
+            else if (Level < 50)
+                stageMultiplier = 0.6f;   // [第4段] 42~49级: 魔龙/新技能进阶期 (实际 1.2x)
+            else if (Level < 58)
+                stageMultiplier = 0.35f;  // [第5段] 50~57级: 狐月/雪域/雷炎觉醒期 (实际 0.7x)
+            else
+                stageMultiplier = 0.15f;  // [第6段] 58级+: 传世养老期 (实际 0.3x)
+
+            amount = (uint)Math.Max(1, amount * stageMultiplier);
 
             if (Info.Married != 0)
             {
@@ -886,6 +895,13 @@ namespace Server.MirObjects
             if (Info.Mentor != 0 && !Info.IsMentor)
             {
                 MenteeEXP += (amount * Settings.MenteeExpBank) / 100;
+            }
+
+            if (Hero != null && HeroSpawned && !Hero.Dead && Hero.CurrentMap == CurrentMap)
+            {
+                uint heroExp = (uint)Math.Max(1, amount * 0.45f);
+                Hero.GainExp(heroExp);
+                amount = (uint)Math.Max(1, amount * 0.75f);
             }
 
             Experience += amount;

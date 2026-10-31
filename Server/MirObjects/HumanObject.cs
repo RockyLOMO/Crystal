@@ -1390,12 +1390,12 @@ namespace Server.MirObjects
         }
         protected void DeathDrop(MapObject killer)
         {
-            var pkbodydrop = true;
+            var pkbodydrop = Settings.DropEquippedItems;
 
             if (CurrentMap.Info.NoDropPlayer && (Race == ObjectType.Player || Race == ObjectType.Hero))
                 return;
 
-            if ((killer == null) || ((pkbodydrop) || (killer.Race != ObjectType.Player) || killer.Race != ObjectType.Hero))
+            if (Settings.DropEquippedItems && ((killer == null) || ((pkbodydrop) || (killer.Race != ObjectType.Player) || killer.Race != ObjectType.Hero)))
             {
                 for (var i = 0; i < Info.Equipment.Length; i++)
                 {
@@ -2438,7 +2438,7 @@ namespace Server.MirObjects
                     }
                     else
                     {
-                        if (!ob.Blocking || (CheckCellTime && ob.CellTime >= Envir.Time)) continue;
+                        if (!ob.Blocking || (Settings.SafeZoneWalkThrough && (InSafeZone || ob.InSafeZone)) || (CheckCellTime && ob.CellTime >= Envir.Time)) continue;
                     }
 
                     Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
@@ -2575,7 +2575,7 @@ namespace Server.MirObjects
                             if (!NPC.Visible || !NPC.VisibleLog[Info.Index]) continue;
                         }
                         else
-                            if (!ob.Blocking || (CheckCellTime && ob.CellTime >= Envir.Time)) continue;
+                            if (!ob.Blocking || (Settings.SafeZoneWalkThrough && (InSafeZone || ob.InSafeZone)) || (CheckCellTime && ob.CellTime >= Envir.Time)) continue;
 
                         Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
                         return false;
@@ -4038,7 +4038,8 @@ namespace Server.MirObjects
                 return;
             }
 
-            if (target.Level > Level + 2 || !target.Info.CanTame) return;
+            int maxTargetLevel = Level >= 50 ? Level + 5 : Level + 2;
+            if (target.Level > maxTargetLevel || !target.Info.CanTame) return;
 
             if (target.Info.IsBoss)
             {
@@ -4095,7 +4096,7 @@ namespace Server.MirObjects
 
             if (!Settings.PetSave)
             {
-                target.TameTime = Envir.Time + (Settings.Minute * 60);
+                target.TameTime = Envir.Time + (Settings.Minute * 240);
             }
 
             target.Broadcast(new S.ObjectName { ObjectID = target.ObjectID, Name = target.Name });
@@ -4452,18 +4453,28 @@ namespace Server.MirObjects
                 ReceiveChat("You cannot summon pets on this map.", ChatType.System);
                 return;
             }
-            
+
+            int maxDevaCount = 1;
+            byte startPetLevel = magic.Level;
+            if (Level >= 42) { maxDevaCount = 2; startPetLevel = Math.Max(startPetLevel, (byte)3); }
+            if (Level >= 48) { maxDevaCount = 2; startPetLevel = Math.Max(startPetLevel, (byte)7); }
+            if (Level >= 54) { maxDevaCount = 3; startPetLevel = Math.Max(startPetLevel, (byte)7); }
+
             MonsterObject monster;
-            for (int i = 0; i < Pets.Count; i++)
+            int activeShinsuCount = Pets.Count(x => !x.Dead && x.Info.Name == Settings.ShinsuName);
+            if (activeShinsuCount >= maxDevaCount)
             {
-                monster = Pets[i];
-                if ((monster.Info.Name != Settings.ShinsuName) || monster.Dead) continue;
-                if (monster.Node == null) continue;
-                monster.ActionList.Add(new DelayedAction(DelayedType.Recall, Envir.Time + 500));
+                for (int i = 0; i < Pets.Count; i++)
+                {
+                    monster = Pets[i];
+                    if ((monster.Info.Name != Settings.ShinsuName) || monster.Dead) continue;
+                    if (monster.Node == null) continue;
+                    monster.ActionList.Add(new DelayedAction(DelayedType.Recall, Envir.Time + 500));
+                }
                 return;
             }
 
-            if (Pets.Count(x => x.Race == ObjectType.Monster) >= 2) return;
+            if (Pets.Count(x => !x.Dead && x.Race == ObjectType.Monster) >= Math.Max(2, maxDevaCount)) return;
 
             UserItem item = GetAmulet(5);
             if (item == null) return;
@@ -4475,9 +4486,9 @@ namespace Server.MirObjects
             ConsumeItem(item, 5);
 
             monster = MonsterObject.GetMonster(info);
-            monster.PetLevel = magic.Level;
+            monster.PetLevel = startPetLevel;
             monster.Master = this;
-            monster.MaxPetLevel = (byte)(1 + magic.Level * 2);
+            monster.MaxPetLevel = Math.Max((byte)(1 + magic.Level * 2), startPetLevel);
             monster.Direction = Direction;
             monster.ActionTime = Envir.Time + 1000;
 
@@ -4703,18 +4714,28 @@ namespace Server.MirObjects
                 ReceiveChat("You cannot summon pets on this map.", ChatType.System);
                 return;
             }
-            
+
+            int maxDevaCount = 1;
+            byte startPetLevel = magic.Level;
+            if (Level >= 42) { maxDevaCount = 2; startPetLevel = Math.Max(startPetLevel, (byte)3); }
+            if (Level >= 48) { maxDevaCount = 2; startPetLevel = Math.Max(startPetLevel, (byte)7); }
+            if (Level >= 54) { maxDevaCount = 3; startPetLevel = Math.Max(startPetLevel, (byte)7); }
+
             MonsterObject monster;
-            for (int i = 0; i < Pets.Count; i++)
+            int activeDevaCount = Pets.Count(x => !x.Dead && x.Info.Name == Settings.AngelName);
+            if (activeDevaCount >= maxDevaCount)
             {
-                monster = Pets[i];
-                if ((monster.Info.Name != Settings.AngelName) || monster.Dead) continue;
-                if (monster.Node == null) continue;
-                monster.ActionList.Add(new DelayedAction(DelayedType.Recall, Envir.Time + 500));
+                for (int i = 0; i < Pets.Count; i++)
+                {
+                    monster = Pets[i];
+                    if ((monster.Info.Name != Settings.AngelName) || monster.Dead) continue;
+                    if (monster.Node == null) continue;
+                    monster.ActionList.Add(new DelayedAction(DelayedType.Recall, Envir.Time + 500));
+                }
                 return;
             }
 
-            if (Pets.Count(x => x.Race == ObjectType.Monster) >= 2) return;
+            if (Pets.Count(x => !x.Dead && x.Race == ObjectType.Monster) >= Math.Max(2, maxDevaCount)) return;
 
             UserItem item = GetAmulet(2);
             if (item == null) return;
@@ -4726,9 +4747,9 @@ namespace Server.MirObjects
             ConsumeItem(item, 2);
 
             monster = MonsterObject.GetMonster(info);
-            monster.PetLevel = magic.Level;
+            monster.PetLevel = startPetLevel;
             monster.Master = this;
-            monster.MaxPetLevel = (byte)(1 + magic.Level * 2);
+            monster.MaxPetLevel = Math.Max((byte)(1 + magic.Level * 2), startPetLevel);
             monster.Direction = Direction;
             monster.ActionTime = Envir.Time + 1000;
 
@@ -6902,7 +6923,7 @@ namespace Server.MirObjects
         }
         public void LevelMagic(UserMagic magic)
         {
-            byte exp = (byte)(Envir.Random.Next(3) + 1);
+            int rawExp = Envir.Random.Next(3) + 1;
 
             if (Settings.MentorSkillBoost && Info.Mentor != 0 && Info.IsMentor)
             {
@@ -6915,13 +6936,14 @@ namespace Server.MirObjects
                         if (Stats[Stat.SkillGainMultiplier] == 1)
                         {
                             if (GroupMembers != null && GroupMembers.Contains(player))
-                                exp *= 2;
+                                rawExp *= 2;
                         }
                     }
                 }
             }
 
-            exp *= (byte)Math.Min(byte.MaxValue, Stats[Stat.SkillGainMultiplier]);
+            rawExp = (int)Math.Round(rawExp * Math.Max(1, Stats[Stat.SkillGainMultiplier]) * Math.Max(0.1f, Settings.SkillRate));
+            ushort exp = (ushort)Math.Clamp(rawExp, 1, ushort.MaxValue);
 
             if (Level == ushort.MaxValue) exp = byte.MaxValue;
 

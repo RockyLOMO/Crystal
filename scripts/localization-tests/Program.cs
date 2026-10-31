@@ -15,6 +15,12 @@ Check(ore.RawFriendlyName == "BlackIronOre1", "raw normalization retains upstrea
 ore.Name = "BlackIronOre1";
 Check(ore.RawFriendlyName == "BlackIronOre", "refine ore matching remains independent of translated display");
 Check(DbLanguage.Monster("Hen(张三)") == "鸡(张三)", "pet owner identity remains unchanged");
+Check(DbLanguage.Monster("[领主]Hen") == "[领主]鸡" && DbLanguage.Monster("[精英]WoomaTaurus") == "[精英]沃玛教主",
+    "elite and lord prefixes preserve prefix and translate monster base name");
+var weaponInfo = new ItemInfo { Name = "JudgementMace", Type = ItemType.Weapon };
+var userWeapon = new UserItem(weaponInfo);
+userWeapon.RollFullVersionRareStats(forceRare: true, minAdd: 2, maxAdd: 6);
+Check(userWeapon.AddedStats.Values.Values.Sum() >= 2, "RollFullVersionRareStats adds rare stats within bounds when forced");
 Check(DbLanguage.Item("JudgementMace (5)") == "裁决之杖 (5)" && DbLanguage.Item("(HP)DrugLarge (10)") == "金创药（大） (10)",
     "stacked floor item translates base name while preserving stack count");
 Check(DbLanguage.Get("Maps", "__unknown__") == "__unknown__", "unknown entries retain original text");

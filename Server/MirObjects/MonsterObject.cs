@@ -503,15 +503,42 @@ namespace Server.MirObjects
         public MonsterInfo Info;
         public MapRespawn Respawn;
         public MonsterType MonsterType { get; private set; } = MonsterType.Normal;
+        public byte EliteTier = 0; // 0:普通怪, 1:稀有精英(蓝), 2:远古领主(金)
         private long NextRecallTime;
 
         public override string Name
         {
             get
             {
-                return Master == null ? Info.GameName : string.Format("{0}({1})", Info.GameName, Master.Name);
+                if (Master != null)
+                    return string.Format("{0}({1})", Info.GameName, Master.Name);
+
+                return EliteTier switch
+                {
+                    2 => $"[领主]{Info.GameName}",
+                    1 => $"[精英]{Info.GameName}",
+                    _ => Info.GameName
+                };
             }
             set { throw new NotSupportedException(); }
+        }
+
+        public void RollEliteMutation()
+        {
+            if (Info == null || Info.AI == 6 || Info.IsBoss || Master != null || Info.Stats[Stat.HP] >= 15000 || Race != ObjectType.Monster)
+                return;
+
+            int roll = Envir.Random.Next(1000);
+            if (roll < 4)
+            {
+                EliteTier = 2;
+                NameColour = Color.Gold;
+            }
+            else if (roll < 28)
+            {
+                EliteTier = 1;
+                NameColour = Color.DeepSkyBlue;
+            }
         }
 
         public override int CurrentMapIndex { get; set; }
@@ -695,6 +722,7 @@ namespace Server.MirObjects
 
             CurrentMap.AddObject(this);
 
+            RollEliteMutation();
             RefreshAll();
             SetHP(Stats[Stat.HP]);
 
@@ -721,6 +749,7 @@ namespace Server.MirObjects
             if (Respawn.Route.Count > 0)
                 Route.AddRange(Respawn.Route);
 
+            RollEliteMutation();
             RefreshAll();
             SetHP(Stats[Stat.HP]);
 
@@ -752,6 +781,23 @@ namespace Server.MirObjects
 
             MoveSpeed = Info.MoveSpeed;
             AttackSpeed = Info.AttackSpeed;
+
+            if (Master == null)
+            {
+                if (EliteTier == 2)
+                {
+                    ScaleStat(Stat.HP, 5.5);
+                    ScaleStat(Stat.MinDC, 1.5);
+                    ScaleStat(Stat.MaxDC, 1.7);
+                    AttackSpeed = (ushort)Math.Max(300, AttackSpeed - 150);
+                    MoveSpeed = (ushort)Math.Max(300, MoveSpeed - 150);
+                }
+                else if (EliteTier == 1)
+                {
+                    ScaleStat(Stat.HP, 2.5);
+                    ScaleStat(Stat.MaxDC, 1.25);
+                }
+            }
         }
 
         protected virtual void ApplyMonsterTypeBonuses()
@@ -800,7 +846,7 @@ namespace Server.MirObjects
             if (amount == 0) return 0;
 
             MonsterRarityProfile profile = GetRarityProfile();
-            double scaled = amount * profile.GoldMultiplier;
+            double scaled = amount * profile.GoldMultiplier * Settings.GoldRate;
 
             if (scaled <= 0) return 0;
             if (scaled > uint.MaxValue) return uint.MaxValue;
@@ -826,8 +872,9 @@ namespace Server.MirObjects
                 AttackSpeed = (ushort)Math.Min(ushort.MaxValue, (Math.Max(ushort.MinValue, AttackSpeed - MaxPetLevel * 70)));
             }
 
-            if (MoveSpeed < 400) MoveSpeed = 400;
-            if (AttackSpeed < 400) AttackSpeed = 400;
+            ushort minSpeed = (Master == null && EliteTier == 2) ? (ushort)300 : (ushort)400;
+            if (MoveSpeed < minSpeed) MoveSpeed = minSpeed;
+            if (AttackSpeed < minSpeed) AttackSpeed = minSpeed;
 
             RefreshBuffs();
         }
@@ -880,6 +927,14 @@ namespace Server.MirObjects
                         colour = Color.Navy;
                         break;
                 }
+            }
+            else if (EliteTier == 2)
+            {
+                colour = Color.Gold;
+            }
+            else if (EliteTier == 1)
+            {
+                colour = Color.DeepSkyBlue;
             }
             else if (MonsterType != MonsterType.Normal)
             {
@@ -1101,44 +1156,56 @@ namespace Server.MirObjects
             int totalItemBonus = ownerItemBonus + profile.ItemDropBonusPercent;
             int totalGoldBonus = ownerGoldBonus + profile.GoldDropBonusPercent;
 
-            for (int i = 0; i < Info.Drops.Count; i++)
+            int dropLoops = EliteTier == 2 ? 6 : (EliteTier == 1 ? 2 : 1);
+
+            for (int loop = 0; loop < dropLoops; loop++)
             {
-                DropInfo drop = Info.Drops[i];
-
-                var reward = drop.AttemptDrop(totalItemBonus, totalGoldBonus);
-
-                if (reward != null)
+                for (int i = 0; i < Info.Drops.Count; i++)
                 {
-                    uint scaledGold = ApplyGoldModifier(reward.Gold);
+                    DropInfo drop = Info.Drops[i];
 
-                    if (scaledGold > 0)
+                    var reward = drop.AttemptDrop(totalItemBonus, totalGoldBonus);
+
+                    if (reward != null)
                     {
-                        DropGold(scaledGold);
-                    }
+                        uint scaledGold = ApplyGoldModifier(reward.Gold);
 
-                    foreach (var dropItem in reward.Items)
-                    {
-                        UserItem item = Envir.CreateDropItem(dropItem);
-
-                        if (item == null) continue;
-
-                        if (GMMade)
+                        if (scaledGold > 0)
                         {
-                            item.GMMade = true;
+                            DropGold(scaledGold);
                         }
 
-                        if (EXPOwner != null && EXPOwner.Race == ObjectType.Player)
+                        foreach (var dropItem in reward.Items)
                         {
-                            PlayerObject ob = (PlayerObject)EXPOwner;
+                            UserItem item = Envir.CreateDropItem(dropItem);
 
-                            if (ob.CheckGroupQuestItem(item))
+                            if (item == null) continue;
+
+                            if (EliteTier == 2)
+                                item.RollFullVersionRareStats(forceRare: true, minAdd: 2, maxAdd: 6);
+                            else if (EliteTier == 1)
+                                item.RollFullVersionRareStats(forceRare: true, minAdd: 1, maxAdd: 3);
+                            else
+                                item.RollFullVersionRareStats(forceRare: false, minAdd: 1, maxAdd: 4);
+
+                            if (GMMade)
                             {
-                                continue;
+                                item.GMMade = true;
                             }
-                        }
 
-                        if (drop.QuestRequired) continue;
-                        if (!DropItem(item)) return;
+                            if (EXPOwner != null && EXPOwner.Race == ObjectType.Player)
+                            {
+                                PlayerObject ob = (PlayerObject)EXPOwner;
+
+                                if (ob.CheckGroupQuestItem(item))
+                                {
+                                    continue;
+                                }
+                            }
+
+                            if (drop.QuestRequired) continue;
+                            if (!DropItem(item)) return;
+                        }
                     }
                 }
             }

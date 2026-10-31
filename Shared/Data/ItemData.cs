@@ -643,6 +643,77 @@ public class UserItem
         Array.Resize(ref Slots, size ?? Info.Slots);
     }
 
+    public void RollFullVersionRareStats(bool forceRare = false, int minAdd = 1, int maxAdd = 5)
+    {
+        if (Info == null) return;
+
+        if (Info.Type != ItemType.Weapon && Info.Type != ItemType.Armour &&
+            Info.Type != ItemType.Helmet && Info.Type != ItemType.Necklace &&
+            Info.Type != ItemType.Bracelet && Info.Type != ItemType.Ring &&
+            Info.Type != ItemType.Belt && Info.Type != ItemType.Boots &&
+            Info.Type != ItemType.Torch && Info.Type != ItemType.Amulet &&
+            Info.Type != ItemType.Mount)
+            return;
+
+        if (!forceRare && Random.Shared.Next(100) >= 10) return;
+
+        int statCount = 1;
+        int countRoll = Random.Shared.Next(100);
+        if (countRoll >= 75 && countRoll < 95) statCount = 2;
+        else if (countRoll >= 95) statCount = 3;
+
+        for (int i = 0; i < statCount; i++)
+        {
+            int val = 1;
+            int valRoll = Random.Shared.Next(100);
+            if (valRoll < 55) val = 1;
+            else if (valRoll < 80) val = 2;
+            else if (valRoll < 92) val = 3;
+            else if (valRoll < 97) val = 4;
+            else if (valRoll < 99) val = 5;
+            else val = 6;
+
+            val = Math.Clamp(val, minAdd, maxAdd);
+
+            int statType = Random.Shared.Next(6);
+            switch (statType)
+            {
+                case 0: AddedStats[Stat.MaxDC] += val; break;
+                case 1: AddedStats[Stat.MaxMC] += val; break;
+                case 2: AddedStats[Stat.MaxSC] += val; break;
+                case 3: AddedStats[Stat.MaxAC] += val; break;
+                case 4: AddedStats[Stat.MaxMAC] += val; break;
+                case 5:
+                    AddedStats[Stat.HP] += val * 15;
+                    AddedStats[Stat.MP] += val * 15;
+                    break;
+            }
+        }
+
+        if (Random.Shared.Next(100) < 3 || (forceRare && minAdd >= 2 && Random.Shared.Next(100) < 20))
+        {
+            int specialRoll = Random.Shared.Next(5);
+            switch (specialRoll)
+            {
+                case 0:
+                    AddedStats[Stat.CriticalRate] += Random.Shared.Next(1, 3);
+                    break;
+                case 1:
+                    AddedStats[Stat.CriticalDamage] += Random.Shared.Next(2, 6);
+                    break;
+                case 2:
+                    AddedStats[Stat.HPDrainRatePercent] += Random.Shared.Next(1, 4);
+                    break;
+                case 3:
+                    AddedStats[Stat.AttackSpeed] += 1;
+                    break;
+                case 4:
+                    AddedStats[Stat.Luck] += 1;
+                    break;
+            }
+        }
+    }
+
     public ushort Image
     {
         get

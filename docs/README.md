@@ -208,6 +208,30 @@ pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Backup
 
 恢复时先正常停服，另备份当前状态，再把所选备份恢复到相同版本的完整服务端目录，最后启动并检查日志。配置与账号文件不得放入客户端 Web 目录。当前尚未执行真实回滚恢复演练。
 
+## 全版本全特性开启・单人 + 原生 Hero 慢节奏肉鸽化改造
+
+按 `docs/crystal_crystalm2_hero_roguelike.md` 完成服务端源码、NPC 脚本与爆率表的全量落地：
+
+1. **核心配置与全职业/英雄解锁（`Server/Settings.cs`、`Setup.ini`、`HeroSettings.ini`）**
+   - 开放主号与英雄全五职业（战/法/道/刺/弓，`AllowCreateAssassin=True`、`AllowCreateArcher=True`、`AllowNewHero=True`、`MinimumLevel=22`）。
+   - 新增并接入 `GoldRate=3`（`MonsterObject.ApplyGoldModifier`）、`SkillRate=6`（`HumanObject.LevelMagic`）、`DropEquippedItems=False`（`HumanObject.DeathDrop` 与 `PlayerObject.RedDeathDrop` 保护穿戴装备不掉落，保留背包掉落惩罚）、`SafeZoneWalkThrough=False`（`HumanObject.Walk`/`Run`）。
+2. **六段式动态经验曲线与英雄协同分流（`Server/MirObjects/PlayerObject.cs`）**
+   - 在 `GainExp` 中实施 1~21 级（5.0x）、22~34 级（3.0x）、35~41 级（2.0x）、42~49 级（1.2x）、50~57 级（0.7x）、58 级+（0.3x）六段式经验衰减曲线。
+   - 当原生英雄在线且同图存活时，主号获得 75% 经验、英雄获得 45% 经验（合击协同总收益 120%），并移除 `WinExp` 中旧的重复英雄经验结算。
+3. **野外怪物精英化/领主化动态变异（`Server/MirObjects/MonsterObject.cs`、`Shared/DbLanguage.cs`）**
+   - 排除守卫、原生大 Boss、玩家宠物与 ≥15000 HP 巨型怪，普通怪刷新时以 2.4% 概率变异为天蓝色 `[精英]`（2.5x HP、1.25x MaxDC、连抽 2 次掉落且必带 +1~+3 极品），以 0.4% 概率变异为暗金色 `[领主]`（5.5x HP、1.5x MinDC、1.7x MaxDC、移速/攻速加快、连抽 6 次掉落且必带 +2~+6 极品）。
+   - `DbLanguage.Monster` 支持保留 `[领主]` / `[精英]` 前缀并翻译怪物本名（如 `[领主]Hen` → `[领主]鸡`）。
+4. **全版本极品词条生成引擎（`Shared/Data/ItemData.cs`）**
+   - 在 `UserItem` 中实现 `RollFullVersionRareStats(forceRare, minAdd, maxAdd)`，支持攻/魔/道/防/魔御/双血蓝（+15/点）及高阶暴击率、暴击伤害、吸血、攻击速度、幸运词条。
+5. **道士召唤进化与法师诱惑之光强化（`Server/MirObjects/HumanObject.cs`）**
+   - `SummonShinsu` 与 `SummonHolyDeva`：42 级起可同时召唤 2 只（默认 3 级），48 级起默认 7 级，54 级起可同时召唤 3 只 7 级神兽/月灵。
+   - `ElectricShock`：50 级起可诱惑高于自身 5 级的怪物，叛变时间延长至 240 分钟（4 小时）。
+6. **全版本 NPC 熔炉重铸与三梯队险境传送（`Server/MirObjects/NPC/NPCSegment.cs`、`Server/MirEnvir/Envir.cs`、`Envir/NPCs/`）**
+   - `NPCSegment` 原生支持 `GIVEEX`、`TAKE`、`MAPMOVE`、`CHECKLEVELEX`、`SENDMSG`、`MESSAGEBOX` 及无操作符 `CHECKGOLD`，`Envir.GetMapByNameAndInstance` 兼容地图 `FileName` 与 `Title`。
+   - 盟重铁匠铺接入祖玛武器二合一、祖玛首饰三合一、魔龙觉醒灵魂淬炼；盟重传送员接入玛法经典险境、苍月与魔龙险境、狐月/雪域/冰宫/火龙终极禁地三梯队直达传送。
+7. **全版本爆率阶梯式清洗脚本（`scripts/tune_drops_full_version.py`）**
+   - 备份原始 `Envir/Drops` 至 `Server/Backups/Drops-PreFullVersion.7z`，对全部 1,640 个掉落文件中的 886 个文件执行技能书（封顶 1/35）、沃玛/祖玛过渡装（封顶 1/60）、赤月/魔龙/雪域高阶装（封顶 1/150）、养成材料（封顶 1/25）及特戒/终极装（封顶 1/260）平滑压缩。
+
 ## 构建与资源续传
 
 所有源码和维护脚本在 `D:\projs\mir2`。构建先输出到新的暂存目录，不直接覆盖运行中的服务端：

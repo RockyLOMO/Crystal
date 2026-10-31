@@ -109,7 +109,8 @@ namespace Server
         public static List<long> OrbsDefList = new List<long>();
         public static List<long> OrbsDmgList = new List<long>();
 
-        public static float DropRate = 1F, ExpRate = 1F;
+        public static float DropRate = 1F, ExpRate = 2F, GoldRate = 3F, SkillRate = 6F;
+        public static bool DropEquippedItems = false, SafeZoneWalkThrough = false;
         public static int TeleportToNPCCost = 3000;
 
         public static int ItemTimeOut = 30,
@@ -425,9 +426,15 @@ namespace Server
             SaveDelay = Reader.ReadInt32("Database", "SaveDelay", SaveDelay);
             CredxGold = Reader.ReadInt16("Database", "CredxGold", CredxGold);
 
-            //Game
-            DropRate = Reader.ReadSingle("Game", "DropRate", DropRate);
-            ExpRate = Reader.ReadSingle("Game", "ExpRate", ExpRate);
+            //Game & Rates
+            DropRate = Reader.ReadSingle("Rates", "DropRate", Reader.ReadSingle("Game", "DropRate", DropRate));
+            ExpRate = Reader.ReadSingle("Rates", "ExperienceRate", Reader.ReadSingle("Game", "ExpRate", ExpRate));
+            GoldRate = Reader.ReadSingle("Rates", "GoldRate", Reader.ReadSingle("Game", "GoldRate", GoldRate));
+            SkillRate = Reader.ReadSingle("Rates", "SkillRate", Reader.ReadSingle("Game", "SkillRate", SkillRate));
+            DropEquippedItems = Reader.ReadBoolean("Game", "DropEquippedItems", DropEquippedItems);
+            SafeZoneWalkThrough = Reader.ReadBoolean("Game", "SafeZoneWalkThrough", SafeZoneWalkThrough);
+            AllowNewHero = Reader.ReadBoolean("Game", "AllowHeroes", AllowNewHero);
+            Hero_RequiredLevel = Reader.ReadByte("Game", "HeroLevelRequirement", Hero_RequiredLevel);
             ItemTimeOut = Reader.ReadInt32("Game", "ItemTimeOut", ItemTimeOut);
             PlayerDiedItemTimeOut = Reader.ReadInt32("Game", "PlayerDiedItemTimeOut", PlayerDiedItemTimeOut);
             PetSave = Reader.ReadBoolean("Game", "PetSave", PetSave);
@@ -713,9 +720,19 @@ namespace Server
             Reader.Write("Database", "SaveDelay", SaveDelay);
             Reader.Write("Database", "CredxGold", CredxGold);
 
-            //Game
+            //Game & Rates
             Reader.Write("Game", "DropRate", DropRate);
             Reader.Write("Game", "ExpRate", ExpRate);
+            Reader.Write("Game", "GoldRate", GoldRate);
+            Reader.Write("Game", "SkillRate", SkillRate);
+            Reader.Write("Game", "DropEquippedItems", DropEquippedItems);
+            Reader.Write("Game", "SafeZoneWalkThrough", SafeZoneWalkThrough);
+            Reader.Write("Game", "AllowHeroes", AllowNewHero);
+            Reader.Write("Game", "HeroLevelRequirement", Hero_RequiredLevel);
+            Reader.Write("Rates", "ExperienceRate", ExpRate);
+            Reader.Write("Rates", "DropRate", DropRate);
+            Reader.Write("Rates", "GoldRate", GoldRate);
+            Reader.Write("Rates", "SkillRate", SkillRate);
             Reader.Write("Game", "ItemTimeOut", ItemTimeOut);
             Reader.Write("Game", "PlayerDiedItemTimeOut", PlayerDiedItemTimeOut);
             Reader.Write("Game", "PetSave", PetSave);

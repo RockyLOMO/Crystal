@@ -4807,6 +4807,8 @@ namespace Server.MirEnvir
             if (instanceValue > 0) instanceValue--;
 
             var instanceMapList = MapList.Where(t => string.Equals(t.Info.FileName, name, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            if (instanceMapList.Count == 0)
+                instanceMapList = MapList.Where(t => string.Equals(t.Info.Title, name, StringComparison.CurrentCultureIgnoreCase)).ToList();
             return instanceValue < instanceMapList.Count() ? instanceMapList[instanceValue] : null;
         }
 
@@ -4941,6 +4943,17 @@ namespace Server.MirEnvir
 
         public ItemInfo GetItemInfo(string name)
         {
+            if (!string.IsNullOrEmpty(name))
+            {
+                name = name switch
+                {
+                    "BoneWands" or "BoneWand" => "WarMageStaff",
+                    "DragonlessSword" => "DragonSword",
+                    "GreenJade" => "AwakeningSoul0",
+                    "SoulJade" => "AwakeningSoul1",
+                    _ => name
+                };
+            }
             for (var i = 0; i < ItemInfoList.Count; i++)
             {
                 var info = ItemInfoList[i];

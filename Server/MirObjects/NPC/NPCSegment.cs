@@ -117,15 +117,17 @@ namespace Server.MirObjects
             switch (parts[0].ToUpper())
             {
                 case "LEVEL":
+                case "CHECKLEVELEX":
                     if (parts.Length < 3) return;
 
                     CheckList.Add(new NPCChecks(CheckType.Level, parts[1], parts[2]));
                     break;
 
                 case "CHECKGOLD":
-                    if (parts.Length < 3) return;
-
-                    CheckList.Add(new NPCChecks(CheckType.CheckGold, parts[1], parts[2]));
+                    if (parts.Length == 2)
+                        CheckList.Add(new NPCChecks(CheckType.CheckGold, ">=", parts[1]));
+                    else if (parts.Length >= 3)
+                        CheckList.Add(new NPCChecks(CheckType.CheckGold, parts[1], parts[2]));
                     break;
                 case "CHECKGUILDGOLD":
                     if (parts.Length < 3) return;
@@ -450,6 +452,7 @@ namespace Server.MirObjects
             switch (parts[0].ToUpper())
             {
                 case "MOVE":
+                case "MAPMOVE":
                     if (parts.Length < 2) return;
 
                     string tempx = parts.Length > 3 ? parts[2] : "0";
@@ -509,16 +512,25 @@ namespace Server.MirObjects
                     break;
 
                 case "GIVEITEM":
+                case "GIVEEX":
                     if (parts.Length < 2) return;
 
                     string count = parts.Length < 3 ? string.Empty : parts[2];
-                    acts.Add(new NPCActions(ActionType.GiveItem, parts[1], count));
+                    string rareTier = parts.Length > 3 ? parts[3] : (parts[0].Equals("GIVEEX", StringComparison.OrdinalIgnoreCase) ? "1" : "0");
+                    acts.Add(new NPCActions(ActionType.GiveItem, parts[1], count, rareTier));
                     break;
 
                 case "TAKEITEM":
-                    if (parts.Length < 3) return;
+                case "TAKE":
+                    if (parts.Length < 2) return;
 
-                    count = parts.Length < 3 ? string.Empty : parts[2];
+                    if (parts.Length >= 3 && (parts[1].Equals("金币", StringComparison.OrdinalIgnoreCase) || parts[1].Equals("Gold", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        acts.Add(new NPCActions(ActionType.TakeGold, parts[2]));
+                        break;
+                    }
+
+                    count = parts.Length < 3 ? "1" : parts[2];
                     string dura = parts.Length > 3 ? parts[3] : "";
 
                     acts.Add(new NPCActions(ActionType.TakeItem, parts[1], count, dura));
@@ -765,6 +777,25 @@ namespace Server.MirObjects
 
                         var last = parts.Count() - 1;
                         acts.Add(new NPCActions(ActionType.LocalMessage, message, parts[last]));
+                    }
+                    break;
+
+                case "MESSAGEBOX":
+                    if (parts.Length >= 2)
+                    {
+                        var msg = line.Substring(parts[0].Length).Trim().Trim('"');
+                        acts.Add(new NPCActions(ActionType.LocalMessage, msg, "System"));
+                    }
+                    break;
+
+                case "SENDMSG":
+                    if (parts.Length >= 3)
+                    {
+                        var msg = string.Join(" ", parts.Skip(2)).Trim().Trim('"');
+                        if (parts[1] == "0" || parts[1] == "1")
+                            acts.Add(new NPCActions(ActionType.GlobalMessage, msg, "System2"));
+                        else
+                            acts.Add(new NPCActions(ActionType.LocalMessage, msg, "Hint"));
                     }
                     break;
 
@@ -3082,7 +3113,11 @@ namespace Server.MirObjects
 
                             var coords = new Point(x, y);
 
-                            if (coords.X > 0 && coords.Y > 0) player.Teleport(targetmap, coords);
+                            if (coords.X > 0 && coords.Y > 0)
+                            {
+                                if (!player.Teleport(targetmap, coords))
+                                    player.TeleportRandom(200, 0, targetmap);
+                            }
                             else player.TeleportRandom(200, 0, targetmap);
                         }
                         break;
@@ -3359,6 +3394,11 @@ namespace Server.MirObjects
                                     item.Count = item.Info.StackSize;
                                 }
 
+                                if (param.Count > 2 && int.TryParse(param[2], out int rareTier) && rareTier > 0)
+                                {
+                                    item.RollFullVersionRareStats(forceRare: true, minAdd: rareTier, maxAdd: Math.Max(rareTier + 2, 5));
+                                }
+
                                 if (player.CanGainItem(item))
                                     player.GainItem(item);
                             }
@@ -3370,8 +3410,8 @@ namespace Server.MirObjects
                             if (param.Count < 2 || !ushort.TryParse(param[1], out ushort count)) count = 1;
                             var info = Envir.GetItemInfo(param[0]);
 
-                            ushort dura;
-                            bool checkDura = ushort.TryParse(param[2], out dura);
+                            ushort dura = 0;
+                            bool checkDura = param.Count > 2 && ushort.TryParse(param[2], out dura);
 
                             if (info == null)
                             {
