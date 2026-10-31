@@ -775,7 +775,7 @@ namespace Client.MirObjects
 
             item.Count = canGain;
         }
-        private int FreeSpace(UserItem[] array)
+        public int FreeSpace(UserItem[] array)
         {
             int freeSlots = 0;
 
@@ -810,7 +810,7 @@ namespace Client.MirObjects
 
             base.ProcessFrames();
 
-            if (clear) QueuedAction = null;
+            if (clear && (Frame == null || FrameIndex < Frame.Count - 2)) QueuedAction = null;
             if ((CurrentAction == MirAction.Standing || CurrentAction == MirAction.MountStanding || CurrentAction == MirAction.Stance || CurrentAction == MirAction.Stance2 || CurrentAction == MirAction.DashFail) && (QueuedAction != null || NextAction != null))
                 SetAction();
         }

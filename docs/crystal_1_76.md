@@ -111,9 +111,9 @@ Crystal（基于 C# 开发的开源传奇引擎）默认采用的是韩服/欧�
 
 仅改客户端还不够，Crystal 服务端默认带有很多生存类限制，需要一并关闭才能彻底找回 1.76 的爽快感：
 
-- [ ] **取消饥饿度/体力限制**：在服务端源码 `PlayerObject.cs` 中，检查跑步是否消耗饥饿值或受低血量减速影响（韩服设定血量低于一定比例跑不动），将其注释掉。
-- [ ] **放宽反外挂移动超速校验（防拉回）**：当你把客户端改为“无助跑直接跑”后，服务端 `PlayerObject.Run()` 可能会因为校验 `CanRun` 时间戳而把你拉回原地（Rollback）。需同步在服务端的 `Run` 验证方法中放宽起跑第一帧的时间间隔检查。
-- [ ] **调整怪物尸体碰撞清理**：确保怪物死亡倒地的那一瞬间立即释放格子阻挡（`Blocking = false`），防止怪死在窄道上把玩家跑步路径卡死。
+- [x] **取消饥饿度/体力限制**：在客户端 `Client/MirScenes/GameScene.cs`（`MapControl.CheckInput`）中移除 `User.HP >= 10` 的低血量禁跑限制；服务端 `Server/MirObjects/HumanObject.cs` 无额外饥饿度减速。
+- [x] **放宽反外挂起跑预热校验（防拉回）**：在服务端 `Server/MirObjects/HumanObject.cs` 的 `CanRun` 属性中移除 `(_stepCounter > 0 || FastRun)` 限制，使角色在静止起跑第一帧（`_stepCounter == 0`）直接发送 `C.Run` 时服务端正常放行，不再触发 `S.UserLocation` 拉回（Rollback）。
+- [x] **调整怪物尸体碰撞清理**：已核验服务端 `Server/MirObjects/MonsterObject.cs` 的 `Blocking => !Dead`，怪物死亡瞬间立即释放格子阻挡（`Blocking = false`）。
 
 ---
 
@@ -125,3 +125,23 @@ Crystal（基于 C# 开发的开源传奇引擎）默认采用的是韩服/欧�
 2. **森林绕树测试**：在比奇森林对着树林按住右键不松手。合格标准：**角色遇到大树自动向两侧滑步绕开继续跑，不会顶着树原地踏步。**
 3. **战士刺杀/追砍测试**：开启免 Shift，鼠标左键点中一只鹿不松手。合格标准：**角色自动追上去连续挥刀，无需按住键盘 Shift。**
 4. **打怪爆物测试**：打死怪物爆出一地金币和药水，直接用右键从物品堆上跑过去。合格标准：**跑过瞬间脚下物品自动进包，无需停下来按空格。**
+
+---
+
+## 第五部分：源码落地与验证记录（2026-10-31）
+
+| 阶段 / 任务 | 实际修改文件 | 落地实现摘要 |
+| --- | --- | --- |
+| **Phase 1.1：无助跑瞬时起跑** | `Client/MirScenes/GameScene.cs`、`Client/MirObjects/PlayerObject.cs`、`Server/MirObjects/HumanObject.cs` | 客户端 `GameScene.CanRun` 默认常驻 `true`，移除站立/转向/受击/低血量（`User.HP >= 10`）将 `CanRun` 置 `false` 的预热锁；服务端 `HumanObject.CanRun` 同步移除 `(_stepCounter > 0 \|\| FastRun)` 校验，消除起跑首帧拉回。 |
+| **Phase 1.2：近距离右键起跑** | `Client/MirScenes/GameScene.cs` (`MapControl.CheckInput`) | 将右键距离判定从 `Functions.InRange(MapLocation, User.CurrentLocation, 2)` 放宽为 `MapLocation == User.CurrentLocation`；鼠标在角色身旁 1~2 格按住右键即可朝鼠标方向连续跑步。 |
+| **Phase 1.3：跑步遇阻滑步与降级** | `Client/MirScenes/GameScene.cs` (`MapControl.CanRun(dir, out outDir)`) | 新增 `CanRun(MirDirection dir, out MirDirection outDir)` 重载，按“正前方 2 格跑 -> 左右 ±45° 扇区滑步 2 格跑 -> 自动降级 `CanWalk(direction, out direction)` 1 格走步”三级回退，解决树林、墙角、NPC 旁跑步卡死。 |
+| **Phase 2.1：免 Shift 攻击与智能追击** | `Client/Settings.cs`、`Client/MirScenes/GameScene.cs`、`Client/MirScenes/Dialogs/MainDialogs.cs` | 新增 `Settings.SmartShift = true`（持久化至 `Mir2Config.ini` 并在 `F12` 选项面板提供“免Shift攻击”勾选框）；支持开启刺杀剑术（`User.Thrusting`）时 2 格直线刺杀位免 Shift 自动出刀，以及目标距离 > 2 格时自动跑步追击、距离 ≤ 2 格时自动走步贴身。 |
+| **Phase 2.2：预输入窗口与独立吃药** | `Client/MirObjects/UserObject.cs`、`Client/MirControls/MirItemCell.cs` | 在 `UserObject.ProcessFrames()` 中保留动作末尾 2 帧（约最后 30% 进度）的 `QueuedAction` 预输入缓存，消除跑动/挥刀中转向与技能吞指令；将药水（`ItemType.Potion`）的 `UseItemTime` 冷却缩短为 `200ms`，与移动/攻击动作锁完全解耦。 |
+| **Phase 3.1~3.3：踩点自动捡物与 1.76 内挂** | `Client/Settings.cs`、`Client/MirScenes/GameScene.cs`、`Client/MirScenes/Dialogs/MainDialogs.cs` | 新增 `Settings.AutoPickUp = true`（`F12` 面板可开关），角色所在格存在地面物品或金币且背包有空位时按 `250ms` 节流自动发送 `C.PickUp`；常驻地面物品名（极品染色 `Cyan`）、显血显名与 `F9~F12` 经典键位默认生效，并已同步部署至 `D:\private-server\mir2\Server` 与 `D:\private-server\mir2-client`。 |
+
+### 构建与回归测试结果
+
+- `dotnet build Server.MirForms/Server.csproj -c Release`：**0 Error(s)**
+- `dotnet build Client/Client.csproj -c Release`：**0 Error(s)**
+- `dotnet run --project scripts/performance-tests/PerformanceTests.csproj -c Release`：**37/37 全部通过**（含新增 `PASS 34: 1.76 instant-run: HumanObject.CanRun is true from standstill without 1-step walk warm-up`）
+- `dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Release`：**29/29 全部通过**

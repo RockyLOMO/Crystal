@@ -622,7 +622,7 @@ namespace Client.MirControls
                     break;
             }
 
-            GameScene.UseItemTime = CMain.Time + 300;
+            GameScene.UseItemTime = CMain.Time + (Item != null && Item.Info.Type == ItemType.Potion ? 200 : 300);
             PlayItemSound();
         }
         public void UseSlotItem()

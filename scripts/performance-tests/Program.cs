@@ -271,6 +271,8 @@ try
     rewardScript.Call(player, 1, "[@ELSEIF_TEST]");
     Check(parsedElseIfPage.SegmentList.Count == 3 && player.Account.Gold == 130 && player.NPCSpeech.Count == 0,
         "#ELSEIF parses into chained segments, executes matching branch once, and skips subsequent branches");
+    Check(player.CanRun && !player.FastRun,
+        "1.76 instant-run: HumanObject.CanRun is true from standstill without 1-step walk warm-up");
 }
 finally
 {

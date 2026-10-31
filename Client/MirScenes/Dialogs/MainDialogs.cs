@@ -2534,6 +2534,7 @@ namespace Client.MirScenes.Dialogs
         public MirButton HPViewOn, HPViewOff;
         public MirButton NewMoveOn, NewMoveOff;
         public MirButton ObserveOn, ObserveOff;
+        public MirCheckBox SmartShiftBox, AutoPickUpBox;
         public MirImageControl SoundBar, MusicSoundBar;
         public MirImageControl VolumeBar, MusicVolumeBar;
 
@@ -2804,6 +2805,30 @@ namespace Client.MirScenes.Dialogs
                 PressedIndex = 460
             };
             ObserveOff.Click += (o, e) => ToggleObserve(false);
+
+            SmartShiftBox = new MirCheckBox
+            {
+                Index = 2086,
+                UnTickedIndex = 2086,
+                TickedIndex = 2087,
+                Parent = this,
+                Location = new Point(28, 322),
+                Library = Libraries.Prguse,
+                LabelText = "免Shift攻击"
+            };
+            SmartShiftBox.Click += (o, e) => Settings.SmartShift = SmartShiftBox.Checked;
+
+            AutoPickUpBox = new MirCheckBox
+            {
+                Index = 2086,
+                UnTickedIndex = 2086,
+                TickedIndex = 2087,
+                Parent = this,
+                Location = new Point(142, 322),
+                Library = Libraries.Prguse,
+                LabelText = "踩点自动捡物"
+            };
+            AutoPickUpBox.Click += (o, e) => Settings.AutoPickUp = AutoPickUpBox.Checked;
         }
 
         private void ToggleObserve(bool allow)
@@ -3001,6 +3026,9 @@ namespace Client.MirScenes.Dialogs
                 ObserveOn.Index = 456;
                 ObserveOff.Index = 461;
             }
+
+            if (SmartShiftBox != null) SmartShiftBox.Checked = Settings.SmartShift;
+            if (AutoPickUpBox != null) AutoPickUpBox.Checked = Settings.AutoPickUp;
         }
 
     }

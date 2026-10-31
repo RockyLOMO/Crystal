@@ -39,7 +39,7 @@ namespace Client.MirScenes
         }
 
         public static long MoveTime, AttackTime, NextRunTime, LogTime, LastRunTime, ChangePModeTime, ChangeAModeTime, HeroSpellTime, IntelligentCreaturePickupTime;
-        public static bool CanMove, CanRun;
+        public static bool CanMove, CanRun = true;
 
         private bool hasHero;
         public bool HasHero
@@ -11365,8 +11365,7 @@ namespace Client.MirScenes
         private static void OnMouseDown(object sender, MouseEventArgs e)
         {
             MapButtons |= e.Button;
-            if (e.Button != MouseButtons.Right || !Settings.NewMove)
-                GameScene.CanRun = false;
+            GameScene.CanRun = true;
 
             if (AwakeningAction == true) return;
 
@@ -11466,6 +11465,23 @@ namespace Client.MirScenes
 
             if (CMain.Time < InputDelay || User.Poison.HasFlag(PoisonType.Paralysis) || User.Poison.HasFlag(PoisonType.LRParalysis) || User.Poison.HasFlag(PoisonType.Frozen) || User.Fishing) return;
 
+            if (Settings.AutoPickUp && CMain.Time > GameScene.PickUpTime && !User.Dead && ValidPoint(User.CurrentLocation))
+            {
+                var cellObjects = M2CellInfo[User.CurrentLocation.X, User.CurrentLocation.Y].CellObjects;
+                if (cellObjects != null)
+                {
+                    for (int i = 0; i < cellObjects.Count; i++)
+                    {
+                        if (cellObjects[i] is ItemObject itemOb && (User.FreeSpace(User.Inventory) > 0 || (itemOb.DrawFrame >= 112 && itemOb.DrawFrame <= 116)))
+                        {
+                            GameScene.PickUpTime = CMain.Time + 250;
+                            Network.Enqueue(new C.PickUp());
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (User.NextMagic != null && !User.RidingMount)
             {
                 UseMagic(User.NextMagic, User);
@@ -11505,7 +11521,11 @@ namespace Client.MirScenes
                         //  return;
                     }
 
-                    else if (Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 1))
+                    else if (Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 1) ||
+                        (Settings.SmartShift && User.Thrusting && Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 2) &&
+                         (User.CurrentLocation.X == MapObject.TargetObject.CurrentLocation.X ||
+                          User.CurrentLocation.Y == MapObject.TargetObject.CurrentLocation.Y ||
+                          Math.Abs(User.CurrentLocation.X - MapObject.TargetObject.CurrentLocation.X) == Math.Abs(User.CurrentLocation.Y - MapObject.TargetObject.CurrentLocation.Y))))
                     {
                         if (CMain.Time > GameScene.AttackTime && CanRideAttack() && !User.Poison.HasFlag(PoisonType.Dazed))
                         {
@@ -11531,20 +11551,11 @@ namespace Client.MirScenes
                 direction = MouseDirection();
                 if (AutoRun)
                 {
-                    if (GameScene.CanRun && CanRun(direction) && CMain.Time > GameScene.NextRunTime && User.HP >= 10 && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow remove
+                    if (CanRun(direction, out direction) && CMain.Time > GameScene.NextRunTime && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow remove
                     {
                         int distance = User.RidingMount || User.Sprint && !User.Sneaking ? 3 : 2;
-                        bool fail = false;
-                        for (int i = 1; i <= distance; i++)
-                        {
-                            if (!CheckDoorOpen(Functions.PointMove(User.CurrentLocation, direction, i)))
-                                fail = true;
-                        }
-                        if (!fail)
-                        {
-                            User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = direction, Location = Functions.PointMove(User.CurrentLocation, direction, distance) };
-                            return;
-                        }
+                        User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = direction, Location = Functions.PointMove(User.CurrentLocation, direction, distance) };
+                        return;
                     }
                     if ((CanWalk(direction, out direction)) && (CheckDoorOpen(Functions.PointMove(User.CurrentLocation, direction, 1))))
                     {
@@ -11678,7 +11689,7 @@ namespace Client.MirScenes
                         if (MapObject.MouseObject is PlayerObject && MapObject.MouseObject != User && CMain.Ctrl) break;
                         if (Settings.NewMove) break;
 
-                        if (Functions.InRange(MapLocation, User.CurrentLocation, 2))
+                        if (MapLocation == User.CurrentLocation)
                         {
                             if (direction != User.Direction)
                             {
@@ -11687,22 +11698,13 @@ namespace Client.MirScenes
                             return;
                         }
 
-                        GameScene.CanRun = User.FastRun ? true : GameScene.CanRun;
+                        GameScene.CanRun = true;
 
-                        if (GameScene.CanRun && CanRun(direction) && CMain.Time > GameScene.NextRunTime && User.HP >= 10 && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow removed
+                        if (CanRun(direction, out direction) && CMain.Time > GameScene.NextRunTime && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow removed
                         {
-                            int distance = User.RidingMount || User.Sprint && !User.Sneaking ? 3 : 2;
-                            bool fail = false;
-                            for (int i = 0; i <= distance; i++)
-                            {
-                                if (!CheckDoorOpen(Functions.PointMove(User.CurrentLocation, direction, i)))
-                                    fail = true;
-                            }
-                            if (!fail)
-                            {
-                                User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = direction, Location = Functions.PointMove(User.CurrentLocation, direction, User.RidingMount || (User.Sprint && !User.Sneaking) ? 3 : 2) };
-                                return;
-                            }
+                            int distance = User.RidingMount || (User.Sprint && !User.Sneaking) ? 3 : 2;
+                            User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = direction, Location = Functions.PointMove(User.CurrentLocation, direction, distance) };
+                            return;
                         }
                         if ((CanWalk(direction, out direction)) && (CheckDoorOpen(Functions.PointMove(User.CurrentLocation, direction, 1))))
                         {
@@ -11773,6 +11775,14 @@ namespace Client.MirScenes
             if (Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 1)) return;
             if (User.Class == MirClass.Archer && User.HasClassWeapon && (MapObject.TargetObject is MonsterObject || MapObject.TargetObject is PlayerObject)) return; //ArcherTest - stop walking
             direction = Functions.DirectionFromPoint(User.CurrentLocation, MapObject.TargetObject.CurrentLocation);
+
+            if (Settings.SmartShift && !Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 2) &&
+                CanRun(direction, out MirDirection runDir) && CMain.Time > GameScene.NextRunTime && (!User.Sneaking || (User.Sneaking && User.Sprint)))
+            {
+                int distance = User.RidingMount || (User.Sprint && !User.Sneaking) ? 3 : 2;
+                User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = runDir, Location = Functions.PointMove(User.CurrentLocation, runDir, distance) };
+                return;
+            }
 
             if (!CanWalk(direction, out direction)) return;
 
@@ -12164,6 +12174,46 @@ namespace Client.MirScenes
                 return true;
             }
 
+            return false;
+        }
+
+        private bool CanRun(MirDirection dir, out MirDirection outDir)
+        {
+            outDir = dir;
+            int distance = User.RidingMount || (User.Sprint && !User.Sneaking) ? 3 : 2;
+
+            bool CanRunWithDoors(MirDirection candidate)
+            {
+                if (!CanRun(candidate)) return false;
+                for (int i = 1; i <= distance; i++)
+                {
+                    if (!CheckDoorOpen(Functions.PointMove(User.CurrentLocation, candidate, i)))
+                        return false;
+                }
+                return true;
+            }
+
+            if (CanRunWithDoors(dir))
+                return true;
+
+            if (CMain.Random.Next(2) == 0)
+            {
+                outDir = Functions.NextDir(dir);
+                if (CanRunWithDoors(outDir)) return true;
+
+                outDir = Functions.PreviousDir(dir);
+                if (CanRunWithDoors(outDir)) return true;
+            }
+            else
+            {
+                outDir = Functions.PreviousDir(dir);
+                if (CanRunWithDoors(outDir)) return true;
+
+                outDir = Functions.NextDir(dir);
+                if (CanRunWithDoors(outDir)) return true;
+            }
+
+            outDir = dir;
             return false;
         }
 

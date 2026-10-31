@@ -743,8 +743,7 @@ namespace Client.MirObjects
 
             if (this == User)
             {
-                if (CMain.Time - GameScene.LastRunTime > 899)
-                    GameScene.CanRun = false;
+                GameScene.CanRun = true;
             }
 
             SkipFrames = this != User && ActionFeed.Count > 0;
@@ -1314,7 +1313,7 @@ namespace Client.MirObjects
                         case MirAction.MountStanding:
                             Network.Enqueue(new C.Turn { Direction = Direction });
                             MapControl.NextAction = CMain.Time + 2500;
-                            GameScene.CanRun = false;
+                            GameScene.CanRun = true;
                             break;
                         case MirAction.Walking:
                         case MirAction.MountWalking:
@@ -1336,7 +1335,7 @@ namespace Client.MirObjects
                             GameScene.LastRunTime = CMain.Time;
                             GameScene.Scene.MapControl.FloorValid = false;
                             MapControl.InputDelay = CMain.Time + 500;
-                            GameScene.CanRun = false;
+                            GameScene.CanRun = true;
                             GameScene.CanMove = false;
                             break;
                         case MirAction.DashL:
@@ -1345,7 +1344,7 @@ namespace Client.MirObjects
                         case MirAction.DashAttack:
                             GameScene.LastRunTime = CMain.Time;
                             GameScene.Scene.MapControl.FloorValid = false;
-                            GameScene.CanRun = false;
+                            GameScene.CanRun = true;
                             //CanSetAction = false;
                             break;
                         case MirAction.Mine:

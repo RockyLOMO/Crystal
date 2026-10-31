@@ -136,6 +136,10 @@ try {
             $clientVerDir = Join-Path $TargetDirectory 'ClientVersion'
             New-Item -ItemType Directory -Path $clientVerDir -Force | Out-Null
             Copy-Item -LiteralPath $clientSource -Destination (Join-Path $clientVerDir 'Client.exe') -Force
+            $clientDll = [IO.Path]::ChangeExtension($clientSource, '.dll')
+            if (Test-Path -LiteralPath $clientDll) {
+                Copy-Item -LiteralPath $clientDll -Destination (Join-Path $clientVerDir 'Client.dll') -Force
+            }
             Write-Host "已同步 ClientVersion 校验文件: $clientSource" -ForegroundColor Green
         }
     }
