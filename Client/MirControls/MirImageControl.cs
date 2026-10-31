@@ -172,6 +172,7 @@ namespace Client.MirControls
 
         protected internal override void DrawControl()
         {
+            ChineseUIOverlay.Prepare(this);
             base.DrawControl();
 
             if (DrawImage && Library != null)

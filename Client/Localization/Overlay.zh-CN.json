@@ -1,0 +1,3003 @@
+{
+  "Rules": [
+    {
+      "Library": "Title",
+      "Indices": [
+        504
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "装备",
+          "Rect": [
+            11,
+            72,
+            56,
+            16
+          ],
+          "FontSize": 8,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "属性",
+          "Rect": [
+            73,
+            72,
+            56,
+            16
+          ],
+          "FontSize": 8,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "状态",
+          "Rect": [
+            135,
+            72,
+            56,
+            16
+          ],
+          "FontSize": 8,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "技能",
+          "Rect": [
+            197,
+            72,
+            56,
+            16
+          ],
+          "FontSize": 8,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "CharacterDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        506
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "生命值",
+          "Rect": [
+            12,
+            19,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "魔法值",
+          "Rect": [
+            12,
+            37,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "防御",
+          "Rect": [
+            12,
+            55,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "魔御",
+          "Rect": [
+            12,
+            73,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "攻击",
+          "Rect": [
+            12,
+            91,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "魔法",
+          "Rect": [
+            12,
+            109,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "道术",
+          "Rect": [
+            12,
+            127,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "暴击几率",
+          "Rect": [
+            12,
+            145,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "暴击伤害",
+          "Rect": [
+            12,
+            163,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "攻击速度",
+          "Rect": [
+            12,
+            181,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "准确",
+          "Rect": [
+            12,
+            199,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "敏捷",
+          "Rect": [
+            12,
+            217,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "幸运",
+          "Rect": [
+            12,
+            235,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        }
+      ],
+      "ParentType": "CharacterDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        507
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "经验",
+          "Rect": [
+            12,
+            19,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "背包负重",
+          "Rect": [
+            12,
+            37,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "穿戴负重",
+          "Rect": [
+            12,
+            55,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "腕力",
+          "Rect": [
+            12,
+            73,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "魔法躲避",
+          "Rect": [
+            12,
+            91,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "中毒躲避",
+          "Rect": [
+            12,
+            109,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "体力恢复",
+          "Rect": [
+            12,
+            127,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "魔法恢复",
+          "Rect": [
+            12,
+            145,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "中毒恢复",
+          "Rect": [
+            12,
+            163,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "神圣",
+          "Rect": [
+            12,
+            181,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "冰冻",
+          "Rect": [
+            12,
+            199,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        },
+        {
+          "Text": "毒素攻击",
+          "Rect": [
+            12,
+            217,
+            108,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Right",
+          "Border": false
+        }
+      ],
+      "ParentType": "CharacterDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        197
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "物品一",
+          "Rect": [
+            4,
+            2,
+            64,
+            20
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "InventoryDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        738
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "物品二",
+          "Rect": [
+            4,
+            2,
+            64,
+            20
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "InventoryDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        739
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "任务物品",
+          "Rect": [
+            4,
+            2,
+            64,
+            20
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "InventoryDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        411
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "系统设置",
+          "Rect": [
+            29,
+            6,
+            98,
+            19
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        },
+        {
+          "Text": "技能模式",
+          "Rect": [
+            42,
+            67,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "快捷技能栏",
+          "Rect": [
+            42,
+            92,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "技能特效",
+          "Rect": [
+            42,
+            117,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "显示掉落",
+          "Rect": [
+            42,
+            142,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "显示名称",
+          "Rect": [
+            42,
+            167,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "生命魔法显示",
+          "Rect": [
+            42,
+            192,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "音效音量",
+          "Rect": [
+            42,
+            218,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "音乐音量",
+          "Rect": [
+            42,
+            244,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "允许观察",
+          "Rect": [
+            42,
+            270,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        },
+        {
+          "Text": "移动方式",
+          "Rect": [
+            42,
+            295,
+            107,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Left",
+          "Border": false
+        }
+      ],
+      "ControlType": "OptionDialog"
+    },
+    {
+      "Library": "Prguse2",
+      "Indices": [
+        456,
+        457,
+        458
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "开",
+          "Rect": [
+            4,
+            1,
+            28,
+            15
+          ],
+          "FontSize": 7,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "OptionDialog"
+    },
+    {
+      "Library": "Prguse2",
+      "Indices": [
+        459,
+        460,
+        461
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "关",
+          "Rect": [
+            4,
+            1,
+            28,
+            15
+          ],
+          "FontSize": 7,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "OptionDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        851,
+        852,
+        853
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "新",
+          "Rect": [
+            4,
+            1,
+            28,
+            15
+          ],
+          "FontSize": 7,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "OptionDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        848,
+        849,
+        850
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "旧",
+          "Rect": [
+            4,
+            1,
+            28,
+            15
+          ],
+          "FontSize": 7,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "OptionDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        199
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "好友",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "FriendDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        209
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "好友留言",
+          "Rect": [
+            32,
+            7,
+            90,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "MemoDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        670
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "信箱",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "MailListDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        671
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "书写信件",
+          "Rect": [
+            32,
+            7,
+            115,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        },
+        {
+          "Text": "收件人",
+          "Rect": [
+            9,
+            33,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "信件内容",
+          "Rect": [
+            9,
+            71,
+            72,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MailComposeLetterDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        674
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "邮寄包裹",
+          "Rect": [
+            32,
+            7,
+            115,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        },
+        {
+          "Text": "收件人",
+          "Rect": [
+            10,
+            33,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "邮票",
+          "Rect": [
+            31,
+            54,
+            37,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "信件内容",
+          "Rect": [
+            10,
+            77,
+            72,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "邮资",
+          "Rect": [
+            17,
+            267,
+            40,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MailComposeParcelDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        728
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "排行榜",
+          "Rect": [
+            32,
+            7,
+            90,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        },
+        {
+          "Text": "名次",
+          "Rect": [
+            17,
+            78,
+            57,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "姓名",
+          "Rect": [
+            77,
+            78,
+            94,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "职业",
+          "Rect": [
+            176,
+            78,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "等级",
+          "Rect": [
+            247,
+            78,
+            44,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "RankingDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        749
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "商城",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "GameShopDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        786
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "寄售商行",
+          "Rect": [
+            32,
+            7,
+            140,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "TrustMerchantDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        468
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "灵兽状态",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        },
+        {
+          "Text": "名称",
+          "Rect": [
+            132,
+            52,
+            34,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "体力",
+          "Rect": [
+            132,
+            124,
+            48,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "IntelligentCreatureDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        710
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "装备觉醒",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        },
+        {
+          "Text": "锻造台",
+          "Rect": [
+            36,
+            47,
+            98,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "将武器放入",
+          "Rect": [
+            25,
+            73,
+            116,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "右侧装备栏",
+          "Rect": [
+            25,
+            88,
+            116,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "觉醒类型",
+          "Rect": [
+            36,
+            118,
+            96,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "熔炉",
+          "Rect": [
+            36,
+            183,
+            98,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "将材料放入",
+          "Rect": [
+            25,
+            207,
+            116,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "上排材料栏",
+          "Rect": [
+            25,
+            222,
+            116,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "将辅助材料放入",
+          "Rect": [
+            25,
+            253,
+            116,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "下排材料栏",
+          "Rect": [
+            25,
+            268,
+            116,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "辅助",
+          "Rect": [
+            174,
+            247,
+            28,
+            12
+          ],
+          "FontSize": 7,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "辅助",
+          "Rect": [
+            229,
+            247,
+            28,
+            12
+          ],
+          "FontSize": 7,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "NPCAwakeDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        120
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "队伍",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "GroupDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        170
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "师徒",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "MentorDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        586
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "仓库",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "StorageDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        1340
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "钓鱼装备",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "FishingDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        1341
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "钓鱼",
+          "Rect": [
+            32,
+            7,
+            80,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "FishingStatusDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        1422
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "英雄背包",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "HeroInventoryDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        1688
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "英雄管理",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "HeroManageDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        238
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "出租装备",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "ItemRentingDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        238
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "装备租借",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "GuestItemRentingDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        238
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "租借确认",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "ItemRentDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        238
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "租借确认",
+          "Rect": [
+            32,
+            7,
+            110,
+            17
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": true
+        }
+      ],
+      "ControlType": "GuestItemRentDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        323,
+        324,
+        325
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "注册帐号",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        326,
+        327,
+        328
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "修改密码",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        329,
+        330,
+        331
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "退出",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        332,
+        333,
+        334
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "软键盘",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        320,
+        321,
+        322
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "确定",
+          "Rect": [
+            7,
+            9,
+            34,
+            30
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        340,
+        341,
+        342
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "进入游戏",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        343,
+        344,
+        345
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "创建角色",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        346,
+        347,
+        348
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "删除角色",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        349,
+        350,
+        351
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "制作名单",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        352,
+        353,
+        354
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "退出游戏",
+          "Rect": [
+            7,
+            3,
+            86,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        180,
+        181,
+        182
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "自动",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        193,
+        194,
+        195,
+        276,
+        277,
+        278
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "关闭",
+          "Rect": [
+            5,
+            4,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        203,
+        204,
+        205
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "取消",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        273,
+        274,
+        275
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "完成任务",
+          "Rect": [
+            5,
+            4,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        290,
+        291,
+        292,
+        520,
+        521,
+        522
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "确定",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        293,
+        294,
+        295
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "暂存",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        312,
+        313,
+        314
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "购买",
+          "Rect": [
+            5,
+            4,
+            70,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        336,
+        337,
+        338
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "合成",
+          "Rect": [
+            5,
+            4,
+            70,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        370,
+        371,
+        372,
+        680,
+        681,
+        682
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "领取",
+          "Rect": [
+            5,
+            4,
+            62,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        480,
+        481,
+        482
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "查找",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        483,
+        484,
+        485
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "购买",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        540,
+        541,
+        542
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "删除",
+          "Rect": [
+            5,
+            4,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        570,
+        571,
+        572
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "改名",
+          "Rect": [
+            5,
+            4,
+            82,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        576,
+        577,
+        578
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "召唤",
+          "Rect": [
+            5,
+            4,
+            70,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        586,
+        587,
+        588
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "保存",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        590,
+        591,
+        592
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "取消",
+          "Rect": [
+            5,
+            4,
+            38,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        607,
+        608,
+        609
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "发送",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        616,
+        617,
+        618
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "共享",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        700,
+        701,
+        702
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "出售",
+          "Rect": [
+            5,
+            4,
+            42,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        703,
+        704,
+        705
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "购买",
+          "Rect": [
+            5,
+            4,
+            74,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        270,
+        271,
+        272
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "接受任务",
+          "Rect": [
+            5,
+            4,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "QuestListDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        270,
+        271,
+        272
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "暂停任务",
+          "Rect": [
+            5,
+            4,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "QuestDetailDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        213,
+        214,
+        215
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "拜师",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "MentorDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        216,
+        217,
+        218
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "解除师徒",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "MentorDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        560,
+        561,
+        562
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "生命",
+          "Rect": [
+            5,
+            4,
+            50,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "HeroInventoryDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        563,
+        564,
+        565
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "魔法",
+          "Rect": [
+            5,
+            4,
+            50,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "HeroInventoryDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        743,
+        744
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "仓库一",
+          "Rect": [
+            4,
+            1,
+            64,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        745,
+        746
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "仓库二",
+          "Rect": [
+            4,
+            1,
+            64,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        770,
+        771
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "全部物品",
+          "Rect": [
+            4,
+            3,
+            64,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        772,
+        773
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "特惠",
+          "Rect": [
+            4,
+            3,
+            64,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        774,
+        775
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "新品",
+          "Rect": [
+            4,
+            3,
+            64,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        776,
+        777
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "热销",
+          "Rect": [
+            4,
+            3,
+            64,
+            18
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        788,
+        789
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "市场",
+          "Rect": [
+            4,
+            1,
+            84,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        790,
+        791
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "寄售",
+          "Rect": [
+            4,
+            1,
+            84,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        816,
+        817
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "拍卖",
+          "Rect": [
+            4,
+            1,
+            84,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        818,
+        819
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "商城",
+          "Rect": [
+            4,
+            1,
+            84,
+            19
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        660,
+        661,
+        662,
+        663,
+        664,
+        665,
+        666,
+        667,
+        668,
+        669
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "姓名",
+          "Rect": [
+            62,
+            6,
+            43,
+            16
+          ],
+          "FontSize": 8,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "等级",
+          "Rect": [
+            61,
+            25,
+            44,
+            16
+          ],
+          "FontSize": 8,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "职业",
+          "Rect": [
+            150,
+            25,
+            28,
+            17
+          ],
+          "FontSize": 7.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "CharacterButton"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        63
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "注册账号",
+          "Rect": [
+            176,
+            10,
+            234,
+            28
+          ],
+          "FontSize": 14,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "账号",
+          "Rect": [
+            134,
+            103,
+            85,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "密码",
+          "Rect": [
+            147,
+            129,
+            72,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "确认密码",
+          "Rect": [
+            146,
+            155,
+            73,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "真实姓名",
+          "Rect": [
+            145,
+            189,
+            74,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "出生日期",
+          "Rect": [
+            128,
+            215,
+            91,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "密保问题",
+          "Rect": [
+            112,
+            250,
+            107,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "密保答案",
+          "Rect": [
+            146,
+            276,
+            73,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "电子邮箱",
+          "Rect": [
+            123,
+            311,
+            96,
+            18
+          ],
+          "FontSize": 9,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "NewAccountDialog"
+    },
+    {
+      "Library": "Prguse",
+      "Indices": [
+        50
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "修改密码",
+          "Rect": [
+            52,
+            13,
+            241,
+            25
+          ],
+          "FontSize": 13,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "账号",
+          "Rect": [
+            66,
+            75,
+            96,
+            19
+          ],
+          "FontSize": 10,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "原密码",
+          "Rect": [
+            22,
+            113,
+            140,
+            19
+          ],
+          "FontSize": 10,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "新密码",
+          "Rect": [
+            47,
+            151,
+            115,
+            19
+          ],
+          "FontSize": 10,
+          "Align": "Center",
+          "Border": false
+        },
+        {
+          "Text": "确认新密码",
+          "Rect": [
+            30,
+            189,
+            132,
+            19
+          ],
+          "FontSize": 10,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "ChangePasswordDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        20
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "创建角色",
+          "Rect": [
+            0,
+            0,
+            187,
+            20
+          ],
+          "FontSize": 12,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MirImageControl"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        30
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "账号登录",
+          "Rect": [
+            0,
+            0,
+            102,
+            24
+          ],
+          "FontSize": 12,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MirImageControl"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        31
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "账号",
+          "Rect": [
+            0,
+            0,
+            32,
+            20
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MirImageControl"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        32
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "密码",
+          "Rect": [
+            0,
+            0,
+            32,
+            20
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MirImageControl"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        40
+      ],
+      "Button": false,
+      "Rects": [
+        {
+          "Text": "选择角色",
+          "Rect": [
+            0,
+            0,
+            84,
+            19
+          ],
+          "FontSize": 10,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ControlType": "MirImageControl"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        200,
+        201,
+        202
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "确定",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        206,
+        207,
+        208
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "是",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        210,
+        211,
+        212
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "否",
+          "Rect": [
+            5,
+            4,
+            66,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        107,
+        108,
+        109
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "确定",
+          "Rect": [
+            5,
+            4,
+            80,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        110,
+        111,
+        112
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "取消",
+          "Rect": [
+            5,
+            4,
+            58,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ]
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        280,
+        281,
+        282
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "取消",
+          "Rect": [
+            4,
+            4,
+            52,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "NewCharacterDialog"
+    },
+    {
+      "Library": "Title",
+      "Indices": [
+        360,
+        361,
+        362
+      ],
+      "Button": true,
+      "Rects": [
+        {
+          "Text": "创建",
+          "Rect": [
+            4,
+            4,
+            52,
+            17
+          ],
+          "FontSize": 8.5,
+          "Align": "Center",
+          "Border": false
+        }
+      ],
+      "ParentType": "NewCharacterDialog"
+    }
+  ]
+}

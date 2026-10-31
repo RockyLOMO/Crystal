@@ -71,6 +71,9 @@
     <None Update="Localization\Chinese.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Localization\Overlay.zh-CN.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Localization\English.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

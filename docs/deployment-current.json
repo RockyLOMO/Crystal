@@ -1,6 +1,6 @@
 {
-  "CheckedAtUtc": "2026-10-31T13:33:31.072877+00:00",
-  "Status": "code-localization-1366-windowed-deployed-stopped",
+  "CheckedAtUtc": "2026-10-31T15:33:12.3593457Z",
+  "Status": "client-ui-overlay-deployed-stopped",
   "Source": {
     "Path": "D:\\projs\\mir2",
     "Repository": "https://github.com/Suprcode/Crystal",
@@ -9,7 +9,9 @@
     "Branch": "rx-server",
     "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
     "DeployedSourceHead": "11074271",
-    "IncludesUncommittedChanges": true
+    "IncludesUncommittedChanges": true,
+    "ClientDeployedSourceHead": "41f7e724",
+    "ClientIncludesUncommittedChanges": true
   },
   "Runtime": {
     "Server": "D:\\private-server\\mir2\\Server",
@@ -45,12 +47,13 @@
     "PlayerTextStructure": "PASS: 3340 entries",
     "LatestVersionHandshake": "PASS",
     "LatestKeepAlive": "PASS",
-    "LatestClientStartup": "Responding; no new Error.txt bytes; visual acceptance not performed",
+    "LatestClientStartup": "Responding; 0 new Error.txt bytes; graceful exit; game visual acceptance not performed",
     "StartupMapWarnings": "None observed during this run",
     "LatestSoundHashCheck": "1608 unchanged",
     "LatestEnvirTextHashCheck": "2600 unchanged",
     "ClientSettingsIntegration": "PASS: 2 checks",
-    "LatestLibMetadataCheck": "1440 unchanged"
+    "LatestLibMetadataCheck": "1440 unchanged",
+    "UIOverlay": "PASS: 93 rules / 166 regions / 14 interaction checks"
   },
   "Content": {
     "DatabaseRelease": "29.01.25",
@@ -140,5 +143,11 @@
     "GracefulShutdown": "PASS",
     "FinalRunning": false
   },
-  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\20261031-132541Z"
+  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\20261031-132541Z",
+  "ClientUIOverlay": {
+    "Evidence": "ui-overlay-validation.json",
+    "ClientBackup": "D:\\private-server\\mir2\\backups\\before-ui-overlay-20261031-232845",
+    "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
+    "ServerDeploymentThisRound": false
+  }
 }

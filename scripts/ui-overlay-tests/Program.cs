@@ -1,0 +1,78 @@
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using Client.MirControls;
+using Client.MirGraphics;
+using Client.MirObjects;
+using Client.MirScenes.Dialogs;
+using Client.MirSounds;
+
+internal static class Program
+{
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        if (args.Length != 2) throw new ArgumentException("Pass repository root and a client dependency directory (msvcr100.dll/msvcp100.dll). No game data is required.");
+        foreach (string file in new[] { "msvcr100.dll", "msvcp100.dll", "d3dx9_43.dll", "d3dcompiler_43.dll" })
+            File.Copy(Path.Combine(args[1], file), Path.Combine(AppContext.BaseDirectory, file), true);
+        Run(Path.GetFullPath(args[0]));
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void Run(string root)
+    {
+        string fixture = Path.Combine(Path.GetTempPath(), "ai", DateTime.Now.ToString("yyyyMMdd"), "mir2-ui-overlay-tests-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(fixture, "Localization"));
+        File.Copy(Path.Combine(root, "Client", "Localization", "Overlay.zh-CN.json"), Path.Combine(fixture, "Localization", "Overlay.zh-CN.json"));
+        Directory.SetCurrentDirectory(fixture);
+        using var measurementBitmap = new Bitmap(1, 1);
+        using var measurementGraphics = Graphics.FromImage(measurementBitmap);
+        Client.CMain.Graphics = measurementGraphics;
+        DbLanguage.Load(Path.Combine(root, "Localization"), "Chinese");
+        var method = typeof(ChineseUIOverlay).GetMethod("Prepare", BindingFlags.Static | BindingFlags.NonPublic)!;
+        void Prepare(MirImageControl control) => method.Invoke(null, [control]);
+        int passed = 0;
+        void Check(bool ok, string name) { if (!ok) throw new Exception(name); Console.WriteLine($"PASS {++passed}: {name}"); }
+        MirButton Button(int index) => new() { AutoSize = false, Library = Libraries.Title, Index = index, Size = new Size(76, 25), Sound = SoundList.None };
+        using var button = Button(200);
+        int before = button.Controls.Count;
+        Prepare(button);
+        var plaque = button.Controls.Last();
+        var label = plaque.Controls.OfType<MirLabel>().Single();
+        Check(label.Text == "确定" && button.Controls.Count == before + 1, "lazy dialog button receives its Chinese art mask");
+        for (int i = 0; i < 100; i++) Prepare(button);
+        Check(button.Controls.Count == before + 1 && ReferenceEquals(button.Controls.Last(), plaque), "repeated rendering does not duplicate overlays");
+        Check(!plaque.IsMouseOver(new Point(12, 12)) && !label.IsMouseOver(new Point(12, 12)), "mask and label pass mouse hit testing through");
+        int clicks = 0; button.Click += (_, _) => clicks++;
+        button.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 12, 12, 0));
+        Check(clicks == 1, "the original button click handler still runs");
+        MirControl.MouseControl = button; MirControl.ActiveControl = button; Prepare(button);
+        Check(label.Location == new Point(1, 1), "pressed button text follows the original active button");
+        button.Enabled = false; Prepare(button);
+        Check(label.ForeColour == Color.Gray && label.Location == Point.Empty, "disabled state resets press offset and dims the label");
+        button.Enabled = true; MirControl.ActiveControl = null; MirControl.MouseControl = null;
+        button.Index = 203; Prepare(button);
+        Check(plaque.IsDisposed && button.Controls.Last().Controls.OfType<MirLabel>().Single().Text == "取消", "dynamic art changes replace the old mask and dispose its label");
+        using var icon = new MirButton { AutoSize = false, Size = new Size(16, 16), Library = Libraries.Prguse, Index = 1970 };
+        before = icon.Controls.Count; Prepare(icon);
+        Check(icon.Controls.Count == before, "pure icons remain visible without a text plaque");
+        using var role = new CharacterDialog(MirGridType.Equipment, new UserObject());
+        role.NameLabel.Text = "Alice张三";
+        Prepare(role); Prepare(role.StatusPage); Prepare(role.StatePage);
+        var tabs = role.Controls.Where(c => c.GetType().Name == "Plaque").ToArray();
+        Check(tabs.Length == 4 && tabs.All(p => !p.DisplayRectangle.IntersectsWith(role.NameLabel.DisplayRectangle)) && role.NameLabel.Text == "Alice张三", "character tabs preserve player name and guild header");
+        var attributes = role.StatusPage.Controls.Where(c => c.GetType().Name == "Plaque").ToArray();
+        var states = role.StatePage.Controls.Where(c => c.GetType().Name == "Plaque").ToArray();
+        Check(attributes.Length == 13 && states.Length == 12 && attributes.Concat(states).All(p => p.Location.X + p.Size.Width <= 120), "all 25 character attribute captions stay left of numeric values");
+        using var hero = new CharacterDialog(MirGridType.HeroEquipment, new UserObject());
+        Prepare(hero); Prepare(hero.StatusPage); Prepare(hero.StatePage);
+        Check(hero.Controls.Count(c => c.GetType().Name == "Plaque") == 4 && hero.StatusPage.Controls.Count(c => c.GetType().Name == "Plaque") == 13, "hero uses the same tabs and stat overlays");
+        DbLanguage.Load(Path.Combine(root, "Localization"), "English"); Prepare(button); Prepare(role);
+        Check(!button.Controls.Last().Visible && tabs.All(p => !p.Visible), "English language hides previously attached overlays");
+        using var english = Button(200); before = english.Controls.Count; Prepare(english);
+        Check(english.Controls.Count == before, "fresh English controls retain their original art");
+        DbLanguage.Load(Path.Combine(root, "Localization"), "Chinese"); Prepare(button);
+        var last = button.Controls.Last(); button.Dispose();
+        Check(last.IsDisposed, "original owner disposal releases overlay controls and fonts");
+        Console.WriteLine($"All {passed} UI overlay checks passed. No game resources, account or Direct3D device used.");
+    }
+}

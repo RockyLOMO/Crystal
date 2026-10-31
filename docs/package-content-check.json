@@ -1,6 +1,6 @@
 {
-  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-1366-zhCN-20261031.zip",
-  "Files": 5200,
+  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
+  "Files": 5201,
   "SelectedFileHashes": "PASS",
   "Checked": [
     "Client.exe",
@@ -11,6 +11,7 @@
     "Localization/ItemsMonsters.zh-CN.json",
     "Localization/NpcText.zh-CN.json",
     "Localization/NpcNarrative.zh-CN.json",
+    "Localization/Overlay.zh-CN.json",
     "Map/DogYoHyun.map"
   ],
   "NoServerDataOrUserPreferences": true,

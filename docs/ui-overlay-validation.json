@@ -1,0 +1,60 @@
+{
+  "CheckedAt": "2026-10-31T23:33:03.236335+08:00",
+  "SourceHead": "41f7e724",
+  "IncludesUncommittedChanges": true,
+  "ClientPublish": "PASS (existing compiler warnings)",
+  "OverlayProfiles": 93,
+  "Regions": 166,
+  "IndexedContextMappings": 215,
+  "ResourceRectangleBounds": "PASS: all installed read-only Lib headers",
+  "InteractionChecks": 14,
+  "InteractionResult": "PASS",
+  "Deployment": {
+    "Backup": "D:\\private-server\\mir2\\backups\\before-ui-overlay-20261031-232845",
+    "Files": 495,
+    "PublishedHashes": "PASS",
+    "LibMetadataUnchanged": 1440,
+    "ClientResponding": true,
+    "NewClientErrorBytes": 0,
+    "GracefulShutdown": true,
+    "ServerStarted": false,
+    "ActualGameplayVisualAcceptance": "NOT VERIFIED"
+  },
+  "Package": {
+    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
+    "Bytes": 8060047281,
+    "SHA256": "2b884f5c4bdd53fe123c88c91c08462c9d06bff178ffc2ab296df8f85d061035",
+    "ZipIntegrity": "PASS",
+    "DistributionCopyChecksum": "PASS",
+    "IncludesServerData": false,
+    "IncludesUserSettingsOrLogs": false,
+    "DefaultEndpoint": "s.f-li.cn:7000"
+  },
+  "PackageContent": {
+    "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
+    "Files": 5201,
+    "SelectedFileHashes": "PASS",
+    "Checked": [
+      "Client.exe",
+      "Client.dll",
+      "Shared.dll",
+      "Localization/Chinese.json",
+      "Localization/DbLanguage.zh-CN.json",
+      "Localization/ItemsMonsters.zh-CN.json",
+      "Localization/NpcText.zh-CN.json",
+      "Localization/NpcNarrative.zh-CN.json",
+      "Localization/Overlay.zh-CN.json",
+      "Map/DogYoHyun.map"
+    ],
+    "NoServerDataOrUserPreferences": true,
+    "CleanDefaultConfig": "PASS",
+    "DefaultEndpoint": "s.f-li.cn:7000",
+    "DefaultResolution": "1366x768",
+    "FullScreen": false
+  },
+  "Preview": "ui-overlay-preview.png (GDI composition, not an in-game screenshot)",
+  "LiveGameVisualAcceptance": "NOT VERIFIED",
+  "AndroidWine": "NOT VERIFIED",
+  "ServerChangesThisRound": false,
+  "RollbackDrill": "NOT VERIFIED"
+}
