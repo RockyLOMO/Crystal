@@ -20,7 +20,7 @@
 | 上游中文语言包补漏纠错 | `Client/Localization/Chinese.json`、`Server.MirForms/Localization/Chinese.json` | 在上游自带中文基础上补齐缺键、纠正属性提示，移除客户端已无对应键的旧条目 |
 | 服务端主窗口中文化 | `Server.MirForms/SMain.cs`、`SMain.Localization.cs` | 菜单、页签、列头与动态状态；不是全数据库编辑器汉化 |
 | 新增译文与覆盖记录 | `Localization/` | 本地整理的名称、菜单和短句；无第三方汉化整包，具体来源与未译范围见下文 |
-| 回归检查 | `scripts/performance-tests/`、`scripts/localization-tests/` | 31 项调度检查及 12 项汉化检查，不启动实际游戏服；提交版不依赖本机 `.ai` 或运行数据库 |
+| 回归检查 | `scripts/performance-tests/`、`scripts/localization-tests/`、`scripts/package-tests/` | 35 项调度检查、13 项汉化检查及 39 项小样本打包检查，不启动实际游戏服；不依赖本机 `.ai` 或运行数据库 |
 | 构建、运行与分发维护 | `scripts/` 内 PowerShell、CMD、Python 脚本 | 独立暂存构建、正常启停/备份、资源下载、干净客户端打包、协议检查与 CPU 测量；不会自行创建计划任务或修改防火墙 |
 | 本地文件边界与证据 | `.gitignore`、`docs/`、根 `README.md` | 忽略 `.ai/`；记录测试、哈希、分发信息和部署边界，不提交运行存档、密钥、资源大文件及缓存 |
 
@@ -38,6 +38,51 @@ dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Rel
 ```
 
 构建仍有上游既有警告：服务端成员隐藏，以及客户端 WindowsBase 依赖版本冲突、未使用字段等；本轮构建为 0 错误，并未把这些警告描述为已修复。详细性能数值、验收范围和备份路径见后文。升级上游时应重点复核上述两个调度文件、共享名称显示与精炼判断，并重跑测试。
+
+## 代码审查与进一步优化（2026-10-30）
+
+对空载调度与中文显示字典代码完成全面审查，并落地以下改进（源码已同步，验证命令与回归测试已更新）：
+
+### 1. 降 CPU 与并发调度优化
+
+| 优化点 | 涉及位置 | 问题背景与改进细节 |
+| --- | --- | --- |
+| 单对象异常隔离与限流退避 | `Server/MirEnvir/Envir.cs` (`ProcessScheduledObject` / `ReportObjectProcessError`) | 原实现中单个怪物或对象 `Process()` 抛出未捕获异常会直达 `ThreadLoop.finally` 并将 `Running = false`，导致全服停机。现改为单对象级捕获：累计 `ObjectProcessErrors`、将异常对象的 `OperateTime` 推迟 `1000ms` 后继续处理并限流输出日志。一次性延迟动作在执行前出队，发生异常后不会重放已部分执行的动作；首次已产生的奖励等效果不自动回滚，其他待执行动作保留。仅在调度器自身结构异常时才触发安全停服。 |
+| 批处理锁合并（减少 50% 入出队锁争用） | `Server/MirEnvir/Envir.cs` (`ProcessMobBatch`) | 原实现每处理一个对象需分别加锁调用 `TakeDue` 与 `Complete`。现将“完成上一对象入堆（`Complete`）”与“取出下一到期对象（`TakeDue`）”合并至同一次 `MobThread.ScheduleLock` 临界区内执行。 |
+| `OperateTime` 无变化写跳过 | `Server/MirObjects/MapObject.cs` (`OperateTime.set`) | 在进入 `MobThread.ScheduleLock` 前先通过 `Interlocked.Read(ref OperateTimeValue) == value` 判断值是否变化；未变化时直接返回，避免无意义的加锁与堆修复。 |
+| 真实繁忙耗时与锁竞争监控指标 | `Server/MirEnvir/Envir.cs` (`WorkLoop` / `ProcessMobBatch`) | 修复因 `Monitor.Wait` 休眠导致 `LastRunTime` 恒为固定节拍（10–16ms）的问题：`Envir.LastRunTime` 改为统计每秒内单 Tick 最大实际繁忙耗时（ms），`MobThread.LastRunTime` 统计当前批次实际执行耗时，并新增每秒全局锁争用增量 `LastLockContentionPerSecond`（基于 `Monitor.LockContentionCount`）与异常计数 `ObjectProcessErrors`。 |
+
+### 2. 汉化与显示/逻辑边界优化
+
+| 优化点 | 涉及位置 | 问题背景与改进细节 |
+| --- | --- | --- |
+| GM 按物品查角色支持中英双语 | `Server/MirEnvir/Envir.cs` (`MatchPlayerbyItem` / `MatchesItemName`) | 服务端启用中文后 `Item.FriendlyName` 返回中文，导致 GM 输入英文原名查询失效。现同时匹配 `UserItem.FriendlyName`、`ItemInfo.FriendlyName`、`ItemInfo.RawFriendlyName` 与 `ItemInfo.Name`（精确与模糊模式均支持）。 |
+| 地面堆叠物品名称翻译保留数量 | `Shared/DbLanguage.cs` (`Item`)、`Client/MirObjects/ItemObject.cs`、`Client/MirScenes/GameScene.cs` | 服务端下发地面堆叠物品名称格式为 `"名称 (数量)"`，直接查表无法命中带数量的键。新增 `DbLanguage.Item(string)` 识别并剥离末尾 `" (数字)"` 后翻译基础物品名，再拼接原数量后缀（支持跨语言服务端/客户端混用）。 |
+| 商城搜索支持中英双语 | `Client/MirScenes/Dialogs/GameshopDialog.cs` (`MatchesSearch`) | 客户端商城搜索原仅匹配翻译后的 `FriendlyName`；现同时匹配中文显示名、`RawFriendlyName` 与数据库原始英文名 `Name`。 |
+
+### 3. 核心监控指标与后续压测建议
+
+- **核心监控指标**：
+  - `Envir.LastRunTime`（每秒单 Tick 峰值繁忙耗时，ms）與各 `MobThread.LastRunTime`（工作线程批处理实际耗时，ms）。
+  - `Envir.LastCount`（每秒实际执行 `Process()` 的到期对象总数）。
+  - `Envir.LastLockContentionPerSecond`（每秒 `.NET Monitor` 锁争用增量）与 `Envir.ObjectProcessErrors`（调度器隔离的对象异常总数）。
+  - 进程工作集、GC 代际回收次数，以及网络与图形层面的非托管/堆外内存占用（Private Bytes 减去 GC Heap Size）。
+- **已知边界与压测建议**：
+  - 主循环末尾 `Monitor.Wait(_locker, remaining)` 受 Windows 默认时钟粒度影响，空载或轻载下实际 Tick 间隔约 `10–15.6ms`，玩家网络包处理与该节拍同步，建议在多人战斗、攻速与移动加速判定场景下做实机验收。
+
+## 审查问题修复（2026-10-31）
+
+- **P1：NPC 奖励重复执行与同帧多动作漏跳**。`MapObject.Process()` 将到期动作在调用 `Process(action)` 前通过 `ActionList.RemoveAt(i--)` 移除：既保证脚本先发奖励、后抛异常时不会重放该动作，又修复正序移除未回退索引导致同帧连续到期动作被跳过的问题。新增真实 `PlayerObject → CompleteNPC → NPCScript → NPCSegment` 回归：发 100 金币后除零，首次金币为 100；重试后执行剩余 7 金币奖励保持 107；同帧连续两笔 7 金币动作在同一 Tick 内全部执行完毕（金币达 121）。
+- **P2：迁移客户端目录后无法打包**。`Package-Client.ps1` 不再要求输入目录叫 `Mir2`；按真实客户端目录名构造 7z 输入及排除规则，再将 ZIP 顶层统一为 `Mir2`。校验客户端入口、拒绝常见服务端程序/存档，保留干净配置、用户数据排除、CRC/SHA 校验和旧包保护。`-ReportPath` 可把小样本测试报告输出到 TEMP，避免覆盖真实分发记录。
+
+验证命令：
+
+```powershell
+dotnet run --project scripts/performance-tests/PerformanceTests.csproj -c Release
+pwsh -NoProfile -File scripts/package-tests/Test-PackageClient.ps1
+```
+
+调度 35 项、实际 7z 小样本打包/解包 39 项检查通过。打包测试覆盖 `mir2-client`、中文/空格及其他目录名、固定归档根目录、干净配置、个人数据排除、文件哈希、错误输入与已有包保护。没有重新生成真实 8GB 客户端 ZIP，也没有部署或重启运行服；当前已发布包与此前的实测记录不因源码修复而自动更新。实际重打包需用一个不存在的新 `-PackageName`，已有同名包会按原保护规则拒绝覆盖。
 
 ## 目录与分支迁移（2026-10-30）
 
@@ -58,7 +103,7 @@ dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Rel
 | Crystal 源码、部署脚本与本说明 | `D:\projs\mir2` |
 | Windows 运行入口 | `D:\private-server\mir2` |
 | 实际服务端、配置与角色存档 | `D:\private-server\mir2\Server` |
-| 客户端运行程序与资源 | `D:\Program Files\Game\Mir2` |
+| 客户端运行程序与资源 | `D:\private-server\mir2-client` |
 | 客户端打包分发 | `E:\rxdev\webhost\mir2` |
 | 停服一致性备份 | `D:\private-server\mir2\backups` |
 | 数据库参考源码（Git 忽略） | `D:\projs\mir2\.ai\database-source` |
@@ -81,7 +126,7 @@ dotnet run --project scripts/localization-tests/Localization.Tests.csproj -c Rel
 
 ## 当前配置与内容边界
 
-- 游戏地址：`127.0.0.1:7000`；原版状态监听：`127.0.0.1:3000`。
+- 游戏地址：服务端对外监听 `0.0.0.0:7000`，客户端与分发包默认连接 `s.f-li.cn:7000`（`Client/Settings.cs` 支持 `IPAddress=host:port` 或 `[ipv6]:port` 并校验端口范围 `1..65535`）；原版状态监听：`127.0.0.1:3000`。
 - 未添加路由器映射、防火墙规则或开机计划任务，HTTP 管理服务关闭。
 - 仅开放战士、法师、道士创建：`AllowCreateAssassin=False`、`AllowCreateArcher=False`。
 - `Configs/HeroSettings.ini`：`AllowNewHero=False`。
@@ -153,7 +198,7 @@ pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Stop
 pwsh -NoProfile -File D:\private-server\mir2\Manage-Mir2.ps1 -Action Backup
 ```
 
-客户端双击 `D:\Program Files\Game\Mir2\Start-Client.cmd`，或在该目录运行 `Client.exe`。正常用户可在客户端注册；没有预置测试账号或管理员账号。
+客户端双击 `D:\private-server\mir2-client\Start-Client.cmd`，或在该目录运行 `Client.exe`。正常用户可在客户端注册；没有预置测试账号或管理员账号。
 
 原版每次接受新连接后，对相同 IP 设置 5 秒连接冷却。刚启动客户端就立即运行协议探针，可能在握手前被关闭连接；应等待冷却后再测。本轮复核已通过，未关闭这项保护。
 
@@ -176,7 +221,7 @@ pwsh -NoProfile -File D:\projs\mir2\scripts\Build-Mir2.ps1 -OutputDirectory "$en
 客户端额外在程序目录提供 `msvcr100.dll`、`msvcp100.dll`（10.0.40219.1），以及已存在于本机、有效 Microsoft 签名的 x64 `d3dx9_43.dll`、`d3dcompiler_43.dll` 的副本。未安装系统级运行库。重新部署客户端时保留这四个应用本地依赖。
 
 ```powershell
-python D:\projs\mir2\scripts\download-client-resources.py --destination 'D:\Program Files\Game\Mir2' --workspace D:\projs\mir2 --temp "$env:TEMP\ai\20261030\mir2-crystal\resources" --workers 16
+python D:\projs\mir2\scripts\download-client-resources.py --destination 'D:\private-server\mir2-client' --workspace D:\projs\mir2 --temp "$env:TEMP\ai\20261030\mir2-crystal\resources" --workers 16
 python D:\projs\mir2\scripts\probe-server.py
 ```
 

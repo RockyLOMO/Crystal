@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=7000)
-    parser.add_argument("--client", default=r"D:\Program Files\Game\Mir2\Client.exe")
+    parser.add_argument("--client", default=r"D:\private-server\mir2-client\Client.exe")
     args = parser.parse_args()
     with Path(args.client).open("rb") as stream:
         version_hash = hashlib.file_digest(stream, "md5").digest()

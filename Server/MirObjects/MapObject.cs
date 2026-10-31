@@ -169,6 +169,9 @@ namespace Server.MirObjects
             get => Interlocked.Read(ref OperateTimeValue);
             set
             {
+                // Unchanged due time needs no heap repair. Writes always happen under the lock,
+                // so an atomic read that observes the same value is a linearizable no-op.
+                if (Interlocked.Read(ref OperateTimeValue) == value) return;
                 lock (MobThread.ScheduleLock)
                 {
                     OperateTimeValue = value;
@@ -252,8 +255,12 @@ namespace Server.MirObjects
             for (int i = 0; i < ActionList.Count; i++)
             {
                 if (Envir.Time < ActionList[i].Time) continue;
-                Process(ActionList[i]);
-                ActionList.RemoveAt(i);
+                // Delayed actions may already have granted rewards or dealt damage
+                // when they fail. Consume them before dispatch so retrying this
+                // object cannot replay an action's partially completed effects.
+                var action = ActionList[i];
+                ActionList.RemoveAt(i--);
+                Process(action);
             }
         }
 

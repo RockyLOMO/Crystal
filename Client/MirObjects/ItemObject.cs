@@ -26,7 +26,7 @@ namespace Client.MirObjects
 
         public void Load(S.ObjectItem info)
         {
-            Name = DbLanguage.Get("Items", info.Name);
+            Name = DbLanguage.Item(info.Name);
             NameColour = info.NameColour;
 
             BodyLibrary = Libraries.FloorItems;

@@ -39,6 +39,22 @@ public static class DbLanguage
             ? translated : original;
     }
 
+    /// <summary>
+    /// Floor item names may carry the server's stack suffix, e.g. "Name (5)". The count is
+    /// kept and only the item name is translated.
+    /// </summary>
+    public static string Item(string original)
+    {
+        string translated = Get("Items", original);
+        if (translated != original || original == null || !original.EndsWith(')')) return translated;
+        int count = original.LastIndexOf(" (", StringComparison.Ordinal);
+        if (count <= 0) return original;
+        for (int i = count + 2; i < original.Length - 1; i++)
+            if (!char.IsDigit(original[i])) return original;
+        return count + 3 <= original.Length - 1
+            ? Get("Items", original[..count]) + original[count..] : original;
+    }
+
     public static string Monster(string original)
     {
         string translated = Get("Monsters", original);

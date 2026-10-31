@@ -271,6 +271,19 @@ namespace Server.MirEnvir
         public int SpawnMultiplier = 1;//set this to 2 if you want double spawns (warning this can easily lag your server far beyond what you imagine)
         private readonly MobThread _mainObjectSchedule = new MobThread { Id = -1 };
 
+        // A faulty object is isolated instead of stopping the whole world. It is retried
+        // after this delay, and error logs are rate limited across all scheduler threads.
+        private const int ObjectErrorRetryMilliseconds = 1000;
+        private const int ObjectErrorLogIntervalMilliseconds = 1000;
+        private readonly object _objectErrorLogLock = new object();
+        private long _objectProcessErrors, _lastObjectErrorLogTime = long.MinValue;
+        private int _suppressedObjectErrorLogs;
+
+        /// <summary>Total exceptions isolated by the object scheduler since startup.</summary>
+        public long ObjectProcessErrors => Interlocked.Read(ref _objectProcessErrors);
+        /// <summary>Process-wide lock contentions observed during the last second.</summary>
+        public long LastLockContentionPerSecond { get; private set; }
+
         internal void UpdateObjectSchedule(MapObject obj)
         {
             lock (MobThread.ScheduleLock)
@@ -2134,10 +2147,11 @@ namespace Server.MirEnvir
                 var userTime = Time + Settings.Minute * 5;
                 var lineMessageTime = Time + Settings.Minute * Settings.LineMessageTimer;
                 var processTime = Time + 1000;
-                var startTime = Time;
 
                 var processCount = 0;
                 var processRealCount = 0;
+                long tickBusyPeak = 0;
+                var lockContention = Monitor.LockContentionCount;
 
                 if (Settings.Multithreaded)
                 {
@@ -2190,6 +2204,12 @@ namespace Server.MirEnvir
                             processCount = 0;
                             processRealCount = 0;
                             processTime = Time + 1000;
+                            // Peak busy milliseconds of a single tick during the last second.
+                            LastRunTime = tickBusyPeak;
+                            tickBusyPeak = 0;
+                            var contention = Monitor.LockContentionCount;
+                            LastLockContentionPerSecond = contention - lockContention;
+                            lockContention = contention;
                         }
 
                         if (conTime != Time)
@@ -2215,9 +2235,6 @@ namespace Server.MirEnvir
                             }
                         }
 
-
-                        LastRunTime = Time - startTime;
-                        startTime = Time;
 
                         if (Settings.Multithreaded)
                         {
@@ -2279,6 +2296,8 @@ namespace Server.MirEnvir
                                 Type = ChatType.LineMessage
                             });
                         }
+
+                        tickBusyPeak = Math.Max(tickBusyPeak, Stopwatch.ElapsedMilliseconds - Time);
 
                         // Work due times are unchanged. Wait only for the remainder of this
                         // tick instead of repeatedly scanning objects which are not due yet.
@@ -2378,30 +2397,85 @@ namespace Server.MirEnvir
         private int ProcessMobBatch(MobThread info)
         {
             var processed = 0;
-            while (Running)
+            var batchStart = Stopwatch.ElapsedMilliseconds;
+            MapObject obj = null;
+            try
             {
-                MapObject obj;
-                lock (MobThread.ScheduleLock)
-                    obj = info.TakeDue(Time);
-                if (obj == null) break;
+                while (true)
+                {
+                    // At least one due object runs per batch; afterwards the budget is checked.
+                    // The heap retains unprocessed due objects when the budget expires.
+                    var takeNext = Running && (processed == 0 || Stopwatch.ElapsedMilliseconds < info.EndTime);
+                    // Completing the previous object and taking the next one share one lock.
+                    lock (MobThread.ScheduleLock)
+                    {
+                        if (obj != null) info.Complete(obj);
+                        obj = null;
+                        if (takeNext) obj = info.TakeDue(Time);
+                    }
+                    if (obj == null) break;
 
-                try
-                {
-                    obj.Process();
-                    obj.SetOperateTime();
+                    ProcessScheduledObject(obj);
+                    processed++;
                 }
-                finally
-                {
+            }
+            finally
+            {
+                // Only reachable with a non-null object if the scheduler itself failed.
+                if (obj != null)
                     lock (MobThread.ScheduleLock)
                         info.Complete(obj);
-                }
-                processed++;
-                // The heap retains unprocessed due objects when the budget expires.
-                if (Stopwatch.ElapsedMilliseconds >= info.EndTime) break;
             }
-            info.LastRunTime = (info.LastRunTime + (Time - info.StartTime)) / 2;
+            // Busy time of this batch rather than the tick interval, so the value reflects load.
+            info.LastRunTime = Stopwatch.ElapsedMilliseconds - batchStart;
             info.StartTime = Time;
             return processed;
+        }
+
+        private void ProcessScheduledObject(MapObject obj)
+        {
+            try
+            {
+                obj.Process();
+                obj.SetOperateTime();
+            }
+            catch (Exception ex)
+            {
+                Interlocked.Increment(ref _objectProcessErrors);
+                // MapObject consumes delayed actions before dispatch. Resume the object
+                // later, without replaying the failed action's non-transactional effects.
+                // The object is dequeued, so this only records its due time; Complete requeues it.
+                obj.OperateTime = Time + ObjectErrorRetryMilliseconds;
+                ReportObjectProcessError(obj, ex);
+            }
+        }
+
+        private void ReportObjectProcessError(MapObject obj, Exception ex)
+        {
+            int suppressed;
+            lock (_objectErrorLogLock)
+            {
+                if (_lastObjectErrorLogTime != long.MinValue && Time - _lastObjectErrorLogTime < ObjectErrorLogIntervalMilliseconds)
+                {
+                    _suppressedObjectErrorLogs++;
+                    return;
+                }
+                _lastObjectErrorLogTime = Time;
+                suppressed = _suppressedObjectErrorLogs;
+                _suppressedObjectErrorLogs = 0;
+            }
+
+            string description;
+            try
+            {
+                description = $"{obj.GetType().Name} '{obj.Name}' ID={obj.ObjectID} Map={obj.CurrentMap?.Info?.FileName} Location={obj.CurrentLocation}";
+            }
+            catch
+            {
+                description = $"{obj.GetType().Name} ID={obj.ObjectID}";
+            }
+
+            MessageQueue.Enqueue($"Object process error isolated (retry in {ObjectErrorRetryMilliseconds} ms, total {ObjectProcessErrors}, suppressed {suppressed}): {description}{Environment.NewLine}{ex}");
         }
 
         private void AdjustLights()
@@ -4267,6 +4341,20 @@ namespace Server.MirEnvir
 
             return list;
         }
+        /// <summary>
+        /// GM item lookup accepts the localized display name and the original database name.
+        /// </summary>
+        private static bool MatchesItemName(UserItem item, string identifier, bool partial)
+        {
+            if (item.Info == null) return false;
+            return Matches(item.FriendlyName) || Matches(item.Info.FriendlyName) ||
+                Matches(item.Info.RawFriendlyName) || Matches(item.Info.Name);
+
+            bool Matches(string name) => name != null && (partial
+                ? name.IndexOf(identifier, StringComparison.OrdinalIgnoreCase) >= 0
+                : name.Equals(identifier, StringComparison.OrdinalIgnoreCase));
+        }
+
         public List<CharacterInfo> MatchPlayerbyItem(string itemIdentifier, bool match = false)
         {
             List<CharacterInfo> list = new List<CharacterInfo>();
@@ -4278,42 +4366,42 @@ namespace Server.MirEnvir
                 if (match)
                 {
                     foreach (var item in CharacterList[i].Inventory)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.Equals(itemIdentifier, StringComparison.OrdinalIgnoreCase))) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, false))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var item in CharacterList[i].AccountInfo.Storage)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.Equals(itemIdentifier, StringComparison.OrdinalIgnoreCase))) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, false))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var item in CharacterList[i].QuestInventory)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.Equals(itemIdentifier, StringComparison.OrdinalIgnoreCase))) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, false))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var item in CharacterList[i].Equipment)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.Equals(itemIdentifier, StringComparison.OrdinalIgnoreCase))) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, false))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var mail in CharacterList[i].Mail)
                         foreach (var item in mail.Items)
-                            if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.Equals(itemIdentifier, StringComparison.OrdinalIgnoreCase))) && !list.Contains(CharacterList[i]))
+                            if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, false))) && !list.Contains(CharacterList[i]))
                                 list.Add(CharacterList[i]);
                 }
                 else
                 {
                     foreach (var item in CharacterList[i].Inventory)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.IndexOf(itemIdentifier, StringComparison.OrdinalIgnoreCase) >= 0)) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, true))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var item in CharacterList[i].QuestInventory)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.IndexOf(itemIdentifier, StringComparison.OrdinalIgnoreCase) >= 0)) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, true))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var item in CharacterList[i].Equipment)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.IndexOf(itemIdentifier, StringComparison.OrdinalIgnoreCase) >= 0)) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, true))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
 
                     foreach (var item in CharacterList[i].AccountInfo.Storage)
-                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && item.FriendlyName.IndexOf(itemIdentifier, StringComparison.OrdinalIgnoreCase) >= 0)) && !list.Contains(CharacterList[i]))
+                        if (item != null && ((isNumeric && item.UniqueID == itemId) || (!isNumeric && MatchesItemName(item, itemIdentifier, true))) && !list.Contains(CharacterList[i]))
                             list.Add(CharacterList[i]);
                 }
             }

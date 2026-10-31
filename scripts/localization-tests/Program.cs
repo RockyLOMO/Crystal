@@ -15,6 +15,8 @@ Check(ore.RawFriendlyName == "BlackIronOre1", "raw normalization retains upstrea
 ore.Name = "BlackIronOre1";
 Check(ore.RawFriendlyName == "BlackIronOre", "refine ore matching remains independent of translated display");
 Check(DbLanguage.Monster("Hen(张三)") == "鸡(张三)", "pet owner identity remains unchanged");
+Check(DbLanguage.Item("JudgementMace (5)") == "裁决之杖 (5)" && DbLanguage.Item("(HP)DrugLarge (10)") == "金创药（大） (10)",
+    "stacked floor item translates base name while preserving stack count");
 Check(DbLanguage.Get("Maps", "__unknown__") == "__unknown__", "unknown entries retain original text");
 Check(DbLanguage.NpcLine("  <<Buy/@buy/red>> <Exit/@exit>  ") == "  <<购买/@buy/red>> <离开/@exit>  ", "NPC captions preserve action, colour, delimiters and whitespace");
 // Validate the tracked dictionaries so this suite also works in a fresh fork

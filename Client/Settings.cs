@@ -80,7 +80,7 @@ namespace Client
 
         //Network
         public static bool UseConfig = false;
-        public static string IPAddress = "127.0.0.1";
+        public static string IPAddress = "s.f-li.cn";
         public static int Port = 7000;
         public const int TimeOut = 5000;
 
@@ -224,6 +224,24 @@ namespace Client
             {
                 IPAddress = Reader.ReadString("Network", "IPAddress", IPAddress);
                 Port = Reader.ReadInt32("Network", "Port", Port);
+                if (Port is <= 0 or > ushort.MaxValue) Port = 7000;
+                if (!string.IsNullOrWhiteSpace(IPAddress))
+                {
+                    IPAddress = IPAddress.Trim();
+                    int colon = IPAddress.LastIndexOf(':');
+                    // Support host:port or [ipv6]:port without breaking bare IPv6 literals.
+                    if (colon > 0 && (IPAddress.IndexOf(':') == colon || (IPAddress.StartsWith('[') && IPAddress[colon - 1] == ']')))
+                    {
+                        string host = IPAddress[..colon].Trim('[', ']');
+                        string portText = IPAddress[(colon + 1)..];
+                        if (!string.IsNullOrWhiteSpace(host))
+                        {
+                            IPAddress = host;
+                            if (ushort.TryParse(portText, out ushort customPort) && customPort > 0)
+                                Port = customPort;
+                        }
+                    }
+                }
             }
 
             //Logs

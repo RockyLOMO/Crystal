@@ -11,12 +11,12 @@
   },
   "Runtime": {
     "Server": "D:\\private-server\\mir2\\Server",
-    "Client": "D:\\Program Files\\Game\\Mir2",
+    "Client": "D:\\private-server\\mir2-client",
     "Distribution": "E:\\rxdev\\webhost\\mir2",
     "ServerHost": "Windows",
     "ServerRuntime": "Microsoft.WindowsDesktop.App 8.0.29",
     "ClientSelfContained": true,
-    "GameEndpoint": "127.0.0.1:7000",
+    "GameEndpoint": "s.f-li.cn:7000",
     "StatusEndpoint": "127.0.0.1:3000",
     "HTTPAdmin": false
   },

@@ -653,7 +653,7 @@ namespace Client.MirScenes.Dialogs
             List<GameShopItem> shopList;
 
             if (Search.TextBox.Text != "")
-                shopList = GameScene.GameShopInfoList.Where(f => f.Info.FriendlyName.ToLower().Contains(Search.TextBox.Text.ToLower())).ToList();
+                shopList = GameScene.GameShopInfoList.Where(f => MatchesSearch(f.Info, Search.TextBox.Text)).ToList();
             else
                 shopList = GameScene.GameShopInfoList;
 
@@ -702,7 +702,7 @@ namespace Client.MirScenes.Dialogs
             List<GameShopItem> ShopList;
 
             if (Search.TextBox.Text != "")
-                ShopList = GameScene.GameShopInfoList.Where(f => f.Info.FriendlyName.ToLower().Contains(Search.TextBox.Text.ToLower())).ToList();
+                ShopList = GameScene.GameShopInfoList.Where(f => MatchesSearch(f.Info, Search.TextBox.Text)).ToList();
             else
                 ShopList = GameScene.GameShopInfoList;
 
@@ -757,6 +757,15 @@ namespace Client.MirScenes.Dialogs
 
             GameScene.Scene.GameShopDialog.Viewer.Visible = false;
 
+        }
+
+        private static bool MatchesSearch(ItemInfo info, string query)
+        {
+            if (info == null || string.IsNullOrEmpty(query)) return true;
+            return Contains(info.FriendlyName) || Contains(info.RawFriendlyName) || Contains(info.Name);
+
+            bool Contains(string text) =>
+                !string.IsNullOrEmpty(text) && text.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
     }

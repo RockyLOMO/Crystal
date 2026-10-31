@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Server;
 using Server.MirDatabase;
 using Server.MirEnvir;
@@ -179,11 +180,84 @@ lock (monitor)
 Check(workerThread.Join(2000) && threadFailure == null, "stop wakes and terminates the waiting worker");
 DespawnAll();
 running.SetValue(env, true);
+Tick(30_000);
 var failing = Spawn(); failing.FailOnProcess = true; failing.OperateTime = 0;
+var healthy = Spawn(); healthy.OperateTime = 1;
+var errorsBefore = env.ObjectProcessErrors;
+Check(Run(partition) == 2 && failing.Calls == 1 && healthy.Calls == 1 && env.Running
+    && env.ObjectProcessErrors == errorsBefore + 1 && failing.OperateTime == 31_000,
+    "object Process exception is isolated, logged, delayed for retry, and does not stop other objects");
+DespawnAll();
+
+// Exercise the real delayed-NPC pipeline: grant gold, then fail after that
+// side effect. Retrying the player must not replay the consumed reward action.
+var player = new SilentPlayer
+{
+    Info = new CharacterInfo { Name = "retry-regression" },
+    Account = new AccountInfo(),
+    Connection = (Server.MirNetwork.MirConnection)RuntimeHelpers.GetUninitializedObject(typeof(Server.MirNetwork.MirConnection)),
+    CurrentMap = new Map(new MapInfo()),
+    ItemExpireTime = long.MaxValue,
+    TorchTime = long.MaxValue,
+    DuraTime = long.MaxValue,
+};
+player.Info.Mount = new MountInfo(player);
+player.Stats = new Stats();
+player.Node = new LinkedList<MapObject>().AddLast(player);
+var rewardPage = new NPCPage("[@REWARD]");
+var rewardSegment = new NPCSegment(rewardPage, [], [], [], [], []);
+rewardSegment.ActList.Add(new NPCActions(ActionType.GiveGold, "100"));
+rewardSegment.ActList.Add(new NPCActions(ActionType.Calc, "1", "/", "0", "A0"));
+rewardPage.SegmentList.Add(rewardSegment);
+var rewardScript = (NPCScript)RuntimeHelpers.GetUninitializedObject(typeof(NPCScript));
+rewardScript.NPCPages = [rewardPage];
+var followupPage = new NPCPage("[@FOLLOWUP]");
+var followupSegment = new NPCSegment(followupPage, [], [], [], [], []);
+followupSegment.ActList.Add(new NPCActions(ActionType.GiveGold, "7"));
+followupPage.SegmentList.Add(followupSegment);
+rewardScript.NPCPages.Add(followupPage);
+int scriptId = env.ScriptIndex + 1;
+while (env.Scripts.ContainsKey(scriptId)) scriptId++;
+env.Scripts.Add(scriptId, rewardScript);
+var processObject = typeof(Envir).GetMethod("ProcessScheduledObject", Private)!;
+try
+{
+    var failedReward = new DelayedAction(DelayedType.NPC, 0, (uint)1, scriptId, "[@REWARD]");
+    var followupReward = new DelayedAction(DelayedType.NPC, 0, (uint)1, scriptId, "[@FOLLOWUP]");
+    player.ActionList.Add(failedReward);
+    player.ActionList.Add(followupReward);
+    Tick(40_000);
+    errorsBefore = env.ObjectProcessErrors;
+    processObject.Invoke(env, [player]);
+    Check(player.Account.Gold == 100 && player.ActionList.Count == 1 && player.ActionList[0] == followupReward &&
+        env.ObjectProcessErrors == errorsBefore + 1 && player.OperateTime == 41_000,
+        "partially failed NPC reward is consumed once, preserving unrelated queued actions");
+    Tick(41_001);
+    processObject.Invoke(env, [player]);
+    Tick(42_002);
+    processObject.Invoke(env, [player]);
+    Check(player.Account.Gold == 107 && player.ActionList.Count == 0 &&
+        env.ObjectProcessErrors == errorsBefore + 1,
+        "player retries execute the remaining reward once without replaying the failed reward");
+    player.ActionList.Add(new DelayedAction(DelayedType.NPC, 0, (uint)1, scriptId, "[@FOLLOWUP]"));
+    player.ActionList.Add(new DelayedAction(DelayedType.NPC, 0, (uint)1, scriptId, "[@FOLLOWUP]"));
+    Tick(43_000);
+    processObject.Invoke(env, [player]);
+    Check(player.Account.Gold == 121 && player.ActionList.Count == 0,
+        "multiple delayed actions due in the same tick are all processed without skipping adjacent entries");
+}
+finally
+{
+    env.Scripts.Remove(scriptId);
+}
+
+// Corrupt the internal heap to verify that a scheduler-level failure still stops the server safely.
+((List<MapObject>)heapField.GetValue(partition)!).Add(null!);
 partition.Stop = false; partition.EndTime = long.MaxValue;
 var failedThread = new Thread(() => worker.Invoke(env, [partition])) { IsBackground = true };
 failedThread.Start();
 Check(failedThread.Join(2000) && !env.Running && partition.Stop, "worker error cannot strand the main completion waiter");
+((List<MapObject>)heapField.GetValue(partition)!).Clear();
 DespawnAll();
 Check(Size(partition) == 0 && Size(mainQueue) == 0, "final cleanup releases all scheduled references");
 var closing = Enumerable.Range(0, 10).Select(_ => Spawn()).ToArray();
@@ -211,4 +285,10 @@ sealed class CountingMonster : MonsterObject
         OnProcess?.Invoke(this);
     }
     public override void SetOperateTime() => OperateTime = NextDue;
+}
+
+sealed class SilentPlayer : PlayerObject
+{
+    public override void Enqueue(Packet packet) { }
+    protected override void ProcessBuffs() { }
 }

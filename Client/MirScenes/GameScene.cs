@@ -4953,7 +4953,7 @@ namespace Client.MirScenes
                 {
                     ObjectType.Monster => DbLanguage.Monster(p.Name),
                     ObjectType.Merchant => DbLanguage.Get("Npcs", p.Name),
-                    ObjectType.Item => DbLanguage.Get("Items", p.Name),
+                    ObjectType.Item => DbLanguage.Item(p.Name),
                     _ => p.Name
                 };
         }
