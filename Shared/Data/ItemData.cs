@@ -657,6 +657,9 @@ public class UserItem
 
         if (!forceRare && Random.Shared.Next(100) >= 10) return;
 
+        minAdd = Math.Clamp(minAdd, 1, 6);
+        maxAdd = Math.Clamp(maxAdd, minAdd, 6);
+
         int statCount = 1;
         int countRoll = Random.Shared.Next(100);
         if (countRoll >= 75 && countRoll < 95) statCount = 2;
@@ -675,7 +678,8 @@ public class UserItem
 
             val = Math.Clamp(val, minAdd, maxAdd);
 
-            int statType = Random.Shared.Next(6);
+            // 仅抽取攻/魔/道/双防五项基础极品词条，停用 HP/MP*15 词条以避免放大原版 Stats.Count 售价与修理费公式
+            int statType = Random.Shared.Next(5);
             switch (statType)
             {
                 case 0: AddedStats[Stat.MaxDC] += val; break;
@@ -683,10 +687,6 @@ public class UserItem
                 case 2: AddedStats[Stat.MaxSC] += val; break;
                 case 3: AddedStats[Stat.MaxAC] += val; break;
                 case 4: AddedStats[Stat.MaxMAC] += val; break;
-                case 5:
-                    AddedStats[Stat.HP] += val * 15;
-                    AddedStats[Stat.MP] += val * 15;
-                    break;
             }
         }
 

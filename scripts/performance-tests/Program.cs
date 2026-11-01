@@ -273,6 +273,22 @@ try
         "#ELSEIF parses into chained segments, executes matching branch once, and skips subsequent branches");
     Check(player.CanRun && !player.FastRun,
         "1.76 instant-run: HumanObject.CanRun is true from standstill without 1-step walk warm-up");
+
+    var sampleInfo = new ItemInfo { Index = 999, Name = "JudgementMace", Type = ItemType.Weapon, Price = 10000, Durability = 30000 };
+    bool noHpMpInflation = true;
+    bool boundedStats = true;
+    for (int r = 0; r < 100; r++)
+    {
+        var sampleItem = new UserItem(sampleInfo) { CurrentDura = 30000, MaxDura = 30000 };
+        sampleItem.RollFullVersionRareStats(forceRare: true, minAdd: 99, maxAdd: 999);
+        if (sampleItem.AddedStats[Stat.HP] != 0 || sampleItem.AddedStats[Stat.MP] != 0)
+            noHpMpInflation = false;
+        int primarySum = sampleItem.AddedStats[Stat.MaxDC] + sampleItem.AddedStats[Stat.MaxMC] + sampleItem.AddedStats[Stat.MaxSC] + sampleItem.AddedStats[Stat.MaxAC] + sampleItem.AddedStats[Stat.MaxMAC];
+        if (primarySum < 6 || primarySum > 18)
+            boundedStats = false;
+    }
+    Check(noHpMpInflation && boundedStats,
+        "RollFullVersionRareStats clamps out-of-range tiers to [1,6] and excludes HP/MP*15 price inflation");
 }
 finally
 {

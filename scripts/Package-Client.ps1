@@ -47,6 +47,8 @@ Port=7000
 [Game]
 Language=Chinese
 FontName=Microsoft YaHei
+SmartShift=True
+AutoPickUp=True
 
 [Launcher]
 Enabled=False

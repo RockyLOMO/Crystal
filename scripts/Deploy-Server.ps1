@@ -34,11 +34,13 @@ $serverProcess = @(Get-CimInstance Win32_Process -Filter "Name='Server.exe'" -Er
 
 if ($serverProcess.Count -gt 0) {
     if ($Restart -or $ForceStop) {
+        if (-not (Test-Path -LiteralPath $manageScript)) {
+            throw "未找到管理脚本 $manageScript，拒绝强制终止运行中的服务端进程 (PID: $($serverProcess[0].ProcessId))。"
+        }
         Write-Host "检测到服务端正在运行 (PID: $($serverProcess[0].ProcessId))，正在优雅停服..." -ForegroundColor Yellow
-        if (Test-Path -LiteralPath $manageScript) {
-            & pwsh -NoLogo -NoProfile -File $manageScript -Action Stop -RuntimeRoot $runtimeRoot
-        } else {
-            Stop-Process -Id $serverProcess[0].ProcessId -Force
+        & pwsh -NoLogo -NoProfile -File $manageScript -Action Stop -RuntimeRoot $runtimeRoot
+        if ($LASTEXITCODE -ne 0) {
+            throw "优雅停服失败，退出码: $LASTEXITCODE。已终止部署以保护存档数据。"
         }
         Start-Sleep -Seconds 2
         $remaining = @(Get-CimInstance Win32_Process -Filter "Name='Server.exe'" -ErrorAction SilentlyContinue |
@@ -54,9 +56,13 @@ if ($serverProcess.Count -gt 0) {
 
 # 2. 可选：全量运行数据/数据库备份
 if ($BackupData) {
-    if (Test-Path -LiteralPath $manageScript) {
-        Write-Host "正在执行服务端完整数据一致性备份..." -ForegroundColor Cyan
-        & pwsh -NoLogo -NoProfile -File $manageScript -Action Backup -RuntimeRoot $runtimeRoot
+    if (-not (Test-Path -LiteralPath $manageScript)) {
+        throw "未找到管理脚本 $manageScript，无法执行数据一致性备份，已终止部署。"
+    }
+    Write-Host "正在执行服务端完整数据一致性备份..." -ForegroundColor Cyan
+    & pwsh -NoLogo -NoProfile -File $manageScript -Action Backup -RuntimeRoot $runtimeRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "服务端数据一致性备份失败，退出码: $LASTEXITCODE。已终止部署。"
     }
 }
 
