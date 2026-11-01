@@ -189,6 +189,65 @@ Check(Run(partition) == 2 && failing.Calls == 1 && healthy.Calls == 1 && env.Run
     "object Process exception is isolated, logged, delayed for retry, and does not stop other objects");
 DespawnAll();
 
+// Use real NPC construction and disk scripts: owner lookup must work before
+// ParseQuests/ParseSpeech run, while failed construction must never be scheduled.
+var npcFixturePath = Path.Combine(Path.GetTempPath(), "ai", "20261101", "mir2-quest-binding", Guid.NewGuid().ToString("N"));
+var originalWorkingDirectory = Directory.GetCurrentDirectory();
+var originalScriptIndex = env.ScriptIndex;
+var originalQuests = env.QuestInfoList.ToArray();
+var originalScriptKeys = env.Scripts.Keys.ToHashSet();
+var originalNpcObjects = env.NPCs.ToHashSet();
+var acceptQuest = new QuestInfo { Index = 1, Name = "fixture-accept", RequiredMinLevel = 1, RequiredMaxLevel = 65535 };
+var finishQuest = new QuestInfo { Index = 2, Name = "fixture-finish", RequiredMinLevel = 1, RequiredMaxLevel = 65535 };
+try
+{
+    Directory.CreateDirectory(npcFixturePath);
+    Directory.SetCurrentDirectory(npcFixturePath);
+    Directory.CreateDirectory(Settings.NPCPath);
+    Directory.CreateDirectory(Settings.GoodsPath);
+    env.QuestInfoList.Clear();
+    env.QuestInfoList.AddRange([acceptQuest, finishQuest]);
+    File.WriteAllLines(Path.Combine(Settings.NPCPath, "quest-owner.txt"),
+        ["[@MAIN]", "#SAY", "Fixture", "[Quests]", "1", "-2", "[Speech]", "1 Fixture speech"]);
+    var questNpc = new NPCObject(new NPCInfo { Index = 991001, FileName = "quest-owner" });
+    Check(acceptQuest.NpcIndex == questNpc.ObjectID && finishQuest.FinishNpcIndex == questNpc.ObjectID
+        && questNpc.Quests.SequenceEqual(new[] { acceptQuest, finishQuest }),
+        "real NPC constructor binds positive quest IDs for acceptance and negative IDs for completion");
+    Check(questNpc.Speech.Count == 1 && questNpc.Speech[0].Message == "Fixture speech",
+        "real NPC constructor binds speech through the registered script owner");
+    Check(env.NPCs.Contains(questNpc) && questNpc.Node != null && membership.GetValue(questNpc) == mainQueue,
+        "successfully initialized NPC is registered and scheduled on the main queue");
+
+    File.WriteAllLines(Path.Combine(Settings.NPCPath, "broken-owner.txt"), ["[@MAIN]", "#SAY", "Fixture"]);
+    // One goods record claimed, but no record bytes: force LoadGoods to fail.
+    File.WriteAllBytes(Path.Combine(Settings.GoodsPath, "991002.msd"), BitConverter.GetBytes(1));
+    var objectsBeforeFailure = env.Objects.Count;
+    var npcsBeforeFailure = env.NPCs.Count;
+    var queueBeforeFailure = Size(mainQueue);
+    var scriptsBeforeFailure = env.Scripts.Count;
+    bool failedNpcRejected = false;
+    try { _ = new NPCObject(new NPCInfo { Index = 991002, FileName = "broken-owner" }); }
+    catch (EndOfStreamException) { failedNpcRejected = true; }
+    Check(failedNpcRejected && env.Objects.Count == objectsBeforeFailure && env.NPCs.Count == npcsBeforeFailure
+        && Size(mainQueue) == queueBeforeFailure && env.Scripts.Count == scriptsBeforeFailure,
+        "failed NPC script initialization leaves no registered NPC, script, or scheduled object");
+}
+finally
+{
+    foreach (var fixtureNpc in env.NPCs.Where(item => !originalNpcObjects.Contains(item)).ToArray())
+    {
+        if (fixtureNpc.Node != null) fixtureNpc.Despawn();
+        env.NPCs.Remove(fixtureNpc);
+    }
+    foreach (var fixtureScript in env.Scripts.Keys.Where(key => !originalScriptKeys.Contains(key)).ToArray())
+        env.Scripts.Remove(fixtureScript);
+    env.ScriptIndex = originalScriptIndex;
+    env.QuestInfoList.Clear();
+    env.QuestInfoList.AddRange(originalQuests);
+    Directory.SetCurrentDirectory(originalWorkingDirectory);
+    Directory.Delete(npcFixturePath, recursive: true);
+}
+
 // Exercise the real delayed-NPC pipeline: grant gold, then fail after that
 // side effect. Retrying the player must not replay the consumed reward action.
 var player = new SilentPlayer

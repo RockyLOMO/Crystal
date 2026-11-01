@@ -837,7 +837,7 @@ namespace Client.MirScenes.Dialogs
                     {
                         if (mapInfo?.MapInfo != null && !string.IsNullOrEmpty(mapInfo.MapInfo.Title))
                         {
-                            mapName = mapInfo.MapInfo.Title;
+                            mapName = DbLanguage.Get("Maps", mapInfo.MapInfo.Title);
                         }
                     }
                     // Otherwise no map info yet; we will request it below if needed

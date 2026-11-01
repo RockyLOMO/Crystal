@@ -84,7 +84,7 @@ namespace Client.MirScenes.Dialogs
                 if (currentRecord == value) return;
                 SetButtonsVisibility(false);
                 currentRecord = value;
-                TitleLabel.Text = currentRecord != null ? currentRecord.MapInfo.Title : string.Empty;
+                TitleLabel.Text = currentRecord != null ? DbLanguage.Get("Maps", currentRecord.MapInfo.Title) : string.Empty;
                 ViewPort.UserRadarDot.Visible = currentRecord != null && currentRecord.Index == GameScene.Scene.MapControl.Index;
                 SetButtonsVisibility(true);
             }
@@ -528,7 +528,7 @@ namespace Client.MirScenes.Dialogs
                 };
                 button.MouseEnter += (o, e) =>
                 {
-                    TitleLabel.Text = icon.Title;
+                    TitleLabel.Text = DbLanguage.Get("Maps", icon.Title);
                     TitleLabel.Location = new Point(Size.Width / 2 - TitleLabel.Size.Width / 2, 10);
                 };
                 button.MouseLeave += (o, e) =>

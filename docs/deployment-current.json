@@ -149,5 +149,16 @@
     "ClientBackup": "D:\\private-server\\mir2\\backups\\before-ui-overlay-20261031-232845",
     "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
     "ServerDeploymentThisRound": false
+  },
+  "QuestBindingRepair": {
+    "CheckedAt": "2026-11-01T22:49:46.6110905+08:00",
+    "Evidence": "quest-binding-validation.json",
+    "Deployed": true,
+    "Files": [
+      "Server.Library.dll",
+      "Server.Library.pdb"
+    ],
+    "FinalGameNetwork": "Stopped",
+    "GameplayAcceptance": "NOT VERIFIED"
   }
 }

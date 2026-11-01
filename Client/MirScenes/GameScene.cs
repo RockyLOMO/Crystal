@@ -2178,7 +2178,7 @@ namespace Client.MirScenes
                     Sound = SoundList.ButtonA,
                     Parent = BigMapDialog.ViewPort,
                     Location = new Point(20, 38),
-                    Hint = mInfo.Title,
+                    Hint = DbLanguage.Get("Maps", mInfo.Title),
                     Visible = false
                 };
                 button.MouseEnter += (o, e) =>

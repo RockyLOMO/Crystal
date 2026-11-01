@@ -52,8 +52,17 @@ namespace Server.MirObjects
             Direction = (MirDirection)Envir.Random.Next(3);
             TurnTime = Envir.Time + Envir.Random.Next(100);
 
-            LoadScript();
             Envir.NPCs.Add(this);
+            try
+            {
+                // Script quest/speech binding resolves its owner through Envir.NPCs.
+                LoadScript();
+            }
+            catch
+            {
+                Envir.NPCs.Remove(this);
+                throw;
+            }
 
             Spawned();
         }

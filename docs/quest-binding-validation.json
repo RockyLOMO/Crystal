@@ -1,0 +1,49 @@
+{
+  "CheckedAt": "2026-11-01T22:49:18.9336749+08:00",
+  "RootCause": "NPC script parsed before owner registration; ParseQuests/ParseSpeech owner lookup returned null",
+  "Fix": "Register owner before script parsing; remove owner and rethrow on failure; schedule only after success",
+  "QuestDefinitions": 154,
+  "NPCDefinitions": 375,
+  "SchedulingAndNPCRegressionChecks": 42,
+  "RegressionResult": "PASS",
+  "RealDatabaseBindings": {
+    "CraftsLady_Jude": [
+      1,
+      2
+    ],
+    "Merchant_John": [
+      3,
+      4
+    ],
+    "Assistant_Jane": [
+      1,
+      2,
+      3,
+      7,
+      10,
+      13,
+      16,
+      19
+    ]
+  },
+  "ServerPublish": "PASS",
+  "ProgramBackup": "D:\\private-server\\mir2\\backups\\quest-binding-programs-20261101-224848",
+  "DataBackup": "Consistent backup: D:\\private-server\\mir2\\backups\\20261101-144842Z",
+  "DeployedFiles": [
+    "Server.Library.dll",
+    "Server.Library.pdb"
+  ],
+  "VersionHandshake": {
+    "endpoint": "127.0.0.1:7000",
+    "connected_packet": "PASS",
+    "client_version": "PASS",
+    "keepalive_roundtrip": "PASS",
+    "account_changes": false
+  },
+  "StartupErrors": false,
+  "MapsLoaded463": true,
+  "FinalGameNetwork": "Stopped (same as before deployment)",
+  "GameplayAcceptance": "NOT VERIFIED",
+  "ClientChangedThisRound": false,
+  "Commit": "Not committed"
+}
