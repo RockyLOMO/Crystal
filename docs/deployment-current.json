@@ -1,5 +1,5 @@
 {
-  "CheckedAtUtc": "2026-11-02T22:29:37+08:00",
+  "CheckedAtUtc": "2026-11-02T23:28:23+08:00",
   "Status": "deployed-stopped",
   "Source": {
     "Path": "D:\\projs\\mir2",
@@ -53,7 +53,7 @@
     "LatestEnvirTextHashCheck": "2600 unchanged",
     "ClientSettingsIntegration": "PASS: 2 checks",
     "LatestLibMetadataCheck": "1440 unchanged",
-    "UIOverlay": "PASS: 93 rules / 166 regions / 14 interaction checks"
+    "UIOverlay": "PASS: 93 rules / 166 regions / 24 interaction checks"
   },
   "Content": {
     "DatabaseRelease": "29.01.25",
@@ -173,5 +173,11 @@
     "Evidence": "yob-translation-validation.json",
     "RuntimeDictionariesUpdated": true,
     "FullClientPackageRequiresPatch": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-zhCN-Yob-fix-20261102.zip"
+  },
+  "NpcOptionsAndClothSale": {
+    "Evidence": "npc-options-validation.json",
+    "RuntimeClientUpdated": true,
+    "ServerRestarted": false,
+    "DistributionUpdated": false
   }
 }

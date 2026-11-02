@@ -17,7 +17,6 @@ foreach (var change in new Action<UserItem>[]
     i => i.Info.Bind = BindMode.DontSell,
     i => i.Info.Set = ItemSet.Spirit,
     i => i.Info.Unique = SpecialItemMode.Teleport,
-    i => i.Info.StartItem = true,
     i => i.Info.NeedIdentify = true,
     i => i.SoulBoundId = 2,
     i => i.WeddingRing = 2,
@@ -34,6 +33,56 @@ foreach (var change in new Action<UserItem>[]
 {
     var i = Ordinary(); change(i); Check(!NpcAutoController.IsOrdinaryEquipment(i), "valuable or non-equipment excluded");
 }
+foreach (string name in new[] { "BaseDress(M)", "BaseDress(F)" })
+{
+    var cloth = Ordinary(); cloth.Info.Name = name; cloth.Info.Type = ItemType.Armour; cloth.Info.StartItem = true;
+    Check(NpcAutoController.IsOrdinaryEquipment(cloth), "ordinary inventory cloth remains eligible despite starter-template flag: " + name);
+    cloth.AddedStats[Stat.MaxAC] = 1;
+    Check(!NpcAutoController.IsOrdinaryEquipment(cloth), "enhanced cloth still protected: " + name);
+}
+var drapery = new Fake { Bag = new[] { Ordinary() } };
+var redirected = new NpcAutoController(drapery);
+redirected.OnPage(Array.Empty<string>(), 0);
+redirected.OnPage(new[] { "<View/@BuySell> Store.", "<Repair/@Repair> Drapery pieces." }, 10);
+redirected.Process(200);
+Check(drapery.Pages.SequenceEqual(new[] { "@BUYSELL" }), "redirected drapery dialogue follows its final service page");
+var maleCloth = Ordinary(31); maleCloth.Info.Name = "BaseDress(M)"; maleCloth.Info.Type = ItemType.Armour; maleCloth.Info.StartItem = true;
+var femaleCloth = Ordinary(32); femaleCloth.Info.Name = "BaseDress(F)"; femaleCloth.Info.Type = ItemType.Armour; femaleCloth.Info.StartItem = true;
+drapery.Bag = new[] { maleCloth, femaleCloth };
+redirected.OnPage(new[] { "<Back/@main>" }, 210); redirected.OnSellPanel(210); redirected.Process(400);
+redirected.OnSold(31, true, 500); drapery.Bag = new[] { femaleCloth }; redirected.Process(700);
+Check(drapery.Sales.SequenceEqual(new ulong[] { 31, 32 }), "drapery automatically sells ordinary male and female cloth sequentially");
+var multiPage = new Fake { Bag = new[] { Ordinary() } }; var multipageController = new NpcAutoController(multiPage);
+multipageController.OnPage(new[] { "Opening page <Close/@Exit>" }, 0);
+multipageController.OnPage(new[] { "Final page <Sell/@Sell>" }, 10); multipageController.Process(200);
+Check(multiPage.Pages.SequenceEqual(new[] { "@SELL" }), "same-NPC redirect before the first action does not cancel automation");
+// Exercise the server's real GOTO response sequence, rather than assuming every
+// merchant sends exactly one page. The fixture does not start a game server.
+string originalDirectory = Directory.GetCurrentDirectory();
+string dialogueFixture = Path.Combine(Path.GetTempPath(), "ai", DateTime.Now.ToString("yyyyMMdd"), "mir2-drapery-dialogue", Guid.NewGuid().ToString("N"));
+Directory.CreateDirectory(Path.Combine(dialogueFixture, "Envir", "NPCs"));
+try
+{
+    Directory.SetCurrentDirectory(dialogueFixture);
+    File.WriteAllLines(Path.Combine("Envir", "NPCs", "drapery.txt"),
+        ["[@MAIN]", "#IF", "CHECKPKPOINT > 199", "#SAY", "No service", "#ELSEACT", "GOTO @Main-1",
+         "[@Main-1]", "#SAY", "<View/@BuySell> Store.", "<Repair/@Repair> Drapery pieces.", "[Types]", "2", "4", "9", "10"]);
+    var npc = new Server.MirObjects.NPCObject(new Server.MirDatabase.NPCInfo { FileName = "drapery", Rate = 100 });
+    var script = Server.MirObjects.NPCScript.Get(npc.ScriptID);
+    var actor = new DialoguePlayer { Info = new Server.MirDatabase.CharacterInfo(), Account = new Server.MirDatabase.AccountInfo() };
+    script.Call(actor, npc.ObjectID, Server.MirObjects.NPCScript.MainKey);
+    foreach (var action in actor.ActionList.ToArray()) actor.Process(action);
+    var pages = actor.Packets.OfType<ServerPackets.NPCResponse>().ToArray();
+    Check(pages.Length == 2 && pages[0].Page.Count == 0 && pages[1].Page.Any(s => s.Contains("/@BuySell")),
+        "real drapery GOTO emits an empty response followed by the merchant page");
+    var live = new Fake { Bag = new[] { femaleCloth } }; var controller = new NpcAutoController(live);
+    for (int i = 0; i < pages.Length; i++) { live.IsAvailable = pages[i].Page.Count > 0; controller.OnPage(pages[i].Page, i * 10); }
+    controller.Process(200);
+    Check(live.Pages.SequenceEqual(new[] { "@BUYSELL" }) && script.Types.Contains(ItemType.Armour),
+        "real merchant dialogue and inventory cloth enter the supported armour sell service");
+    npc.Despawn(); Server.MirEnvir.Envir.Main.NPCs.Remove(npc); Server.MirEnvir.Envir.Main.Scripts.Remove(npc.ScriptID);
+}
+finally { Directory.SetCurrentDirectory(originalDirectory); }
 var fake = new Fake { Bag = new[] { Ordinary(), Ordinary(2) }, Worn = new[] { Ordinary(9) } };
 var c = new NpcAutoController(fake);
 c.OnPage(new[] { "<出售/@Sell>", "<<特殊修理/@SRepair>>" }, 0);
@@ -94,6 +143,14 @@ var rented = Ordinary(9); rented.RentalInformation = new RentalInformation { Bin
 Check(!NpcAutoController.CanSpecialRepair(rented), "rental repair restriction honored");
 var full = Ordinary(9); full.CurrentDura = full.MaxDura;
 Check(!NpcAutoController.CanSpecialRepair(full), "full durability skipped without charge");
+var switched = new Fake { Bag = new[] { Ordinary() } }; var switchedController = new NpcAutoController(switched);
+switchedController.OnPage(new[] { "<Sell/@SELL>" }, 0); switchedController.Process(200);
+switchedController.OnPage(new[] { "<Back/@MAIN>" }, 210); switchedController.OnSellPanel(210); switchedController.Process(400);
+switched.SellEnabled = false; switchedController.PreferencesChanged(); switchedController.Process(500);
+Check(!switchedController.Active && !switched.IsLocked(1), "option change cancels queued work and releases the pending cell lock");
+switched.SellEnabled = true; switchedController.PreferencesChanged(); switched.Bag = new[] { Ordinary(2) };
+switchedController.OnPage(new[] { "<Sell/@SELL>" }, 600); switchedController.Process(800);
+Check(switched.Pages.Count == 2, "re-enabling the switch lets the same NPC start a fresh interaction");
 Console.WriteLine($"{passed} checks passed.");
 
 sealed class Fake : INpcAutoContext
@@ -116,4 +173,10 @@ sealed class Fake : INpcAutoContext
     public void Sell(UserItem item) => Sales.Add(item.UniqueID);
     public void SpecialRepair(UserItem item) => Repairs.Add(item.UniqueID);
     public void Notify(string text) => Messages.Add(text);
+}
+
+sealed class DialoguePlayer : Server.MirObjects.PlayerObject
+{
+    public readonly List<Packet> Packets = [];
+    public override void Enqueue(Packet packet) => Packets.Add(packet);
 }

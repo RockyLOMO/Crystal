@@ -1,0 +1,45 @@
+{
+  "Date": "2026-11-02",
+  "SourceHead": "7566bd9a",
+  "IncludesUncommittedChanges": true,
+  "Options": [
+    "AutoSellNormalEquipment",
+    "AutoSpecialRepairEquipment"
+  ],
+  "SettingsBehavior": "Independent switches, immediate queue cancellation and INI persistence; re-click same NPC after changing preferences",
+  "ClothFix": "StartItem is a template flag, not item provenance; ordinary inventory BaseDress(M/F) may be sold; worn/enhanced/bound gear remains protected",
+  "RedirectFix": "Ready stage accepts same-NPC continuation pages; active sale/repair manual-page cancellation retained",
+  "Validation": {
+    "Total": 80,
+    "ClientPublish": "PASS",
+    "NpcAutoChecks": 56,
+    "GitDiffCheck": "PASS",
+    "UIOverlayAndOptionsChecks": 24
+  },
+  "Deployment": {
+    "CheckedAt": "2026-11-02T23:13:17.9457019+08:00",
+    "Backup": "D:\\private-server\\mir2\\backups\\client-options-20261102-231309",
+    "ChangedClientFiles": 6,
+    "ChangedFiles": [
+      "Client.dll",
+      "Client.exe",
+      "Client.pdb",
+      "Shared.dll",
+      "Shared.pdb",
+      "Localization\\Chinese.json"
+    ],
+    "PublishedHashes": "PASS",
+    "ServerProcessIdBefore": 17972,
+    "ServerProcessIdAfter": 17972,
+    "ServerBinariesUnchanged": true,
+    "ServerRestarted": false,
+    "ClientResponding": true,
+    "NewClientErrorBytes": 0,
+    "ClientGracefulExit": true,
+    "DistributionWrites": false,
+    "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "GameplayAcceptance": "NOT VERIFIED",
+  "RollbackDrill": "NOT VERIFIED",
+  "DistributionWrites": false
+}

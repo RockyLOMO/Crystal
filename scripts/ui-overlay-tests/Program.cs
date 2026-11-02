@@ -73,6 +73,37 @@ internal static class Program
         DbLanguage.Load(Path.Combine(root, "Localization"), "Chinese"); Prepare(button);
         var last = button.Controls.Last(); button.Dispose();
         Check(last.IsDisposed, "original owner disposal releases overlay controls and fonts");
+
+        var settings = typeof(OptionDialog).Assembly.GetType("Client.Settings")!;
+        var sellSetting = settings.GetField("AutoSellNormalEquipment")!;
+        var repairSetting = settings.GetField("AutoSpecialRepairEquipment")!;
+        sellSetting.SetValue(null, true); repairSetting.SetValue(null, true);
+        using var options = new OptionDialog();
+        var services = options.Controls.OfType<NpcAutoServiceOptions>().Single();
+        Check(services.AutoSellBox.Checked && services.AutoRepairBox.Checked, "NPC option switches reflect the existing enabled settings");
+        Check(services.Location.Y >= 350 && services.Controls.All(c => c.Location.Y >= 0 && c.Location.Y + c.Size.Height <= services.Size.Height)
+            && services.Location.Y + services.Size.Height <= options.Size.Height, "NPC options extend below the original art and stay inside the dialog hit area");
+        services.AutoSellBox.Sound = SoundList.None; services.AutoRepairBox.Sound = SoundList.None;
+        services.AutoSellBox.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
+        string config = File.ReadAllText("Mir2Config.ini");
+        Check(!(bool)sellSetting.GetValue(null)! && config.Contains("AutoSellNormalEquipment=False"), "selling switch updates its runtime setting and saves immediately");
+        Check((bool)repairSetting.GetValue(null)! && services.AutoRepairBox.Checked, "selling switch does not change repair preference");
+        services.AutoRepairBox.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
+        config = File.ReadAllText("Mir2Config.ini");
+        Check(!(bool)repairSetting.GetValue(null)! && config.Contains("AutoSpecialRepairEquipment=False"), "special repair switch updates its runtime setting and saves immediately");
+        sellSetting.SetValue(null, true); repairSetting.SetValue(null, true);
+        options.Hide(); options.Show();
+        Check(services.AutoSellBox.Checked && services.AutoRepairBox.Checked, "reopening options synchronizes changed preferences");
+        Check(services.AutoSellBox.Hint.Contains("跳过") && services.AutoRepairBox.Hint.Contains("不做普通修理"), "Chinese tooltips explain sale protection and special-repair-only policy");
+        DbLanguage.Load(Path.Combine(root, "Localization"), "English");
+        using var englishOptions = new OptionDialog();
+        var englishServices = englishOptions.Controls.OfType<NpcAutoServiceOptions>().Single();
+        Check(englishServices.AutoSellBox.Controls.OfType<MirLabel>().Any(l => l.Text == "Auto-sell normal equipment")
+            && englishServices.AutoRepairBox.Hint.Contains("never use normal repair"), "English options use English labels and repair policy tooltip");
+        Check(englishServices.AutoSellBox.Controls.Concat(englishServices.AutoRepairBox.Controls).OfType<MirLabel>()
+            .All(l => l.Location.X + l.Size.Width <= englishServices.AutoSellBox.Size.Width), "English switch labels fit within their clickable rows");
+        options.Dispose();
+        Check(services.IsDisposed && services.AutoSellBox.IsDisposed && services.AutoRepairBox.IsDisposed, "closing the option owner disposes the custom panel and switches");
         Console.WriteLine($"All {passed} UI overlay checks passed. No game resources, account or Direct3D device used.");
     }
 }

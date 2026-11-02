@@ -17,6 +17,12 @@ internal static class NpcAutoService
         if (Sessions.TryGetValue(scene, out var session)) session.Process(CMain.Time);
     }
 
+    public static void PreferencesChanged()
+    {
+        if (GameScene.Scene != null && Sessions.TryGetValue(GameScene.Scene, out var session))
+            session.PreferencesChanged();
+    }
+
     public static void OnPacket(GameScene scene, Packet packet)
     {
         // Repairing worn equipment can restore stats lost at zero durability, including manual repairs.
@@ -102,13 +108,21 @@ public sealed class NpcAutoController(INpcAutoContext context)
 
     public bool Active => phase != Phase.Idle;
 
+    public void PreferencesChanged()
+    {
+        Cancel();
+        npcId = 0; // Re-clicking the same NPC after changing a switch starts a fresh interaction.
+    }
+
     public static bool IsOrdinaryEquipment(UserItem item)
     {
         if (item?.Info == null || !IsEquipmentType(item.Info.Type)) return false;
         return item.Info.Name != null && !item.Info.Name.Contains('[') && !item.Info.Name.Contains(']')
             && item.Info.Grade is ItemGrade.None or ItemGrade.Common
             && item.Info.Bind == BindMode.None && item.Info.Unique == SpecialItemMode.None
-            && item.Info.Set == ItemSet.None && !item.Info.StartItem
+            // StartItem describes the template, including later loot of the same
+            // cloth/weapon. Worn gear is excluded by inventory-only selection.
+            && item.Info.Set == ItemSet.None
             && !item.Info.NeedIdentify && item.SoulBoundId == -1 && item.WeddingRing == -1
             && item.AddedStats is { Count: 0 } && !item.IsAdded && item.GemCount == 0
             && item.RefinedValue == RefinedValue.None && item.RefineAdded == 0 && item.RefineSuccessChance == 0
@@ -130,7 +144,7 @@ public sealed class NpcAutoController(INpcAutoContext context)
     {
         if (!context.IsAvailable || (!context.SellEnabled && !context.RepairEnabled)) { Cancel(); return; }
         if (Active && !SameSession()) { Cancel(); return; }
-        if (Active && phase is not (Phase.SellPage or Phase.RepairPage or Phase.MainPage))
+        if (Active && phase is not (Phase.Ready or Phase.SellPage or Phase.RepairPage or Phase.MainPage))
         {
             // A user-selected page supersedes the batch. Do not drive the user back into it.
             Cancel();

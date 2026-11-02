@@ -2829,6 +2829,7 @@ namespace Client.MirScenes.Dialogs
                 LabelText = "踩点自动捡物"
             };
             AutoPickUpBox.Click += (o, e) => Settings.AutoPickUp = AutoPickUpBox.Checked;
+            NpcAutoServiceOptions.Attach(this);
         }
 
         private void ToggleObserve(bool allow)
