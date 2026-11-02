@@ -1,0 +1,753 @@
+{
+  "Date": "2026-11-02",
+  "ChangedEntries": 99,
+  "Changes": [
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "BackStep",
+      "Before": "后跃",
+      "After": "后撤步"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "BladeAvalanche",
+      "Before": "逐日剑法",
+      "After": "剑刃风暴"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "CrossHalfMoon",
+      "Before": "十字半月斩",
+      "After": "十字半月"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "DarkBody",
+      "Before": "暗影分身",
+      "After": "暗影之躯"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "DelayedExplosion",
+      "Before": "延时爆破",
+      "After": "延迟爆炸"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "DragonBracelet",
+      "Before": "圣战手镯",
+      "After": "龙之手镯"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "DragonRing",
+      "Before": "圣战戒指",
+      "After": "龙之戒指"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "DragonRobe(F)",
+      "Before": "天师长袍",
+      "After": "霓裳羽衣"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "DragonRobe(M)",
+      "Before": "天尊道袍（男）",
+      "After": "法神披风（男）"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "EnergyShield",
+      "Before": "灵气盾",
+      "After": "真气护盾"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "ExpelRing",
+      "Before": "驱邪戒指",
+      "After": "降妖除魔戒指"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "FireBurst",
+      "Before": "烈焰突袭",
+      "After": "爆炎术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "FireRobe(F)",
+      "Before": "霓裳羽衣",
+      "After": "恶魔长袍（女）"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "FireRobe(M)",
+      "Before": "法神披风（男）",
+      "After": "恶魔长袍（男）"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "FlameField",
+      "Before": "火龙气焰",
+      "After": "火焰领域"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "FlashDash",
+      "Before": "闪电突袭",
+      "After": "闪光突袭"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "Fury",
+      "Before": "怒气爆发",
+      "After": "狂怒"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "Hallucination",
+      "Before": "迷魂术",
+      "After": "幻觉术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "HealingCircle",
+      "Before": "治愈法阵",
+      "After": "治疗法阵"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "Hemorrhage",
+      "Before": "出血",
+      "After": "放血"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "ImmortalSkin",
+      "Before": "金刚不坏",
+      "After": "不朽之肤"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "IronRing",
+      "Before": "铁戒指",
+      "After": "生铁戒指"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "MPEater",
+      "Before": "魔力吞噬",
+      "After": "噬魔术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "MagicBooster",
+      "Before": "魔法强化",
+      "After": "魔力强化"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "MentalState",
+      "Before": "精神状态",
+      "After": "心境"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "MoonLight",
+      "Before": "月光斩",
+      "After": "月光术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "MoonMist",
+      "Before": "月影迷雾",
+      "After": "月雾术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "MuscleRing",
+      "Before": "肌肉戒指",
+      "After": "超负载戒指"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "Plague",
+      "Before": "瘟疫",
+      "After": "瘟疫术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "PoisonCloud",
+      "Before": "无极毒云",
+      "After": "毒云术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "ProtectionField",
+      "Before": "护体神盾",
+      "After": "护身领域"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "Rage",
+      "Before": "狂暴",
+      "After": "暴怒"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "RecoveryRing",
+      "Before": "恢复戒指",
+      "After": "防御戒指"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "SteelBracelet",
+      "Before": "坚固手套",
+      "After": "钢手镯"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "StoneTrap",
+      "Before": "岩石陷阱",
+      "After": "石化陷阱"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "StormEscape",
+      "Before": "风暴遁形",
+      "After": "风暴逃脱"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "SummonSnakes",
+      "Before": "召唤毒蛇",
+      "After": "召唤蛇群"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "SummonVampire",
+      "Before": "召唤吸血蝠",
+      "After": "召唤吸血鬼"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "SwiftFeet",
+      "Before": "疾风步",
+      "After": "疾行"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "TigerNecklace",
+      "Before": "虎齿项链",
+      "After": "白色虎齿项链"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Items",
+      "Key": "Trap",
+      "Before": "陷阱",
+      "After": "陷阱术"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "Ancient_WoomaFighter",
+      "Before": "远古沃玛战士",
+      "After": "远古沃玛勇士"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "Ancient_WoomaSoldier",
+      "Before": "远古沃玛士兵",
+      "After": "远古沃玛战士"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "BugBat",
+      "Before": "角蝇",
+      "After": "蝙蝠"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "BugBatMaggot",
+      "Before": "蝙蝠蛆",
+      "After": "角蝇"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "Dark",
+      "Before": "暗影",
+      "After": "黑暗战士"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "Dark0",
+      "Before": "暗影·0",
+      "After": "黑暗战士·0"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "GiantKeratoid",
+      "Before": "巨型角虫",
+      "After": "巨型多角虫"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "GiantKeratoid1",
+      "Before": "巨型角虫·1",
+      "After": "巨型多角虫·1"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "GiantKeratoid2",
+      "Before": "巨型角虫·2",
+      "After": "巨型多角虫·2"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "Keratoid",
+      "Before": "角虫",
+      "After": "多角虫"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "Keratoid0",
+      "Before": "角虫·0",
+      "After": "多角虫·0"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "ShellNipper",
+      "Before": "巨钳甲虫",
+      "After": "盔甲虫"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "ShellNipper0",
+      "Before": "巨钳甲虫·0",
+      "After": "盔甲虫·0"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "WhimperingBee",
+      "Before": "悲鸣蜂",
+      "After": "跳跳蜂"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "WhimperingBee0",
+      "Before": "悲鸣蜂·0",
+      "After": "跳跳蜂·0"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "WoomaFighter",
+      "Before": "沃玛战士",
+      "After": "沃玛勇士"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "WoomaFighter0",
+      "Before": "沃玛战士·0",
+      "After": "沃玛勇士·0"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "WoomaSoldier",
+      "Before": "沃玛士兵",
+      "After": "沃玛战士"
+    },
+    {
+      "File": "Localization\\ItemsMonsters.zh-CN.json",
+      "Category": "Monsters",
+      "Key": "WoomaSoldier0",
+      "Before": "沃玛士兵·0",
+      "After": "沃玛战士·0"
+    },
+    {
+      "File": "Localization\\DbLanguage.zh-CN.json",
+      "Category": "Magics",
+      "Key": "MeteorShower",
+      "Before": "流星火雨",
+      "After": "流星雨"
+    },
+    {
+      "File": "Localization\\DbLanguage.zh-CN.json",
+      "Category": "Quests",
+      "Key": "Guards from Prajna",
+      "Before": "般若来的守卫",
+      "After": "苍月来的守卫"
+    },
+    {
+      "File": "Localization\\DbLanguage.zh-CN.json",
+      "Category": "Quests",
+      "Key": "Ingredient from Prajna",
+      "Before": "来自般若的材料",
+      "After": "来自苍月的材料"
+    },
+    {
+      "File": "Localization\\DbLanguage.zh-CN.json",
+      "Category": "Quests",
+      "Key": "Mobs from Prajna",
+      "Before": "来自般若的怪物",
+      "After": "来自苍月的怪物"
+    },
+    {
+      "File": "Localization\\DbLanguage.zh-CN.json",
+      "Category": "Quests",
+      "Key": "Save Prajna",
+      "Before": "拯救般若",
+      "After": "拯救苍月岛"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "BackStep (Level 30)",
+      "Before": "后跃（等级 30）",
+      "After": "后撤步（等级 30）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "BladeAvalanche (Level 38)",
+      "Before": "逐日剑法（等级 38）",
+      "After": "剑刃风暴（等级 38）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "FlameField (Level 42)",
+      "Before": "火龙气焰（等级 42）",
+      "After": "火焰领域（等级 42）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 31: DelayedExplosion",
+      "Before": "等级 31：延时爆破",
+      "After": "等级 31：延迟爆炸"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 33: Trap",
+      "Before": "等级 33：陷阱",
+      "After": "等级 33：陷阱术"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 36: MoonLight",
+      "Before": "等级 36：月光斩",
+      "After": "等级 36：月光术"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 38: BladeAvalanche",
+      "Before": "等级 38：逐日剑法",
+      "After": "等级 38：剑刃风暴"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 38: MPEater",
+      "Before": "等级 38：魔力吞噬",
+      "After": "等级 38：噬魔术"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 43: PoisonCloud",
+      "Before": "等级 43：无极毒云",
+      "After": "等级 43：毒云术"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 46: DarkBody",
+      "Before": "等级 46：暗影分身",
+      "After": "等级 46：暗影之躯"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "ProtectionField (Level 39)",
+      "Before": "护体神盾（等级 39）",
+      "After": "护身领域（等级 39）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Rage (Level 44)",
+      "Before": "狂暴（等级 44）",
+      "After": "暴怒（等级 44）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "SummonVampire (Level 28)",
+      "Before": "召唤吸血蝠（等级 28）",
+      "After": "召唤吸血鬼（等级 28）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Level 38: SummonHolyDeva",
+      "Before": "38级：召唤圣兽",
+      "After": "38级：召唤月灵"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "SummonHolyDeva (Level 38)",
+      "Before": "召唤圣兽（38级）",
+      "After": "召唤月灵（38级）"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcCaptions",
+      "Key": "Repair",
+      "Before": "修复",
+      "After": "修理"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcCaptions",
+      "Key": "Main",
+      "Before": "主页",
+      "After": "主菜单"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcCaptions",
+      "Key": "No",
+      "Before": "不知道",
+      "After": "否"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcCaptions",
+      "Key": "Bichon Wall",
+      "Before": "比奇城墙",
+      "After": "比奇城"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcCaptions",
+      "Key": "Past Bichon",
+      "Before": "旧比奇",
+      "After": "昔日比奇"
+    },
+    {
+      "File": "Client\\Localization\\Chinese.json",
+      "Category": "Text",
+      "Key": "GivesPoisonAbility",
+      "Before": "赋予你中毒能力\n可通过特定技能释放。\n",
+      "After": "赋予你施毒能力\n可通过特定技能释放。\n"
+    },
+    {
+      "File": "Client\\Localization\\Chinese.json",
+      "Category": "Text",
+      "Key": "UltimateEnhancerSkillDescription",
+      "Before": "终极强化\n\n瞬发技能\n魔法值消耗 {2}\n\n需要物品：护身符\n\n吸收周围能量以提升自身属性。\n\n当前技能等级 {0}\n下一级等级 {1}",
+      "After": "无极真气\n\n瞬发技能\n魔法值消耗 {2}\n\n需要物品：护身符\n\n吸收周围能量以提升自身属性。\n\n当前技能等级 {0}\n下一级等级 {1}"
+    },
+    {
+      "File": "Client\\Localization\\Chinese.json",
+      "Category": "Text",
+      "Key": "FatalSwordPassiveSkillDescription",
+      "Before": "绝命剑法\n\n被动技能\n\n增加对怪物的攻击伤害。\n并稍微提升准确度。\n被动技能\n\n当前技能等级 {0}\n下一级 {1}",
+      "After": "致命剑术\n\n被动技能\n\n增加对怪物的攻击伤害。\n并稍微提升准确度。\n被动技能\n\n当前技能等级 {0}\n下一级 {1}"
+    },
+    {
+      "File": "Client\\Localization\\Chinese.json",
+      "Category": "Text",
+      "Key": "UseCrossHalfMoon",
+      "Before": "使用狂风斩。",
+      "After": "使用十字半月。"
+    },
+    {
+      "File": "Client\\Localization\\Chinese.json",
+      "Category": "Text",
+      "Key": "DoNotUseCrossHalfMoon",
+      "Before": "不使用狂风斩。",
+      "After": "不使用十字半月。"
+    },
+    {
+      "File": "Client\\Localization\\Chinese.json",
+      "Category": "Enum",
+      "Key": "BuffType_UltimateEnhancer",
+      "Before": "终极强化",
+      "After": "无极真气"
+    },
+    {
+      "File": "Localization\\NpcText.zh-CN.json",
+      "Category": "NpcCaptions",
+      "Key": "SummonHolyDeva 38",
+      "Before": "召唤圣兽 38",
+      "After": "召唤月灵 38"
+    },
+    {
+      "File": "Localization\\NpcText.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "<SummonHolyDeva 38/@summondeva>     <Curse 40/@curse>     <PoisonCloud 43/@poisoncloud>",
+      "Before": "<召唤圣兽 38/@summondeva>     <诅咒术 40/@curse>     <毒云术 43/@poisoncloud>",
+      "After": "<召唤月灵 38/@summondeva>     <诅咒术 40/@curse>     <毒云术 43/@poisoncloud>"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Eliminate 20 {Dung/Crimson} and {WoomaSoldiers/Crimson}.",
+      "Before": "消灭 20 只{粪虫/Crimson}和{沃玛士兵/Crimson}。",
+      "After": "消灭 20 只{粪虫/Crimson}和{沃玛战士/Crimson}。"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "ShellNipper, Keratoid and etc.",
+      "Before": "巨钳甲虫、角虫等。",
+      "After": "盔甲虫、多角虫等。"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Collect 10 {BeefRib/LightSteelBlue} by Killing {WoomaSoldier's/Crimson}",
+      "Before": "击杀{沃玛士兵/Crimson}，收集10个{牛肋排/LightSteelBlue}",
+      "After": "击杀{沃玛战士/Crimson}，收集10个{牛肋排/LightSteelBlue}"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "Summons a HolyDeva.",
+      "Before": "召唤一只圣兽。",
+      "After": "召唤一只月灵。"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "{Specimen/LightSteelBlue} of {WhimperingBee/Crimson} a few days ago, but",
+      "Before": "几天前的{悲鸣蜂/Crimson}{标本/LightSteelBlue}，可是",
+      "After": "几天前的{跳跳蜂/Crimson}{标本/LightSteelBlue}，可是"
+    },
+    {
+      "File": "Localization\\NpcNarrative.zh-CN.json",
+      "Category": "NpcLines",
+      "Key": "{WoomaFighter's/Crimson} in {WoomaTemple/Yellow}.",
+      "Before": "{沃玛战士/Crimson}，位于{沃玛寺庙/Yellow}。",
+      "After": "{沃玛勇士/Crimson}，位于{沃玛寺庙/Yellow}。"
+    }
+  ],
+  "MonsterBaseNames": {
+    "WhimperingBee": "跳跳蜂",
+    "Keratoid": "多角虫",
+    "GiantKeratoid": "巨型多角虫",
+    "ShellNipper": "盔甲虫",
+    "Dark": "黑暗战士",
+    "WoomaSoldier": "沃玛战士",
+    "WoomaFighter": "沃玛勇士",
+    "BugBat": "蝙蝠",
+    "BugBatMaggot": "角蝇"
+  },
+  "ItemBaseNames": {
+    "DragonRing": "龙之戒指",
+    "DragonBracelet": "龙之手镯",
+    "IronRing": "生铁戒指",
+    "MuscleRing": "超负载戒指",
+    "RecoveryRing": "防御戒指",
+    "TigerNecklace": "白色虎齿项链",
+    "DragonRobe": "法神披风",
+    "DragonRobe(F)": "霓裳羽衣",
+    "FireRobe": "恶魔长袍",
+    "FireRobe(M)": "恶魔长袍（男）",
+    "FireRobe(F)": "恶魔长袍（女）",
+    "ExpelRing": "降妖除魔戒指",
+    "SteelBracelet": "钢手镯"
+  },
+  "BookNameAlignment": 29,
+  "RuntimeDeployment": false,
+  "DistributionWrites": false,
+  "UncertainRetained": [
+    "DragonNecklace (level 65 extension family)",
+    "ExorcistRing / EvilSlayerRing custom variants",
+    "SteelHelmet",
+    "Great_TaoTomb identity",
+    "Later Korean monster proper names"
+  ],
+  "Validation": {
+    "LocalizationChecks": 37,
+    "PlayerProseEntries": 3340,
+    "GeneratorNameEntries": 2437,
+    "ClientReleaseBuild": "PASS: 7 existing warnings, 0 errors",
+    "DictionaryKeysAndIdentifiers": "Preserved",
+    "IndependentReview": "No new P1/P2 findings",
+    "RuntimeDeployment": false,
+    "DistributionWrites": false,
+    "GitCommit": "Not committed"
+  },
+  "Evidence": [
+    "https://mir.17173.com/content/2001-10-30/n442_358360.html",
+    "https://mir.17173.com/item/item4.htm",
+    "https://mir2.sdo.com/web7/articleDetail.html?id=10582",
+    "https://mir2.web.sdo.com/web7/articleDetail.html?id=17243",
+    "https://actmir2.web.sdo.com/project/banben/mir2_176/index.html"
+  ]
+}

@@ -8135,7 +8135,8 @@ namespace Server.MirObjects
                     break;
                 }
 
-                if (temp == null || index == -1) return;
+                if (temp == null || index == -1) temp = NpcServiceItems.FindEquippedRepairItem(this, uniqueID);
+                if (temp == null) return;
 
                 if ((temp.Info.Bind.HasFlag(BindMode.DontRepair)) || (temp.Info.Bind.HasFlag(BindMode.NoSRepair) && special))
                 {
@@ -8177,6 +8178,7 @@ namespace Server.MirObjects
                 temp.DuraChanged = false;
 
                 Enqueue(new S.ItemRepaired { UniqueID = uniqueID, MaxDura = temp.MaxDura, CurrentDura = temp.CurrentDura });
+                if (index == -1) RefreshStats();
                 return;
             }
         }

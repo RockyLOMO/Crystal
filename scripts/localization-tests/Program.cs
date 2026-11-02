@@ -13,6 +13,35 @@ void Check(bool ok, string message)
     Console.WriteLine($"PASS {++passed}: {message}");
 }
 DbLanguage.Load(Path.Combine(root, "Localization"), "Chinese");
+Check(DbLanguage.Monster("Yob") == "蛤蟆" && DbLanguage.Monster("Yob0") == "蛤蟆·0"
+    && DbLanguage.NpcLine("Once you go far away from town, hunt HookingCat, RakingCat, Yob, Wolf,").Contains("蛤蟆"),
+    "classic Yob frog name and NPC guidance stay consistent");
+Check(DbLanguage.Monster("BugBat") == "蝙蝠" && DbLanguage.Monster("BugBatMaggot") == "角蝇"
+    && DbLanguage.Monster("WhimperingBee0") == "跳跳蜂·0"
+    && DbLanguage.Monster("Keratoid") == "多角虫" && DbLanguage.Monster("ShellNipper") == "盔甲虫"
+    && DbLanguage.Monster("WoomaSoldier") == "沃玛战士" && DbLanguage.Monster("WoomaFighter") == "沃玛勇士",
+    "classic monster identities are preserved instead of literal English translations");
+Check(DbLanguage.Get("Items", "DragonRing") == "龙之戒指" && DbLanguage.Get("Items", "DragonBracelet") == "龙之手镯"
+    && DbLanguage.Get("Items", "DragonRobe(M)") == "法神披风（男）" && DbLanguage.Get("Items", "DragonRobe(F)") == "霓裳羽衣"
+    && DbLanguage.Get("Items", "FireRobe(M)") == "恶魔长袍（男）" && DbLanguage.Get("Items", "FireRobe(F)") == "恶魔长袍（女）",
+    "classic dragon accessories and wizard robes retain their correct identities");
+Check(DbLanguage.Get("NpcCaptions", "No") == "否" && DbLanguage.Get("NpcCaptions", "Repair") == "修理"
+    && DbLanguage.Get("NpcCaptions", "Bichon Wall") == "比奇城"
+    && DbLanguage.Get("Magics", "MeteorShower") == "流星雨" && DbLanguage.Get("Magics", "MeteorStrike") == "流星火雨",
+    "later dictionaries do not override menu meanings or merge distinct spells");
+Check(DbLanguage.Get("NpcCaptions", "SummonHolyDeva 38") == "召唤月灵 38"
+    && DbLanguage.NpcLine("Summons a HolyDeva.") == "召唤一只月灵。"
+    && DbLanguage.NpcLine("ShellNipper, Keratoid and etc.") == "盔甲虫、多角虫等。",
+    "NPC teaching and hunting guidance use the same identities as the name dictionaries");
+using (var spellFile = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "Localization", "DbLanguage.zh-CN.json"))))
+{
+    foreach (var spell in spellFile.RootElement.GetProperty("Magics").EnumerateObject())
+    {
+        string bookName = DbLanguage.Get("Items", spell.Name);
+        if (bookName != spell.Name && bookName != spell.Value.GetString()) throw new Exception($"Skill book title mismatch: {spell.Name}");
+    }
+    Check(true, "skill books and the skill panel use the same display name");
+}
 var item = new ItemInfo { Name = "JudgementMace" };
 Check(item.FriendlyName == "裁决之杖" && item.Name == "JudgementMace", "display translation preserves item identifier");
 var ore = new ItemInfo { Name = "BlackIronOre1[Quest]" };
@@ -61,6 +90,14 @@ using (var worldLanguage = JsonDocument.Parse(File.ReadAllText(Path.Combine(root
     }
     Check(!text.GetProperty("FireballSkillDescription").GetString().Contains("ThunderboltSkillDescription"),
         "skill tooltips match displayed skill names and contain no leaked language key");
+    Check(text.GetProperty("FatalSwordPassiveSkillDescription").GetString().StartsWith("致命剑术\n")
+        && text.GetProperty("UltimateEnhancerSkillDescription").GetString().StartsWith("无极真气\n")
+        && text.GetProperty("UseCrossHalfMoon").GetString().Contains("十字半月")
+        && text.GetProperty("GivesPoisonAbility").GetString().Contains("施毒能力"),
+        "passive skill aliases, toggle hints and poisoning ability keep their actual meanings");
+    Check(clientLanguage.RootElement.GetProperty("Enum").GetProperty("BuffType_UltimateEnhancer").GetString() == "无极真气"
+        && !text.TryGetProperty("BuffType_UltimateEnhancer", out _),
+        "buff display name is translated in the enum table used by the client");
 }
 var quest = new ClientQuestInfo
 {

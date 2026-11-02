@@ -47,6 +47,8 @@ Port=7000
 [Game]
 Language=Chinese
 FontName=Microsoft YaHei
+AutoSellNormalEquipment=True
+AutoSpecialRepairEquipment=True
 SmartShift=True
 AutoPickUp=True
 
@@ -64,6 +66,8 @@ Crystal Mir2 Windows x64 中文客户端
 已包含 .NET 8 运行库及本地 VC++ / DirectX 依赖。
 默认连接 s.f-li.cn:7000；中文字体为 Microsoft YaHei。
 游戏视口固定 1366x768，默认窗口模式；登录和选人保留原生布局。
+点击商人自动出售背包普通装备；仅在 NPC 提供特殊修理时自动维修身上装备。
+可在 INI 的 Game 中将 AutoSellNormalEquipment / AutoSpecialRepairEquipment 设为 False 关闭。
 更换服务端时修改 Mir2Config.ini 的 Network/IPAddress 和 Port。
 服务端也需要监听相应地址。安卓 Wine / Winlator 实际游戏和触控尚未验证。
 此包不包含服务端账号数据库或预置账号。

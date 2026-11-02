@@ -1,6 +1,6 @@
 {
-  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
-  "Files": 5201,
+  "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-autoNPC-20261102.zip",
+  "Files": 5204,
   "SelectedFileHashes": "PASS",
   "Checked": [
     "Client.exe",
@@ -18,5 +18,7 @@
   "CleanDefaultConfig": "PASS",
   "DefaultEndpoint": "s.f-li.cn:7000",
   "DefaultResolution": "1366x768",
-  "FullScreen": false
+  "FullScreen": false,
+  "AutoSellNormalEquipment": true,
+  "AutoSpecialRepairEquipment": true
 }

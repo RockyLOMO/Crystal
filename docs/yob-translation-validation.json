@@ -1,0 +1,15 @@
+{
+  "Date": "2026-11-02",
+  "Correction": "Yob / Yob0: 恶徒 -> 蛤蟆; related NPC guidance updated",
+  "Source": "Display dictionaries and generator only; monster identifiers and resources unchanged",
+  "ProgramBackup": "D:\\private-server\\mir2\\backups\\yob-translation-20261102-214009",
+  "LocalizationTests": 30,
+  "PlayerTextEntries": 3340,
+  "RuntimeFileHashes": "PASS",
+  "RuntimeProcessesStopped": true,
+  "Patch": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-zhCN-Yob-fix-20261102.zip",
+  "PatchSHA256": "d90c2b8fbded427b0f7314453f50302c3727d24b0789d0820d4dd5d02895b117",
+  "OldFullPackagePreserved": true,
+  "FullPackageRequiresPatch": true,
+  "GameplayAcceptance": "NOT VERIFIED"
+}

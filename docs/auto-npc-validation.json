@@ -1,0 +1,91 @@
+{
+  "CheckedAt": "2026-11-02T00:16:02.447442+08:00",
+  "SourceHead": "ba22e9c6",
+  "IncludesUncommittedChanges": true,
+  "HealthIssue": "User confirmed floating numbers without HP loss; positive healing was drawn red without plus sign",
+  "HealthFix": "Healing green +N; player damage red -N; existing server regeneration/running unchanged",
+  "AutoServices": "Only follow actual visible NPC actions; ordinary inventory equipment only; worn special repair only; no ordinary repair fallback; five-second timeout stops without retry",
+  "Regression": {
+    "NpcAutoController": 46,
+    "ServerRepairItem": 12,
+    "DamageIndicatorStyle": 9,
+    "SchedulingAndNpcBinding": 42,
+    "Package": 47,
+    "Total": 156,
+    "Result": "PASS"
+  },
+  "Publish": {
+    "Client": "PASS",
+    "Server": "PASS",
+    "ExistingWarningsRetained": true
+  },
+  "Deployment": {
+    "CheckedAt": "2026-11-02T00:11:38.5803284+08:00",
+    "ProgramBackup": "D:\\private-server\\mir2\\backups\\auto-npc-programs-20261102-001115",
+    "DataBackup": "Consistent backup: D:\\private-server\\mir2\\backups\\20261101-161110Z",
+    "PublishedFiles": 499,
+    "PublishedHashes": "PASS",
+    "ClientResponding": true,
+    "NewClientErrorBytes": 0,
+    "StartupErrors": false,
+    "MapsLoaded463": true,
+    "Handshake": {
+      "endpoint": "127.0.0.1:7000",
+      "connected_packet": "PASS",
+      "client_version": "PASS",
+      "keepalive_roundtrip": "PASS",
+      "account_changes": false
+    },
+    "FinalServerRunning": false,
+    "FinalClientRunning": false,
+    "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "DatabaseHashes": [
+    {
+      "File": "Server.MirDB",
+      "Unchanged": true
+    },
+    {
+      "File": "Server.MirADB",
+      "Unchanged": true
+    }
+  ],
+  "Package": {
+    "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-autoNPC-20261102.zip",
+    "Bytes": 8060057382,
+    "SHA256": "3a548654ac375db887c67bfc97afd0225f5ca2b3923ca87ecad3b22460e8d67f",
+    "ZipIntegrity": "PASS",
+    "DistributionCopyChecksum": "PASS",
+    "IncludesServerData": false,
+    "IncludesUserSettingsOrLogs": false,
+    "DefaultEndpoint": "s.f-li.cn:7000"
+  },
+  "PackageContent": {
+    "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-autoNPC-20261102.zip",
+    "Files": 5204,
+    "SelectedFileHashes": "PASS",
+    "Checked": [
+      "Client.exe",
+      "Client.dll",
+      "Shared.dll",
+      "Localization/Chinese.json",
+      "Localization/DbLanguage.zh-CN.json",
+      "Localization/ItemsMonsters.zh-CN.json",
+      "Localization/NpcText.zh-CN.json",
+      "Localization/NpcNarrative.zh-CN.json",
+      "Localization/Overlay.zh-CN.json",
+      "Map/DogYoHyun.map"
+    ],
+    "NoServerDataOrUserPreferences": true,
+    "CleanDefaultConfig": "PASS",
+    "DefaultEndpoint": "s.f-li.cn:7000",
+    "DefaultResolution": "1366x768",
+    "FullScreen": false,
+    "AutoSellNormalEquipment": true,
+    "AutoSpecialRepairEquipment": true
+  },
+  "GameplayAcceptance": "NOT VERIFIED",
+  "RollbackDrill": "NOT VERIFIED",
+  "OriginalLibAndSound": "No asset files in published deployment manifest; original resources not edited",
+  "AndroidWine": "NOT VERIFIED"
+}

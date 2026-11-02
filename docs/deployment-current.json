@@ -1,6 +1,6 @@
 {
-  "CheckedAtUtc": "2026-10-31T15:33:12.3593457Z",
-  "Status": "client-ui-overlay-deployed-stopped",
+  "CheckedAtUtc": "2026-11-02T22:29:37+08:00",
+  "Status": "deployed-stopped",
   "Source": {
     "Path": "D:\\projs\\mir2",
     "Repository": "https://github.com/Suprcode/Crystal",
@@ -8,9 +8,9 @@
     "Fork": "https://github.com/RockyLOMO/Crystal",
     "Branch": "rx-server",
     "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
-    "DeployedSourceHead": "11074271",
+    "DeployedSourceHead": "ba22e9c6",
     "IncludesUncommittedChanges": true,
-    "ClientDeployedSourceHead": "41f7e724",
+    "ClientDeployedSourceHead": "ba22e9c6",
     "ClientIncludesUncommittedChanges": true
   },
   "Runtime": {
@@ -41,13 +41,13 @@
     "RestoreDrill": "NOT VERIFIED",
     "ClientRestartAfterResourceDownload": "PASS",
     "PackageContent": "PASS",
-    "PlayerLocalizationRegression": 29,
-    "SchedulingRegression": 36,
+    "PlayerLocalizationRegression": 37,
+    "SchedulingRegression": 42,
     "PackageRegression": 47,
     "PlayerTextStructure": "PASS: 3340 entries",
     "LatestVersionHandshake": "PASS",
     "LatestKeepAlive": "PASS",
-    "LatestClientStartup": "Responding; 0 new Error.txt bytes; graceful exit; game visual acceptance not performed",
+    "LatestClientStartup": "Responding; zero new Error.txt bytes; graceful shutdown",
     "StartupMapWarnings": "None observed during this run",
     "LatestSoundHashCheck": "1608 unchanged",
     "LatestEnvirTextHashCheck": "2600 unchanged",
@@ -160,5 +160,18 @@
     ],
     "FinalGameNetwork": "Stopped",
     "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "AutoNpcAndHealingDisplay": {
+    "Evidence": "auto-npc-validation.json",
+    "Backup": "D:\\private-server\\mir2\\backups\\auto-npc-programs-20261102-001115",
+    "Package": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-autoNPC-20261102.zip",
+    "RuntimeStopped": true,
+    "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "YobTranslationCorrection": {
+    "Date": "2026-11-02",
+    "Evidence": "yob-translation-validation.json",
+    "RuntimeDictionariesUpdated": true,
+    "FullClientPackageRequiresPatch": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-zhCN-Yob-fix-20261102.zip"
   }
 }

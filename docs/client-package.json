@@ -1,10 +1,11 @@
 {
-  "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-uiOverlay-20261031.zip",
-  "Bytes": 8060047281,
-  "SHA256": "2b884f5c4bdd53fe123c88c91c08462c9d06bff178ffc2ab296df8f85d061035",
+  "Path": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-Client-win-x64-autoNPC-20261102.zip",
+  "Bytes": 8060057382,
+  "SHA256": "3a548654ac375db887c67bfc97afd0225f5ca2b3923ca87ecad3b22460e8d67f",
   "ZipIntegrity": "PASS",
   "DistributionCopyChecksum": "PASS",
   "IncludesServerData": false,
   "IncludesUserSettingsOrLogs": false,
-  "DefaultEndpoint": "s.f-li.cn:7000"
+  "DefaultEndpoint": "s.f-li.cn:7000",
+  "RecommendedLocalizationPatch": "E:\\rxdev\\webhost\\mir2\\Crystal-Mir2-zhCN-Yob-fix-20261102.zip"
 }

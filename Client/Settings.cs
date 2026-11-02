@@ -163,6 +163,8 @@ namespace Client
 
         public static string Language = "Chinese";
         public static bool ChineseOverlayInspector = false;
+        public static bool AutoSellNormalEquipment = true;
+        public static bool AutoSpecialRepairEquipment = true;
 
         public static int[,] SkillbarLocation = new int[2, 2] { { 0, 0 }, { 216, 0 } };
 
@@ -278,6 +280,8 @@ namespace Client
             ModeView = Reader.ReadBoolean("Game", "ModeView", ModeView);
             FontName = Reader.ReadString("Game", "FontName", FontName);
             ChineseOverlayInspector = Reader.ReadBoolean("Game", "ChineseOverlayInspector", ChineseOverlayInspector);
+            AutoSellNormalEquipment = Reader.ReadBoolean("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
+            AutoSpecialRepairEquipment = Reader.ReadBoolean("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
             TransparentChat = Reader.ReadBoolean("Game", "TransparentChat", TransparentChat);
             DisplayDamage = Reader.ReadBoolean("Game", "DisplayDamage", DisplayDamage);
             TargetDead = Reader.ReadBoolean("Game", "TargetDead", TargetDead);
@@ -392,6 +396,8 @@ namespace Client
             Reader.Write("Game", "ModeView", ModeView);
             Reader.Write("Game", "FontName", FontName);
             Reader.Write("Game", "ChineseOverlayInspector", ChineseOverlayInspector);
+            Reader.Write("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
+            Reader.Write("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
             Reader.Write("Game", "TransparentChat", TransparentChat);
             Reader.Write("Game", "DisplayDamage", DisplayDamage);
             Reader.Write("Game", "TargetDead", TargetDead);

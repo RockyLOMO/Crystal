@@ -1201,6 +1201,7 @@ namespace Client.MirScenes
                 Network.Enqueue(new C.KeepAlive() { Time = CMain.Time });
             }
 
+            NpcAutoService.Process(this);
             TimerControl.Process();
             CompassControl.Process();
             RankingDialog.Process();
@@ -2121,6 +2122,7 @@ namespace Client.MirScenes
                     base.ProcessPacket(p);
                     break;
             }
+            NpcAutoService.OnPacket(this, p);
         }
 
         private void KeepAlive(S.KeepAlive p)
@@ -3519,7 +3521,7 @@ namespace Client.MirScenes
                     switch (p.Type)
                     {
                         case DamageType.Hit: //add damage level colours
-                            obj.Damages.Add(new Damage(p.Damage.ToString("#,##0"), 1000, obj.Race == ObjectType.Player ? Color.Red : Color.White, 50));
+                            obj.Damages.Add(new Damage(DamageIndicatorStyle.Format(p.Damage), 1000, DamageIndicatorStyle.GetColour(p.Damage, obj.Race == ObjectType.Player), 50));
                             break;
                         case DamageType.Miss:
                             obj.Damages.Add(new Damage(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Miss), 1200, obj.Race == ObjectType.Player ? Color.LightCoral : Color.LightGray, 50));
