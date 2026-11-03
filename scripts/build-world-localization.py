@@ -33,7 +33,7 @@ AncientSTombEntrance=远古石墓入口
 AncientTemple=远古神殿
 AncientTempleEntrance=远古神殿入口
 AncientZumaLobby=远古祖玛大厅
-AngledStoneTombEntrance=斜石墓入口
+AngledStoneTombEntrance=石墓入口
 ArchersHideout=弓箭手藏身处
 Armory=军械库
 B1ContestGround=比武场地下一层
@@ -92,8 +92,8 @@ GTCourt=行会领地庭院
 GameMaster=管理员区域
 GeneralStore=杂货店
 GeneralsCamp=将军营地
-GhoulCave=食尸鬼洞穴
-Great_TaoTomb=大道人陵墓
+GhoulCave=尸王殿
+Great_TaoTomb=恶魔祭坛
 GroceryStore=杂货铺
 HauntedForest=幽灵森林
 HellFire_KingsRoom=地狱火王殿
@@ -111,7 +111,7 @@ InnerCastle=内城
 InnerWall=内城墙
 ItemDepository=物品保管所
 Item_Lab=物品研究室
-KingsTomb=王陵
+KingsTomb=国王陵墓
 Kitchen=厨房
 Laundry=洗衣房
 Library=藏书阁
@@ -128,8 +128,8 @@ Mill=磨坊
 MoltenRockCave=熔岩洞穴
 MongchonProvince=盟重省
 MysteryCave=神秘洞穴
-N_1FofDungeon=地牢北一层
-N_2FofDungeon=地牢北二层
+N_1FofDungeon=地牢一层北
+N_2FofDungeon=地牢二层北
 NaturalCave=天然洞穴
 NobleHogPalace=贵族猪殿
 NorthernLostCave=失落洞穴北部
@@ -154,10 +154,10 @@ PrivateHouse=民宅
 PurgatoryHall=炼狱大厅
 ReagentStore=炼金材料店
 RedCavern_KR=赤色洞窟王殿
-RedMoonRoom=赤月密室
+RedMoonRoom=赤月魔穴
 Rev.Tao_Office=道长居所
 Ruins=遗迹
-S_1FofDungeon=地牢南一层
+S_1FofDungeon=地牢一层南
 S_ValleyDeadMine=山谷南部废矿
 S_ValleyTavern=山谷南部酒馆
 SabukSecretGate=沙巴克密道入口
@@ -185,8 +185,8 @@ VillageChiefHouse=村长之家
 ViperCave=毒蛇洞穴
 ViperMaze=毒蛇迷宫
 ViperPath=毒蛇通道
-W_1FofDungeon=地牢西一层
-W_2FofDungeon=地牢西二层
+W_1FofDungeon=地牢一层西
+W_2FofDungeon=地牢二层西
 WaitingRoom=等候室
 Warehouse=仓库
 WasteLands=荒原
@@ -822,7 +822,10 @@ def translate_map(name):
         return f"{MAP_FLOORS[match[1]]}{match[2]}层"
     match = re.fullmatch(r"B(\d+)_AngledStoneTomb", name)
     if match:
-        return f"斜石墓地下{match[1]}层"
+        floors = ["", "一层", "二层", "三层", "四层", "五层", "六层", "七层"]
+        idx = int(match[1])
+        floor_str = floors[idx] if idx < len(floors) else f"{idx}层"
+        return f"石墓{floor_str}"
     match = re.fullmatch(r"DYMine(\d)(\d)", name)
     if match:
         return f"道馆矿洞{match[1]}区{match[2]}号"

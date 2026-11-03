@@ -25,6 +25,18 @@ Check(DbLanguage.Get("Items", "DragonRing") == "龙之戒指" && DbLanguage.Get(
     && DbLanguage.Get("Items", "DragonRobe(M)") == "法神披风（男）" && DbLanguage.Get("Items", "DragonRobe(F)") == "霓裳羽衣"
     && DbLanguage.Get("Items", "FireRobe(M)") == "恶魔长袍（男）" && DbLanguage.Get("Items", "FireRobe(F)") == "恶魔长袍（女）",
     "classic dragon accessories and wizard robes retain their correct identities");
+Check(DbLanguage.Get("Items", "DragonSword") == "井中月" && DbLanguage.Get("Items", "SoulSabre") == "龙纹剑"
+    && DbLanguage.Get("Items", "SteelArmour(M)") == "天魔神甲（男）" && DbLanguage.Get("Items", "SteelArmour(F)") == "圣战宝甲"
+    && DbLanguage.Get("Items", "TitanArmour(M)") == "天尊道袍（男）" && DbLanguage.Get("Items", "TitanArmour(F)") == "天师长袍"
+    && DbLanguage.Get("Items", "IronArmour(M)") == "战神盔甲（男）" && DbLanguage.Get("Items", "PearlArmour(M)") == "幽灵战衣（男）"
+    && DbLanguage.Get("Items", "ClearRing") == "隐身戒指" && DbLanguage.Get("Items", "GaleRing") == "狂风戒指"
+    && DbLanguage.Get("Items", "3rdEyeBracelet") == "心灵手镯" && DbLanguage.Get("Items", "SteelGlove") == "阎罗手套",
+    "classic 1.76 weapons, armours and special rings align with Shanda standards");
+Check(DbLanguage.Monster("BoneLord") == "黄泉教主" && DbLanguage.Monster("Ancient_BoneLord") == "远古黄泉教主"
+    && DbLanguage.Get("Maps", "GhoulCave") == "尸王殿" && DbLanguage.Get("Maps", "AngledStoneTombEntrance") == "石墓入口"
+    && DbLanguage.Get("Maps", "B1_AngledStoneTomb") == "石墓一层" && DbLanguage.Get("Maps", "B7_AngledStoneTomb") == "石墓七层"
+    && DbLanguage.Get("Maps", "RedMoonRoom") == "赤月魔穴" && DbLanguage.Get("Maps", "Great_TaoTomb") == "恶魔祭坛",
+    "classic 1.76 boss and map names preserve iconic locations and BoneLord identity");
 Check(DbLanguage.Get("NpcCaptions", "No") == "否" && DbLanguage.Get("NpcCaptions", "Repair") == "修理"
     && DbLanguage.Get("NpcCaptions", "Bichon Wall") == "比奇城"
     && DbLanguage.Get("Magics", "MeteorShower") == "流星雨" && DbLanguage.Get("Magics", "MeteorStrike") == "流星火雨",
@@ -90,6 +102,12 @@ using (var worldLanguage = JsonDocument.Parse(File.ReadAllText(Path.Combine(root
     }
     Check(!text.GetProperty("FireballSkillDescription").GetString().Contains("ThunderboltSkillDescription"),
         "skill tooltips match displayed skill names and contain no leaked language key");
+    Check(text.GetProperty("AC").GetString().StartsWith("防御")
+        && text.GetProperty("MonsterTooltipAC").GetString().StartsWith("防御:")
+        && text.GetProperty("AddsMAC").GetString().StartsWith("魔御")
+        && text.GetProperty("ItemTypeArmour").GetString() == "衣服"
+        && text.GetProperty("NotInGuild").GetString().Contains("行会"),
+        "client UI strings use classic Shanda 1.76 defence, equipment and guild terminology");
     Check(text.GetProperty("FatalSwordPassiveSkillDescription").GetString().StartsWith("致命剑术\n")
         && text.GetProperty("UltimateEnhancerSkillDescription").GetString().StartsWith("无极真气\n")
         && text.GetProperty("UseCrossHalfMoon").GetString().Contains("十字半月")
