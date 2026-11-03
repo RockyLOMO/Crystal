@@ -600,7 +600,8 @@ namespace Server.MirObjects
             get
             {
                 MonsterRarityProfile profile = GetRarityProfile();
-                double scaled = Info.Experience * profile.ExpMultiplier;
+                double eliteExpMultiplier = EliteTier == 2 ? 15.0 : (EliteTier == 1 ? 5.0 : 1.0);
+                double scaled = Info.Experience * profile.ExpMultiplier * eliteExpMultiplier;
 
                 if (scaled <= 0) return 0;
                 if (scaled > uint.MaxValue) return uint.MaxValue;
@@ -846,7 +847,8 @@ namespace Server.MirObjects
             if (amount == 0) return 0;
 
             MonsterRarityProfile profile = GetRarityProfile();
-            double scaled = amount * profile.GoldMultiplier * Settings.GoldRate;
+            double eliteGoldMultiplier = EliteTier == 2 ? 3.0 : (EliteTier == 1 ? 1.8 : 1.0);
+            double scaled = amount * profile.GoldMultiplier * eliteGoldMultiplier * Settings.GoldRate;
 
             if (scaled <= 0) return 0;
             if (scaled > uint.MaxValue) return uint.MaxValue;
@@ -1153,10 +1155,12 @@ namespace Server.MirObjects
             MonsterRarityProfile profile = GetRarityProfile();
             int ownerItemBonus = EXPOwner?.Stats[Stat.ItemDropRatePercent] ?? 0;
             int ownerGoldBonus = EXPOwner?.Stats[Stat.GoldDropRatePercent] ?? 0;
-            int totalItemBonus = ownerItemBonus + profile.ItemDropBonusPercent;
-            int totalGoldBonus = ownerGoldBonus + profile.GoldDropBonusPercent;
+            int eliteDropBonus = EliteTier == 2 ? 150 : (EliteTier == 1 ? 50 : 0);
+            int totalItemBonus = ownerItemBonus + profile.ItemDropBonusPercent + eliteDropBonus;
+            int totalGoldBonus = ownerGoldBonus + profile.GoldDropBonusPercent + eliteDropBonus;
 
-            int dropLoops = EliteTier == 2 ? 6 : (EliteTier == 1 ? 2 : 1);
+            int dropLoops = EliteTier == 2 ? 6 : (EliteTier == 1 ? 3 : 1);
+            bool droppedGold = false;
 
             for (int loop = 0; loop < dropLoops; loop++)
             {
@@ -1173,6 +1177,7 @@ namespace Server.MirObjects
                         if (scaledGold > 0)
                         {
                             DropGold(scaledGold);
+                            droppedGold = true;
                         }
 
                         foreach (var dropItem in reward.Items)
@@ -1207,6 +1212,22 @@ namespace Server.MirObjects
                             if (!DropItem(item)) return;
                         }
                     }
+                }
+            }
+
+            // 精英与领主保底金币激励（不占背包格与负重，消除精英怪打完空尸体的挫败感）
+            if (EliteTier == 1 && !droppedGold)
+            {
+                uint eliteBounty = ApplyGoldModifier((uint)(Math.Max(1, (int)Level) * 50));
+                if (eliteBounty > 0) DropGold(eliteBounty);
+            }
+            else if (EliteTier == 2)
+            {
+                uint lordBounty = ApplyGoldModifier((uint)(Math.Max(1, (int)Level) * 120));
+                int bountyPiles = droppedGold ? 2 : 3;
+                for (int p = 0; p < bountyPiles; p++)
+                {
+                    if (lordBounty > 0) DropGold(lordBounty);
                 }
             }
         }

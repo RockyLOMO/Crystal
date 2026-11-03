@@ -348,6 +348,17 @@ try
     }
     Check(noHpMpInflation && boundedStats,
         "RollFullVersionRareStats clamps out-of-range tiers to [1,6] and excludes HP/MP*15 price inflation");
+
+    var expMob = new CountingMonster();
+    expMob.Info.Experience = 100;
+    expMob.EliteTier = 0;
+    uint normalExp = expMob.Experience;
+    expMob.EliteTier = 1;
+    uint eliteExp = expMob.Experience;
+    expMob.EliteTier = 2;
+    uint lordExp = expMob.Experience;
+    Check(normalExp == 100 && eliteExp == 500 && lordExp == 1500,
+        "EliteTier experience scaling grants 5x EXP for Elite (Tier 1) and 15x EXP for Lord (Tier 2)");
 }
 finally
 {
