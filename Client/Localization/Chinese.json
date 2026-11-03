@@ -1243,7 +1243,7 @@
         "AwakeType_MAC": "魔御",
         "AwakeType_HPMP": "生命值法力值",
         "MonsterType_Normal": "普通",
-        "MonsterType_Uncommon": "非凡",
+        "MonsterType_Uncommon": "变异",
         "MonsterType_Rare": "稀有",
         "MonsterType_Elite": "精英",
         "HeroBehaviour_Attack": "攻击",

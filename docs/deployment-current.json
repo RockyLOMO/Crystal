@@ -1,5 +1,5 @@
 {
-  "CheckedAtUtc": "2026-11-02T23:28:23+08:00",
+  "CheckedAtUtc": "2026-11-03T22:30:46+08:00",
   "Status": "deployed-stopped",
   "Source": {
     "Path": "D:\\projs\\mir2",
@@ -41,7 +41,7 @@
     "RestoreDrill": "NOT VERIFIED",
     "ClientRestartAfterResourceDownload": "PASS",
     "PackageContent": "PASS",
-    "PlayerLocalizationRegression": 37,
+    "PlayerLocalizationRegression": 40,
     "SchedulingRegression": 42,
     "PackageRegression": 47,
     "PlayerTextStructure": "PASS: 3340 entries",
