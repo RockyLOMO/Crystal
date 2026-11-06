@@ -15,6 +15,7 @@ namespace Client.MirGraphics
         public static readonly MLibrary
             ChrSel = new MLibrary(Settings.DataPath + "ChrSel"),
             Prguse = new MLibrary(Settings.DataPath + "Prguse"),
+            Prguse176 = new MLibrary(Settings.DataPath + "Prguse176"),
             Prguse2 = new MLibrary(Settings.DataPath + "Prguse2"),
             Prguse3 = new MLibrary(Settings.DataPath + "Prguse3"),
             UI_32bit = new MLibrary(Settings.DataPath + "UI_32bit"),

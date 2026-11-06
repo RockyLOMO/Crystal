@@ -47,8 +47,11 @@ namespace Server.SoloExtension
 
         private static void EnsureCustomItems(Envir envir)
         {
-            ushort scrollImage = envir.ItemInfoList.FirstOrDefault(x => x != null && x.Type == ItemType.Scroll)?.Image ?? 250;
-            ushort bookImage = envir.ItemInfoList.FirstOrDefault(x => x != null && x.Type == ItemType.Book)?.Image ?? scrollImage;
+            // Items.Lib 实测图标索引：
+            // 3771 = 行军帐卷/露营行囊图标（替代原先排第1的 3368 修复神水药瓶图标）
+            // 2120 = 羊皮猎魔手札/古籍图标
+            const ushort campTentImage = 3771;
+            const ushort hunterTomeImage = 2120;
 
             const BindMode permanentBind = BindMode.DontDrop | BindMode.DontDeathdrop | BindMode.DontSell |
                                            BindMode.DontTrade | BindMode.DontStore | BindMode.DontUpgrade;
@@ -62,15 +65,23 @@ namespace Server.SoloExtension
                     Name = CampTentItemName,
                     Type = ItemType.Scroll,
                     Shape = CampTentShape,
-                    Image = scrollImage,
+                    Image = campTentImage,
                     Weight = 0,
                     Durability = 1,
                     StackSize = 1,
                     StartItem = true,
                     Bind = permanentBind,
-                    ToolTip = "【玛法独行奇物】双击呼出行军营帐界面：地宫扎营记录、主将与英雄安全区休整、返回行军帐点（不占负重，死亡不掉落）。"
+                    ToolTip = "【玛法独行奇物】双击呼出行军营帐界面：地宫扎营记录、随身清理战利品减负、主将与英雄安全区休整、返回行军帐点（不占负重，死亡不掉落）。"
                 };
                 envir.ItemInfoList.Add(campTent);
+            }
+            else
+            {
+                campTent.Image = campTentImage;
+                campTent.Shape = CampTentShape;
+                campTent.Weight = 0;
+                campTent.Bind = permanentBind;
+                campTent.ToolTip = "【玛法独行奇物】双击呼出行军营帐界面：地宫扎营记录、随身清理战利品减负、主将与英雄安全区休整、返回行军帐点（不占负重，死亡不掉落）。";
             }
 
             if (!envir.StartItems.Contains(campTent))
@@ -87,7 +98,7 @@ namespace Server.SoloExtension
                     Name = HunterTomeItemName,
                     Type = ItemType.Scroll,
                     Shape = HunterTomeShape,
-                    Image = bookImage,
+                    Image = hunterTomeImage,
                     Weight = 0,
                     Durability = 1,
                     StackSize = 1,
@@ -96,6 +107,14 @@ namespace Server.SoloExtension
                     ToolTip = "【玛法独行奇物】双击翻阅猎魔手札：开启4格自动拾取、感知全图精英/领主方位与地图热度、检视玛法生态图鉴永久属性加成。"
                 };
                 envir.ItemInfoList.Add(hunterTome);
+            }
+            else
+            {
+                hunterTome.Image = hunterTomeImage;
+                hunterTome.Shape = HunterTomeShape;
+                hunterTome.Weight = 0;
+                hunterTome.Bind = permanentBind;
+                hunterTome.ToolTip = "【玛法独行奇物】双击翻阅猎魔手札：开启4格自动拾取、感知全图精英/领主方位与地图热度、检视玛法生态图鉴永久属性加成。";
             }
 
             if (!envir.StartItems.Contains(hunterTome))
@@ -255,21 +274,31 @@ namespace Server.SoloExtension
         private static void EnsureStarterCurios(PlayerObject player)
         {
             if (player?.Info?.Inventory == null) return;
+
+            bool hasTent = HasCurio(player, CampTentItemIndex, CampTentItemName);
+            bool hasTome = HasCurio(player, HunterTomeItemIndex, HunterTomeItemName);
+            if (hasTent && hasTome) return;
+
+            if (!hasTent) GiveCurioIfMissing(player, CampTentItemIndex, CampTentItemName);
+            if (!hasTome) GiveCurioIfMissing(player, HunterTomeItemIndex, HunterTomeItemName);
+
             var profile = SoloPlayerProfile.GetOrLoad(player.Name);
-            if (profile.StarterItemsGranted) return;
+            if (!profile.StarterItemsGranted)
+            {
+                profile.StarterItemsGranted = true;
+                profile.Save(force: true);
+            }
+        }
 
-            GiveCurioIfMissing(player, CampTentItemIndex, CampTentItemName);
-            GiveCurioIfMissing(player, HunterTomeItemIndex, HunterTomeItemName);
-
-            profile.StarterItemsGranted = true;
-            profile.Save(force: true);
+        private static bool HasCurio(PlayerObject player, int itemIndex, string itemName)
+        {
+            return player.Info.Inventory.Any(x =>
+                x?.Info != null && (x.Info.Index == itemIndex || x.Info.Name == itemName));
         }
 
         private static void GiveCurioIfMissing(PlayerObject player, int itemIndex, string itemName)
         {
-            bool hasItem = player.Info.Inventory.Any(x =>
-                x?.Info != null && (x.Info.Index == itemIndex || x.Info.Name == itemName));
-            if (hasItem) return;
+            if (HasCurio(player, itemIndex, itemName)) return;
 
             ItemInfo info = Envir.Main.ItemInfoList.FirstOrDefault(x =>
                 x != null && (x.Index == itemIndex || x.Name == itemName));

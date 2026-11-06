@@ -32,6 +32,9 @@ namespace Client.MirScenes.Dialogs
             get { return User != null && User.Class == MirClass.Warrior && User.Level < 26; }
         }
 
+        // Classic controls occupy opaque plaques over transparent pixels in the original art.
+        internal void UseClassicHitArea() => PixelDetect = false;
+
         public MainDialog()
         {
             Index = Settings.Resolution == 800 ? 0 : Settings.Resolution == 1024 ? 1 : 2;
@@ -761,7 +764,7 @@ namespace Client.MirScenes.Dialogs
 
         void PositionBar_OnMoving(object sender, MouseEventArgs e)
         {
-            int x = Settings.Resolution != 800 ? 619 : 395;
+            int x = Classic176HUDLayout.IsClassicChat(this) ? Size.Width - 12 : Settings.Resolution != 800 ? 619 : 395;
             int y = PositionBar.Location.Y;
             if (y >= 16 + CountBar.Size.Height - PositionBar.Size.Height) y = 16 + CountBar.Size.Height - PositionBar.Size.Height;
             if (y < 16) y = 16;
@@ -851,9 +854,10 @@ namespace Client.MirScenes.Dialogs
                     break;
             }
 
+            Classic176HUDLayout.AdaptChatColours(this, type, ref backColour, ref foreColour);
             List<string> chat = new List<string>();
 
-            int chatWidth = Settings.Resolution != 800 ? 614 : 390;
+            int chatWidth = Classic176HUDLayout.IsClassicChat(this) ? Size.Width - 20 : Settings.Resolution != 800 ? 614 : 390;
             int index = 0;
 
             for (int i = 1; i < text.Length; i++)
@@ -946,7 +950,7 @@ namespace Client.MirScenes.Dialogs
             {
                 int h = CountBar.Size.Height - PositionBar.Size.Height;
                 h = (int)((h / (float)(History.Count - 1)) * StartIndex);
-                PositionBar.Location = new Point(Settings.Resolution != 800 ? 619 : 395, 16 + h);
+                PositionBar.Location = new Point(Classic176HUDLayout.IsClassicChat(this) ? Size.Width - 12 : Settings.Resolution != 800 ? 619 : 395, 16 + h);
             }
 
             int y = 1;
@@ -1187,6 +1191,13 @@ namespace Client.MirScenes.Dialogs
 
         public void ChangeSize()
         {
+            if (Classic176HUDLayout.IsClassicChat(this))
+            {
+                WindowSize = (WindowSize + 1) % 3;
+                UpdateBackground();
+                Update();
+                return;
+            }
             if (++WindowSize >= 3) WindowSize = 0;
 
             int y = DisplayRectangle.Bottom;
@@ -1227,6 +1238,11 @@ namespace Client.MirScenes.Dialogs
 
         public void UpdateBackground()
         {
+            if (Classic176HUDLayout.LayoutChat(this))
+            {
+                PixelDetect = false;
+                return;
+            }
             int offset = Transparent ? 1 : 0;
 
             switch (WindowSize)
@@ -1277,6 +1293,7 @@ namespace Client.MirScenes.Dialogs
             SizeButton.Click += (o, e) =>
             {
                 GameScene.Scene.ChatDialog.ChangeSize();
+                if (Classic176HUDLayout.IsClassicChat(GameScene.Scene.ChatDialog)) return;
                 Location = new Point(Location.X, GameScene.Scene.ChatDialog.DisplayRectangle.Top - Size.Height);
                 if (GameScene.Scene.BeltDialog.Index == 1932)
                     GameScene.Scene.BeltDialog.Location = new Point(GameScene.Scene.MainDialog.Location.X + 230, Location.Y - GameScene.Scene.BeltDialog.Size.Height);
@@ -2534,7 +2551,7 @@ namespace Client.MirScenes.Dialogs
         public MirButton HPViewOn, HPViewOff;
         public MirButton NewMoveOn, NewMoveOff;
         public MirButton ObserveOn, ObserveOff;
-        public MirCheckBox SmartShiftBox, AutoPickUpBox;
+        public MirCheckBox SmartShiftBox;
         public MirImageControl SoundBar, MusicSoundBar;
         public MirImageControl VolumeBar, MusicVolumeBar;
 
@@ -2818,17 +2835,6 @@ namespace Client.MirScenes.Dialogs
             };
             SmartShiftBox.Click += (o, e) => Settings.SmartShift = SmartShiftBox.Checked;
 
-            AutoPickUpBox = new MirCheckBox
-            {
-                Index = 2086,
-                UnTickedIndex = 2086,
-                TickedIndex = 2087,
-                Parent = this,
-                Location = new Point(142, 322),
-                Library = Libraries.Prguse,
-                LabelText = "踩点自动捡物"
-            };
-            AutoPickUpBox.Click += (o, e) => Settings.AutoPickUp = AutoPickUpBox.Checked;
             NpcAutoServiceOptions.Attach(this);
         }
 
@@ -3029,7 +3035,6 @@ namespace Client.MirScenes.Dialogs
             }
 
             if (SmartShiftBox != null) SmartShiftBox.Checked = Settings.SmartShift;
-            if (AutoPickUpBox != null) AutoPickUpBox.Checked = Settings.AutoPickUp;
         }
 
     }

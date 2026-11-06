@@ -408,6 +408,8 @@ namespace Client.MirScenes
 
             if (MapInfoList.Count > 0)
                 RecreateBigMapButtons();
+
+            Classic176HUDLayout.Apply176BottomHUD(this);
         }
 
         private void UpdateMouseCursor()
@@ -6186,6 +6188,7 @@ namespace Client.MirScenes
             MainDialog.HeroInfoPanel.Update();
 
             Hero.RefreshStats();
+            Classic176HUDLayout.AlignHeroBelt(this);
         }
 
         private void UpdateHeroSpawnState(S.UpdateHeroSpawnState p)
@@ -11466,23 +11469,6 @@ namespace Client.MirScenes
             if (!CanRideAttack()) AutoHit = false;
 
             if (CMain.Time < InputDelay || User.Poison.HasFlag(PoisonType.Paralysis) || User.Poison.HasFlag(PoisonType.LRParalysis) || User.Poison.HasFlag(PoisonType.Frozen) || User.Fishing) return;
-
-            if (Settings.AutoPickUp && CMain.Time > GameScene.PickUpTime && !User.Dead && ValidPoint(User.CurrentLocation))
-            {
-                var cellObjects = M2CellInfo[User.CurrentLocation.X, User.CurrentLocation.Y].CellObjects;
-                if (cellObjects != null)
-                {
-                    for (int i = 0; i < cellObjects.Count; i++)
-                    {
-                        if (cellObjects[i] is ItemObject itemOb && (User.FreeSpace(User.Inventory) > 0 || (itemOb.DrawFrame >= 112 && itemOb.DrawFrame <= 116)))
-                        {
-                            GameScene.PickUpTime = CMain.Time + 250;
-                            Network.Enqueue(new C.PickUp());
-                            break;
-                        }
-                    }
-                }
-            }
 
             if (User.NextMagic != null && !User.RidingMount)
             {

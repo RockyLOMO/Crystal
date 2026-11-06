@@ -670,6 +670,7 @@ namespace Client.MirScenes.Dialogs
 
         private void BeltPanel_BeforeDraw(object sender, EventArgs e)
         {
+            if (Classic176HUDLayout.IsClassicBelt(this)) return;
             //if Transparent return
 
             if (Libraries.Prguse != null)
@@ -678,6 +679,7 @@ namespace Client.MirScenes.Dialogs
 
         public void Flip()
         {
+            if (Classic176HUDLayout.IsClassicBelt(this)) return;
             //0,70 LOCATION
             if (Index == 1932)
             {

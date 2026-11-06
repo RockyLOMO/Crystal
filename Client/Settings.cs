@@ -158,11 +158,11 @@ namespace Client
             ExpandedHeroBuffWindow = true,
             DisplayBodyName = false,
             NewMove = false,
-            SmartShift = true,
-            AutoPickUp = true;
+            SmartShift = true;
 
         public static string Language = "Chinese";
         public static bool ChineseOverlayInspector = false;
+        public static bool UseClassic176HUD = true;
         public static bool AutoSellNormalEquipment = true;
         public static bool AutoSpecialRepairEquipment = true;
 
@@ -280,6 +280,7 @@ namespace Client
             ModeView = Reader.ReadBoolean("Game", "ModeView", ModeView);
             FontName = Reader.ReadString("Game", "FontName", FontName);
             ChineseOverlayInspector = Reader.ReadBoolean("Game", "ChineseOverlayInspector", ChineseOverlayInspector);
+            UseClassic176HUD = Reader.ReadBoolean("Game", "UseClassic176HUD", UseClassic176HUD);
             AutoSellNormalEquipment = Reader.ReadBoolean("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
             AutoSpecialRepairEquipment = Reader.ReadBoolean("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
             TransparentChat = Reader.ReadBoolean("Game", "TransparentChat", TransparentChat);
@@ -292,7 +293,6 @@ namespace Client
             DisplayBodyName = Reader.ReadBoolean("Game", "DisplayBodyName", DisplayBodyName);
             NewMove = Reader.ReadBoolean("Game", "NewMove", NewMove);
             SmartShift = Reader.ReadBoolean("Game", "SmartShift", SmartShift);
-            AutoPickUp = Reader.ReadBoolean("Game", "AutoPickUp", AutoPickUp);
             Language = Reader.ReadString("Game", "Language", Language);
 
             for (int i = 0; i < SkillbarLocation.Length / 2; i++)
@@ -396,6 +396,7 @@ namespace Client
             Reader.Write("Game", "ModeView", ModeView);
             Reader.Write("Game", "FontName", FontName);
             Reader.Write("Game", "ChineseOverlayInspector", ChineseOverlayInspector);
+            Reader.Write("Game", "UseClassic176HUD", UseClassic176HUD);
             Reader.Write("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
             Reader.Write("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
             Reader.Write("Game", "TransparentChat", TransparentChat);
@@ -408,7 +409,6 @@ namespace Client
             Reader.Write("Game", "DisplayBodyName", DisplayBodyName);
             Reader.Write("Game", "NewMove", NewMove);
             Reader.Write("Game", "SmartShift", SmartShift);
-            Reader.Write("Game", "AutoPickUp", AutoPickUp);
             Reader.Write("Game", "Language", Language);
 
             for (int i = 0; i < SkillbarLocation.Length / 2; i++)

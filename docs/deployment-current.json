@@ -1,6 +1,6 @@
 {
-  "CheckedAtUtc": "2026-11-06T20:03:23+08:00",
-  "Status": "deployed-stopped",
+  "CheckedAtUtc": "2026-11-06T16:53:56.1390626Z",
+  "Status": "deployed-running",
   "Source": {
     "Path": "D:\\projs\\mir2",
     "Repository": "https://github.com/Suprcode/Crystal",
@@ -10,7 +10,7 @@
     "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
     "DeployedSourceHead": "ba22e9c6",
     "IncludesUncommittedChanges": true,
-    "ClientDeployedSourceHead": "ba22e9c6",
+    "ClientDeployedSourceHead": "f1e1b993",
     "ClientIncludesUncommittedChanges": true
   },
   "Runtime": {
@@ -177,6 +177,38 @@
   "NpcOptionsAndClothSale": {
     "Evidence": "npc-options-validation.json",
     "RuntimeClientUpdated": true,
+    "ServerRestarted": false,
+    "DistributionUpdated": false
+  },
+  "Classic176HUD": {
+    "Date": "2026-11-07",
+    "Evidence": "classic176-hud-validation.json",
+    "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607",
+    "NativeFrame": "800x251",
+    "EnabledByDefault": true,
+    "RuntimeClientUpdated": true,
+    "VersionMirrorsUpdated": true,
+    "ServerStarted": true,
+    "DistributionUpdated": false,
+    "ChecksPassed": 347,
+    "GameplayAcceptance": "Side wings deployed; startup and handshake passed; latest in-game visual recheck pending",
+    "RuntimeAcceptance": "classic176-hud-validation.json#RuntimeAcceptance",
+    "AlignmentBackup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255",
+    "DetailLayoutBackup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426",
+    "SideWings": {
+      "Evidence": "classic176-hud-validation.json#SideWings",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-wings-20261107-005315",
+      "Width": "1366 retained",
+      "Height": 144,
+      "ClientProcessId": 1644,
+      "ServerProcessId": 21704,
+      "ClientErrorBytes": 513990,
+      "CheckedAt": "2026-11-07T00:53:34.7111644+08:00"
+    }
+  },
+  "HunterTomeUnifiedPickup": {
+    "Evidence": "tome-pickup-validation.json",
+    "ClientUpdated": true,
     "ServerRestarted": false,
     "DistributionUpdated": false
   }

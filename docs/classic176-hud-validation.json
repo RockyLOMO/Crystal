@@ -1,0 +1,659 @@
+{
+  "CheckedAt": "2026-11-07T00:53:34.7111644+08:00",
+  "Status": "deployed-running-side-wings-awaiting-user-recheck",
+  "SourceHead": "f1e1b993163622a40800dd71a0cbcb77cf5c82d9",
+  "IncludesUncommittedChanges": true,
+  "SourceArt": [
+    {
+      "Path": "E:\\rxdev\\10周年\\热血传奇\\Data\\Prguse.wil",
+      "Length": 23043440,
+      "SHA256": "6D29C4D5662B6547044C204C72592049EE5AA0C801B18790D47A9E5F50FA810B"
+    },
+    {
+      "Path": "E:\\rxdev\\10周年\\热血传奇\\Data\\Prguse.WIX",
+      "Length": 7128,
+      "SHA256": "C8A090394406BD2F0C3FCA5D77AB9D9ACCA74EF586E98291D23C468536372B94"
+    }
+  ],
+  "Profile": {
+    "OrbIndex": 4,
+    "ExperienceIndex": 7,
+    "UserConfirmedNativeFrame": true,
+    "FrameWidth": 800,
+    "FrameHeight": 251,
+    "FrameIndex": 1,
+    "OrbHeight": 90,
+    "OrbWidth": 92,
+    "ImageCount": 1770,
+    "OrbLocation": [
+      40,
+      91
+    ],
+    "ChatRectangle": [
+      207,
+      118,
+      388,
+      126
+    ]
+  },
+  "Validation": {
+    "ClassicHudChecks": 323,
+    "RestoreDrill": "NOT PERFORMED",
+    "AssetConversion": "PASS: all nonempty images pixel-verified after black transparency",
+    "ClientPublish": "PASS win-x64 self-contained",
+    "OverlayRegressionChecks": 24,
+    "Gameplay": "Side-wing build rendered and deployed; latest in-game visual and button operation recheck pending",
+    "NativeRender": "PASS three chat heights",
+    "AndroidWine": "NOT VERIFIED",
+    "TotalChecks": 347
+  },
+  "StagePath": "D:\\projs\\mir2\\Build\\Classic176HUD-20261107-wings\\Client",
+  "ClientChanges": [
+    {
+      "Area": "Client",
+      "Path": "Client.dll",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.dll",
+      "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+      "Existed": true,
+      "OldSHA256": "261EA85A57B568CDA8933105C0639E64C29E3A167498C56A08E58B589B89ADF0",
+      "NewSHA256": "F477087D127962AF14DA08ACFCD25FE3AAEA03FAA9C5CF268A13FDC6FFBA021E",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Client.dll"
+    },
+    {
+      "Area": "Client",
+      "Path": "Client.exe",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.exe",
+      "Destination": "D:\\private-server\\mir2-client\\Client.exe",
+      "Existed": true,
+      "OldSHA256": "60413FA3D1B31311A73AE19392F4EB333AE38179E0B0C6F5FB5F6A221EDAAFE7",
+      "NewSHA256": "99B3092D17929444E1AAD819526DE4B2C8B4BE7E4BEBA3A6F93D19FBE7850ECB",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Client.exe"
+    },
+    {
+      "Area": "Client",
+      "Path": "Client.pdb",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.pdb",
+      "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+      "Existed": true,
+      "OldSHA256": "79C58F5CBE54FFE0909EF8C712C432463FB8289A4767430DF8859B9D81ED77A7",
+      "NewSHA256": "ED81EEA15D0EB64C842425D3DEF4B2A9C9464A924EAF99D82C94DB6D370880CB",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Client.pdb"
+    },
+    {
+      "Area": "Client",
+      "Path": "Shared.dll",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Shared.dll",
+      "Destination": "D:\\private-server\\mir2-client\\Shared.dll",
+      "Existed": true,
+      "OldSHA256": "FB36F817EF800F124478B761C9BC9CD2C86E752EBA64031AE2E17F60339FD652",
+      "NewSHA256": "FE1676DCEC07BC9AE632DAA9263C7341C04E4F4C716DFF1054C0B24D153BED2A",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Shared.dll"
+    },
+    {
+      "Area": "Client",
+      "Path": "Shared.pdb",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Shared.pdb",
+      "Destination": "D:\\private-server\\mir2-client\\Shared.pdb",
+      "Existed": true,
+      "OldSHA256": "D7962833DF2B0EB08A681BF83AFB6B0D15DD652B28CC18E34D20152D4381390F",
+      "NewSHA256": "CE0A3B5F1C4A0427D26328AA24ADD99364BB35C1F72CE652622F2F7DADAC96CD",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Shared.pdb"
+    },
+    {
+      "Area": "Client",
+      "Path": "Data\\Prguse176.Lib",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Data\\Prguse176.Lib",
+      "Destination": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+      "Existed": false,
+      "OldSHA256": null,
+      "NewSHA256": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+      "Backup": null
+    }
+  ],
+  "VersionMirrorTargets": [
+    "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+    "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll"
+  ],
+  "LiveClient": "Side-wings build PID 1644 responding; Error.txt unchanged at 513990 bytes after startup",
+  "LiveServer": "Server PID 21704 remains running; version handshake and keepalive passed; executable unchanged",
+  "Distribution": "UNCHANGED",
+  "DeploymentBackup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607",
+  "Rollback": "See backup manifest; restore seven existing files after closing both ends; new independent lib can remain. [Game] UseClassic176HUD=False plus restart reverts layout.",
+  "EvidenceLogs": [
+    "assets-final.log",
+    "hud-final-v2.log",
+    "overlay-regression.log",
+    "publish-deploy.log"
+  ],
+  "OriginalLibraryMetadataUnchanged": 1440,
+  "OriginalPrguseLibraryHashesUnchanged": 3,
+  "DeployedEntries": [
+    {
+      "Area": "Client",
+      "Path": "Client.dll",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.dll",
+      "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+      "Existed": true,
+      "OldSHA256": "261EA85A57B568CDA8933105C0639E64C29E3A167498C56A08E58B589B89ADF0",
+      "NewSHA256": "F477087D127962AF14DA08ACFCD25FE3AAEA03FAA9C5CF268A13FDC6FFBA021E",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Client.dll"
+    },
+    {
+      "Area": "Client",
+      "Path": "Client.exe",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.exe",
+      "Destination": "D:\\private-server\\mir2-client\\Client.exe",
+      "Existed": true,
+      "OldSHA256": "60413FA3D1B31311A73AE19392F4EB333AE38179E0B0C6F5FB5F6A221EDAAFE7",
+      "NewSHA256": "99B3092D17929444E1AAD819526DE4B2C8B4BE7E4BEBA3A6F93D19FBE7850ECB",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Client.exe"
+    },
+    {
+      "Area": "Client",
+      "Path": "Client.pdb",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.pdb",
+      "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+      "Existed": true,
+      "OldSHA256": "79C58F5CBE54FFE0909EF8C712C432463FB8289A4767430DF8859B9D81ED77A7",
+      "NewSHA256": "ED81EEA15D0EB64C842425D3DEF4B2A9C9464A924EAF99D82C94DB6D370880CB",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Client.pdb"
+    },
+    {
+      "Area": "Client",
+      "Path": "Shared.dll",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Shared.dll",
+      "Destination": "D:\\private-server\\mir2-client\\Shared.dll",
+      "Existed": true,
+      "OldSHA256": "FB36F817EF800F124478B761C9BC9CD2C86E752EBA64031AE2E17F60339FD652",
+      "NewSHA256": "FE1676DCEC07BC9AE632DAA9263C7341C04E4F4C716DFF1054C0B24D153BED2A",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Shared.dll"
+    },
+    {
+      "Area": "Client",
+      "Path": "Shared.pdb",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Shared.pdb",
+      "Destination": "D:\\private-server\\mir2-client\\Shared.pdb",
+      "Existed": true,
+      "OldSHA256": "D7962833DF2B0EB08A681BF83AFB6B0D15DD652B28CC18E34D20152D4381390F",
+      "NewSHA256": "CE0A3B5F1C4A0427D26328AA24ADD99364BB35C1F72CE652622F2F7DADAC96CD",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\Client\\Shared.pdb"
+    },
+    {
+      "Area": "Client",
+      "Path": "Data\\Prguse176.Lib",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Data\\Prguse176.Lib",
+      "Destination": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+      "Existed": false,
+      "OldSHA256": null,
+      "NewSHA256": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+      "Backup": null
+    },
+    {
+      "Area": "ClientVersion",
+      "Path": "Client.exe",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.exe",
+      "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+      "Existed": true,
+      "OldSHA256": "60413FA3D1B31311A73AE19392F4EB333AE38179E0B0C6F5FB5F6A221EDAAFE7",
+      "NewSHA256": "99B3092D17929444E1AAD819526DE4B2C8B4BE7E4BEBA3A6F93D19FBE7850ECB",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\ClientVersion\\Client.exe"
+    },
+    {
+      "Area": "ClientVersion",
+      "Path": "Client.dll",
+      "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106\\Client\\Client.dll",
+      "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+      "Existed": true,
+      "OldSHA256": "261EA85A57B568CDA8933105C0639E64C29E3A167498C56A08E58B589B89ADF0",
+      "NewSHA256": "F477087D127962AF14DA08ACFCD25FE3AAEA03FAA9C5CF268A13FDC6FFBA021E",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607\\ClientVersion\\Client.dll"
+    }
+  ],
+  "RuntimeAcceptance": {
+    "CheckedAt": "2026-11-06T21:26:38+08:00",
+    "ServerProcessId": 22692,
+    "ClientProcessId": 10624,
+    "BothResponding": true,
+    "MapCount": 463,
+    "GamePort": 7000,
+    "StatusPort": 3000,
+    "VersionHandshake": "PASS",
+    "KeepAlive": "PASS",
+    "ActualLogin": "PASS: server log 21:26:06 User logged in",
+    "CharacterConnection": "PASS: server log 21:26:10 character connected",
+    "ClientErrorBytesBefore": 260713,
+    "ClientErrorBytesAfter": 344288,
+    "ServerLog": "D:\\private-server\\mir2\\Server\\Logs\\Server\\Server (06-11-2026).log",
+    "AutomaticWindowInspection": "BLOCKED: node_repl initialization failed with EISDIR realpath kernel.js; retried and reset without recovery",
+    "HudVisualAcceptance": "FAILED: user reports HUD misalignment; exact geometry pending screenshot",
+    "ButtonAcceptance": "NOT VERIFIED",
+    "CredentialsRecorded": false,
+    "FinalState": "Server and client left running as requested",
+    "SubsequentUserFeedback": "Logged into game; HUD position, orb or buttons misaligned; no screenshot supplied yet",
+    "SubsequentErrors": [
+      "D3DERR_DEVICELOST in RenderEnvironment at 21:27:24 local",
+      "MapControl.CreateTexture passes null FloorTexture after device reset; repeated NullReferenceException at 21:27:44-45 local",
+      "No evidence that device recovery defect explains reported HUD misalignment"
+    ]
+  },
+  "AlignmentCorrection": {
+    "CheckedAt": "2026-11-06T21:43:43+08:00",
+    "Trigger": "User in-game screenshot: overlays cover native round buttons and six slots; white chat aperture margins; orb placement offset",
+    "BeforeScreenshot": "classic176-hud-before-alignment.png",
+    "Preview": "classic176-hud-aligned-preview.png",
+    "ExpandedPreview": "classic176-hud-aligned-expanded-preview.png",
+    "OrbLocation": [
+      40,
+      91
+    ],
+    "RoundButtonLocations": [
+      [
+        643,
+        61
+      ],
+      [
+        682,
+        41
+      ],
+      [
+        722,
+        21
+      ],
+      [
+        764,
+        11
+      ]
+    ],
+    "NativeBeltSlotX": [
+      285,
+      328,
+      372,
+      415,
+      459,
+      503
+    ],
+    "NativeBeltSlotY": 59,
+    "ChatRectangle": [
+      207,
+      118,
+      388,
+      126
+    ],
+    "ChatInputRectangle": [
+      208,
+      232,
+      387,
+      12
+    ],
+    "Changes": [
+      "Native round artwork retained; bright native sprites appear on hover; removed opaque Chinese text squares",
+      "Default belt uses six original sockets without full-width cover or extra close button; expanded chat uses floating belt",
+      "Trade/group/guild/map shortcuts moved above frame away from weight gauge",
+      "Classic chat uses readable foreground colors on transparent text backgrounds",
+      "Chat and input bounds cover measured native white apertures; orb moved left 2 and up 5 pixels"
+    ],
+    "TestsPassed": 246,
+    "ClassicChecks": 222,
+    "OverlayChecks": 24,
+    "Backup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255",
+    "DeployedEntries": [
+      {
+        "Area": "Client",
+        "Relative": "Client.dll",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106-alignment\\Client\\Client.dll",
+        "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255\\Client\\Client.dll",
+        "OldSHA256": "F477087D127962AF14DA08ACFCD25FE3AAEA03FAA9C5CF268A13FDC6FFBA021E",
+        "NewSHA256": "C714E8CFA7A7E4C52F57156A3136B5200426D9ED2203743AD3A51399EE804DC6"
+      },
+      {
+        "Area": "Client",
+        "Relative": "Client.pdb",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106-alignment\\Client\\Client.pdb",
+        "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255\\Client\\Client.pdb",
+        "OldSHA256": "ED81EEA15D0EB64C842425D3DEF4B2A9C9464A924EAF99D82C94DB6D370880CB",
+        "NewSHA256": "3352A39F3A1852DE7210FCC42C1E3DFA4B6738B1A188AE25D8C78BDB03BA8875"
+      },
+      {
+        "Area": "ClientVersion",
+        "Relative": "Client.dll",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106-alignment\\Client\\Client.dll",
+        "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255\\ClientVersion\\Client.dll",
+        "OldSHA256": "F477087D127962AF14DA08ACFCD25FE3AAEA03FAA9C5CF268A13FDC6FFBA021E",
+        "NewSHA256": "C714E8CFA7A7E4C52F57156A3136B5200426D9ED2203743AD3A51399EE804DC6"
+      }
+    ],
+    "PreservedFiles": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "CCB010F90160C4B8FEA826CBAEF3EB63A7C9BEECF7AA99AFE2FF2E3BC1E6ABB6",
+        "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "6D8DC653039F45727302F222BC55DF6B7BE134500438FE8DFCF00F7B9015A95E",
+        "Path": "D:\\private-server\\mir2-client\\Localization\\Chinese.json"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "510EBC77315089075FC472C9EF745BE2E16C6DECE970C307D6859CE074CCE861",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse2.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "564B950C2B786D53804B662C3385CCA75929AFDC17396B282B5493CA48E83316",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse3.Lib"
+      }
+    ],
+    "ClientVersionExecutable": "Unchanged; no server restart required; handshake verified",
+    "ServerRestarted": false,
+    "ClientRestarted": true,
+    "ClientProcessId": 15836,
+    "ClientErrorBaseline": 344288,
+    "ClientErrorAfterStartup": 344288,
+    "LiveVisualAcceptance": "PENDING user new screenshot",
+    "VisionRelay": "gj-vision model-list preflight failed TLS UNEXPECTED_EOF; used visible supplied image and local pixel/template analysis",
+    "MapDeviceRecovery": "Known separate defect observed before correction; not changed in this alignment-only fix"
+  },
+  "DetailLayout": {
+    "Date": "2026-11-06",
+    "DeployedAt": "2026-11-06T22:04:27.0417447+08:00",
+    "BeforeScreenshot": "classic176-hud-before-details.png",
+    "Preview": "classic176-hud-details-preview.png",
+    "ExpandedPreview": "classic176-hud-details-expanded-preview.png",
+    "ChatChannelRowShiftY": 4,
+    "ChatChannelRowHeight": 18,
+    "ExtensionDock": {
+      "Buttons": [
+        "交易",
+        "组队",
+        "行会",
+        "地图",
+        "召英",
+        "英包",
+        "英装",
+        "任务",
+        "坐骑"
+      ],
+      "Position": [
+        227,
+        22
+      ],
+      "ButtonSize": [
+        36,
+        22
+      ],
+      "Size": [
+        348,
+        22
+      ],
+      "FollowsChatExpansion": true,
+      "GroupGap": 10,
+      "VisibleCaptionBoundsCorrected": true
+    },
+    "LevelField": [
+      666,
+      143,
+      33,
+      18
+    ],
+    "RightHeader": {
+      "Positions": [
+        [
+          630,
+          108
+        ],
+        [
+          670,
+          108
+        ],
+        [
+          710,
+          108
+        ]
+      ],
+      "Captions": [
+        "属性",
+        "商城",
+        "英雄"
+      ],
+      "Menu": [
+        752,
+        100,
+        32,
+        30
+      ]
+    },
+    "SecondSlotReview": {
+      "SocketCenterX": 626.5,
+      "ItemImage": 398,
+      "SlotsChanged": false,
+      "Conclusion": "Socket/centering code correct. Red bottle artwork optical mass is left-biased, similarly to first bottle; preserved inventory slots and hit areas.",
+      "VisibleBounds": [
+        617,
+        577,
+        19,
+        30
+      ],
+      "WholeImageCenterX": 626.0,
+      "ScreenshotDrawOrigin": [
+        617,
+        577
+      ],
+      "BodyCentroidX": 623.874,
+      "SecondBottleBodyBias": -2.626,
+      "FirstBottleBodyBias": -2.371
+    },
+    "ClassicChecks": 242,
+    "OverlayChecks": 24,
+    "TotalChecks": 266,
+    "NativeRender": "PASS all three heights; manually inspected default and expanded previews",
+    "Backup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426",
+    "Entries": [
+      {
+        "Area": "Client",
+        "Relative": "Client.dll",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106-details\\Client\\Client.dll",
+        "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426\\Client\\Client.dll",
+        "OldSHA256": "C714E8CFA7A7E4C52F57156A3136B5200426D9ED2203743AD3A51399EE804DC6",
+        "NewSHA256": "84312B835A0D9D048438D19BEEA861157E02408C8E491F3D55F0204F595210CE"
+      },
+      {
+        "Area": "Client",
+        "Relative": "Client.pdb",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106-details\\Client\\Client.pdb",
+        "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426\\Client\\Client.pdb",
+        "OldSHA256": "3352A39F3A1852DE7210FCC42C1E3DFA4B6738B1A188AE25D8C78BDB03BA8875",
+        "NewSHA256": "8E36991167A7082CA51EEC87F02BED1F650AC044FD03E78AF876BB70A16B7E3A"
+      },
+      {
+        "Area": "ClientVersion",
+        "Relative": "Client.dll",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261106-details\\Client\\Client.dll",
+        "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426\\ClientVersion\\Client.dll",
+        "OldSHA256": "C714E8CFA7A7E4C52F57156A3136B5200426D9ED2203743AD3A51399EE804DC6",
+        "NewSHA256": "84312B835A0D9D048438D19BEEA861157E02408C8E491F3D55F0204F595210CE"
+      }
+    ],
+    "PreservedFiles": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "CF96C5A9D49F1EDC1B0EC85F453EF527C173B4252B1FDC83087224B4A7F5745A",
+        "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "6D8DC653039F45727302F222BC55DF6B7BE134500438FE8DFCF00F7B9015A95E",
+        "Path": "D:\\private-server\\mir2-client\\Localization\\Chinese.json"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "510EBC77315089075FC472C9EF745BE2E16C6DECE970C307D6859CE074CCE861",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse2.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "564B950C2B786D53804B662C3385CCA75929AFDC17396B282B5493CA48E83316",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse3.Lib"
+      }
+    ],
+    "ClientErrorBaseline": 428143,
+    "ClientErrorAfterStartup": 428143,
+    "ClientProcessId": 24736,
+    "ServerRestarted": false,
+    "DistributionUpdated": false,
+    "ActualInGameVisualAcceptance": "PENDING user recheck",
+    "KnownSeparateMapDeviceRecoveryDefect": "Not changed in this HUD detail task"
+  },
+  "SideWings": {
+    "DeployedAt": "2026-11-07T00:53:15.5840776+08:00",
+    "Resolution": "1366x768 retained",
+    "NativeFrame": "800x251 unchanged",
+    "WingHeight": 144,
+    "LeftRectangle": [
+      0,
+      624,
+      283,
+      144
+    ],
+    "RightRectangle": [
+      1083,
+      624,
+      283,
+      144
+    ],
+    "LeftButtons": [
+      "交易",
+      "组队",
+      "行会",
+      "地图"
+    ],
+    "RightButtons": [
+      "召英",
+      "英包",
+      "英装",
+      "任务",
+      "坐骑"
+    ],
+    "ButtonRows": "Left 2+2; right 3+2 at 1366; compact adaptive rows at 1024",
+    "SupportedWidthsTested": [
+      800,
+      1024,
+      1280,
+      1366,
+      1367
+    ],
+    "NarrowFallback": "Below 96px per side, use original 348x22 toolbar",
+    "StoneSource": "Frame 1 rectangle 666,109,43,26 tiled without stretching, tinted 190 gray; existing edge strips",
+    "ClassicChecks": 323,
+    "OverlayChecks": 24,
+    "TotalChecks": 347,
+    "Preview": "classic176-hud-wings-preview.png",
+    "ExpandedPreview": "classic176-hud-wings-expanded-preview.png",
+    "PreviewType": "Isolated actual Direct3D control rendering; not online gameplay screenshot",
+    "Backup": "D:\\private-server\\mir2\\backups\\classic176-wings-20261107-005315",
+    "DeployedEntries": [
+      {
+        "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+        "NewSHA256": "CFFF243A7A77562ADB19A54DFDCEB59B94538CCC13472A31EE7B441D0A3C6186",
+        "Area": "Client",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-wings-20261107-005315\\Client\\Client.dll",
+        "Relative": "Client.dll",
+        "OldSHA256": "CFFF243A7A77562ADB19A54DFDCEB59B94538CCC13472A31EE7B441D0A3C6186",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261107-wings\\Client\\Client.dll"
+      },
+      {
+        "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+        "NewSHA256": "C214129196FF2762BB7D89F961D6D73F764DD38BE94971748CA67E94FE1EC5FF",
+        "Area": "Client",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-wings-20261107-005315\\Client\\Client.pdb",
+        "Relative": "Client.pdb",
+        "OldSHA256": "C214129196FF2762BB7D89F961D6D73F764DD38BE94971748CA67E94FE1EC5FF",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261107-wings\\Client\\Client.pdb"
+      },
+      {
+        "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+        "NewSHA256": "CFFF243A7A77562ADB19A54DFDCEB59B94538CCC13472A31EE7B441D0A3C6186",
+        "Area": "ClientVersion",
+        "Backup": "D:\\private-server\\mir2\\backups\\classic176-wings-20261107-005315\\ClientVersion\\Client.dll",
+        "Relative": "Client.dll",
+        "OldSHA256": "84312B835A0D9D048438D19BEEA861157E02408C8E491F3D55F0204F595210CE",
+        "Source": "D:\\projs\\mir2\\Build\\Classic176HUD-20261107-wings\\Client\\Client.dll"
+      }
+    ],
+    "PreservedFiles": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "CF96C5A9D49F1EDC1B0EC85F453EF527C173B4252B1FDC83087224B4A7F5745A",
+        "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "6D8DC653039F45727302F222BC55DF6B7BE134500438FE8DFCF00F7B9015A95E",
+        "Path": "D:\\private-server\\mir2-client\\Localization\\Chinese.json"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "510EBC77315089075FC472C9EF745BE2E16C6DECE970C307D6859CE074CCE861",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse2.Lib"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "564B950C2B786D53804B662C3385CCA75929AFDC17396B282B5493CA48E83316",
+        "Path": "D:\\private-server\\mir2-client\\Data\\Prguse3.Lib"
+      }
+    ],
+    "ClientExeUnchanged": true,
+    "Runtime": {
+      "CheckedAt": "2026-11-07T00:53:34.7111644+08:00",
+      "ClientProcessId": 1644,
+      "ClientExited": false,
+      "ClientResponding": true,
+      "ServerProcessId": 21704,
+      "ClientErrorAfterStartup": 513990,
+      "Handshake": "PASS",
+      "KeepAlive": "PASS",
+      "GameplayAcceptance": "Pending user in-game visual recheck"
+    },
+    "ServerRestarted": false,
+    "DistributionUpdated": false,
+    "LiveVisualAcceptance": "PENDING user in-game visual recheck",
+    "MapDeviceRecovery": "Existing separate device-lost map texture recovery defect unchanged",
+    "EvidenceDirectory": "T:\\TEMP\\ai\\20261107\\mir2-classic176-wings"
+  }
+}

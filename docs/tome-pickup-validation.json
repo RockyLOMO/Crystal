@@ -1,0 +1,48 @@
+{
+  "Date": "2026-11-07",
+  "SourceHead": "f1e1b993",
+  "IncludesUncommittedChanges": true,
+  "Change": "Remove client AutoPickUp field/INI/checkbox/automatic C.PickUp path; the hunter tome is the sole character auto-pickup entry",
+  "CanonicalState": "Server SoloPlayerProfile.AutoPickRangeMode",
+  "ModeCycle": [
+    "Smart (2)",
+    "All (1)",
+    "Off (0)"
+  ],
+  "ExistingRoleModesChanged": false,
+  "OldIniKey": "Ignored if present",
+  "ManualPickup": "Preserved",
+  "Validation": {
+    "LegacySourceScan": "PASS: no AutoPickUp in client source or package defaults",
+    "UIOverlayAndOptionsChecks": 25,
+    "ExistingClassicHudChecks": 320,
+    "ClientPublish": "PASS",
+    "GitDiffCheck": "PASS",
+    "Total": 381,
+    "ServerTomePickupChecks": 36
+  },
+  "Deployment": {
+    "CheckedAt": "2026-11-07T00:52:32.2227533+08:00",
+    "Backup": "D:\\private-server\\mir2\\backups\\tome-pickup-client-20261107-005224",
+    "ChangedClientFiles": 3,
+    "ChangedFiles": [
+      "Client.dll",
+      "Client.pdb",
+      "Localization\\Chinese.json"
+    ],
+    "PublishedHashes": "PASS",
+    "ServerProcessIdBefore": 21704,
+    "ServerProcessIdAfter": 21704,
+    "ServerBinariesUnchanged": true,
+    "ServerRestarted": false,
+    "ClientResponding": true,
+    "NewClientErrorBytes": 0,
+    "ClientGracefulExit": true,
+    "DistributionWrites": false,
+    "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "RuntimeServerFilesChanged": false,
+  "GameplayAcceptance": "NOT VERIFIED",
+  "DistributionWrites": false,
+  "RollbackDrill": "NOT VERIFIED"
+}

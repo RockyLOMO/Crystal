@@ -50,7 +50,6 @@ FontName=Microsoft YaHei
 AutoSellNormalEquipment=True
 AutoSpecialRepairEquipment=True
 SmartShift=True
-AutoPickUp=True
 
 [Launcher]
 Enabled=False

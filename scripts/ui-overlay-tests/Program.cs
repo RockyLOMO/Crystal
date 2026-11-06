@@ -24,6 +24,7 @@ internal static class Program
         Directory.CreateDirectory(Path.Combine(fixture, "Localization"));
         File.Copy(Path.Combine(root, "Client", "Localization", "Overlay.zh-CN.json"), Path.Combine(fixture, "Localization", "Overlay.zh-CN.json"));
         Directory.SetCurrentDirectory(fixture);
+        File.WriteAllText("Mir2Config.ini", "[Game]\nAutoPickUp=True\nSmartShift=True\nLanguage=Chinese\n");
         using var measurementBitmap = new Bitmap(1, 1);
         using var measurementGraphics = Graphics.FromImage(measurementBitmap);
         Client.CMain.Graphics = measurementGraphics;
@@ -75,6 +76,10 @@ internal static class Program
         Check(last.IsDisposed, "original owner disposal releases overlay controls and fonts");
 
         var settings = typeof(OptionDialog).Assembly.GetType("Client.Settings")!;
+        settings.GetMethod("Load")!.Invoke(null, null);
+        Check(settings.GetField("AutoPickUp") == null && typeof(OptionDialog).GetField("AutoPickUpBox") == null
+            && File.ReadAllText("Mir2Config.ini").Contains("AutoPickUp=True"),
+            "legacy AutoPickUp=true is harmless: the setting and standalone option no longer exist");
         var sellSetting = settings.GetField("AutoSellNormalEquipment")!;
         var repairSetting = settings.GetField("AutoSpecialRepairEquipment")!;
         sellSetting.SetValue(null, true); repairSetting.SetValue(null, true);

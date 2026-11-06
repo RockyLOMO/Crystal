@@ -155,7 +155,8 @@ namespace Server.SoloExtension
                 "----------------------------------------",
                 "<[切换] 4×4 范围自动拾取模式 (智能极品/全部/关闭)/@Tome_TogglePick>",
                 "<[感知] 探查本层魔物惊扰度与存活领主方位/@Tome_Sense>",
-                "<[图鉴] 查阅玛法猎魔图鉴进度与永久属性加成/@Tome_Codex>"
+                "<[图鉴] 查阅玛法猎魔图鉴进度与永久属性加成/@Tome_Codex>",
+                "<[减负] 一键清理包袱中15级以下过渡装 (解除超重)/@Solo_CleanLowGear>"
             };
 
             if (player.InSafeZone)
@@ -398,6 +399,11 @@ namespace Server.SoloExtension
                         if (profile.AutoPickRangeMode == 2 && !ShouldSmartPickupItem(item))
                             continue;
 
+                        // 严格检查背包负重上限，防止范围自动拾取导致玩家超重跑不动
+                        uint totalItemWeight = (uint)(item.Weight * Math.Max(1, (int)item.Count));
+                        if (player.CurrentBagWeight + totalItemWeight > player.Stats[Stat.BagWeight])
+                            continue;
+
                         if (player.CanGainItem(item))
                         {
                             item.Identified = true;
@@ -416,16 +422,20 @@ namespace Server.SoloExtension
         {
             if (item?.Info == null) return false;
 
-            // 1. 精良及以上品质极品装备（或带任何附加词条/名牌装备）必捡
-            if (item.GetSoloRarityTier() >= 1 || TownAndCampModule.IsProtectedEquipment(item))
-            {
-                if (TownAndCampModule.IsEquipmentType(item.Info.Type))
-                    return true;
-            }
-
-            // 2. 普通白板垃圾装备跳过不捡，彻底解决包袱超重痛点！
             if (TownAndCampModule.IsEquipmentType(item.Info.Type))
-                return false;
+            {
+                int rarityTier = item.GetSoloRarityTier();
+                // 15级以下新手过渡底材：智能模式下仅自动拾取【稀有】(蓝装 Tier>=2) 及以上或名牌，避免低级绿装塞满包袱
+                if (item.Info.RequiredType == RequiredType.Level &&
+                    item.Info.RequiredAmount < 15 &&
+                    !TownAndCampModule.IsFamousOrHighTierGear(item.Info))
+                {
+                    return rarityTier >= 2;
+                }
+
+                // 15级以上装备：精良及以上品质极品装备（或带任何附加词条/名牌装备）必捡
+                return rarityTier >= 1 || TownAndCampModule.IsProtectedEquipment(item);
+            }
 
             // 3. 矿石仅拾取纯度 >= 10 的高纯度矿石
             if (item.Info.Type == ItemType.Ore)

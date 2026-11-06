@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Server.MirEnvir;
 
 namespace Server.MirDatabase
@@ -513,7 +513,7 @@ namespace Server.MirDatabase
 
             if (itemDropRatePercentOffset > 0)
             {
-                rate -= (rate * itemDropRatePercentOffset) / 100;
+                rate = (int)Math.Max(1, (rate * 100L) / (100L + itemDropRatePercentOffset));
             }
 
             if (rate < 1) rate = 1;

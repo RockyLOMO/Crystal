@@ -193,11 +193,11 @@ namespace Server.SoloExtension
             if (mob == null) return 0;
             return mob.Rarity switch
             {
-                MonsterRarity.Lord => 180,
-                MonsterRarity.Elite => 120,
-                MonsterRarity.Rare => 50,
-                MonsterRarity.Uncommon => 25,
-                _ => mob.EliteTier == 2 ? 150 : (mob.EliteTier == 1 ? 50 : 0)
+                MonsterRarity.Lord => 100,
+                MonsterRarity.Elite => 60,
+                MonsterRarity.Rare => 40,
+                MonsterRarity.Uncommon => 20,
+                _ => mob.EliteTier == 2 ? 100 : (mob.EliteTier == 1 ? 40 : 0)
             };
         }
 
@@ -206,11 +206,11 @@ namespace Server.SoloExtension
             if (mob == null) return 1;
             return mob.Rarity switch
             {
-                MonsterRarity.Lord => 8,
-                MonsterRarity.Elite => 5,
-                MonsterRarity.Rare => 3,
-                MonsterRarity.Uncommon => 2,
-                _ => mob.EliteTier == 2 ? 6 : (mob.EliteTier == 1 ? 3 : 1)
+                MonsterRarity.Lord => 4,
+                MonsterRarity.Elite => 3,
+                MonsterRarity.Rare => 2,
+                MonsterRarity.Uncommon => 1,
+                _ => mob.EliteTier == 2 ? 4 : (mob.EliteTier == 1 ? 2 : 1)
             };
         }
 
@@ -266,7 +266,7 @@ namespace Server.SoloExtension
 
             Map map = mob.CurrentMap;
             int prevHeat = GetMapHeat(map);
-            int delta = Envir.Main.Random.Next(3, 5); // 每杀1只普通怪 +3~4 点惊扰度
+            int delta = 1; // 每杀1只普通怪 +1 点惊扰度（50只引出精英，100只引出领主）
             int heat = prevHeat + delta;
 
             if (heat >= 100) // 满 100 点：清零并在附近刷出猩红 [领主]！
@@ -368,15 +368,7 @@ namespace Server.SoloExtension
             return origin;
         }
 
-        public static int GetDropRateBonusPercent(MonsterObject mob)
-        {
-            if (mob == null) return 0;
-            if (mob.Rarity == MonsterRarity.Lord || mob.EliteTier == 2) return 150;
-            if (mob.Rarity == MonsterRarity.Elite) return 80;
-            if (mob.Rarity == MonsterRarity.Rare || mob.EliteTier == 1) return 50;
-            if (mob.Rarity == MonsterRarity.Uncommon) return 20;
-            return 0;
-        }
+        public static int GetDropRateBonusPercent(MonsterObject mob) => GetDropBonusPercent(mob);
 
         private static void ScaleStat(MonsterObject mob, Stat stat, double multiplier)
         {

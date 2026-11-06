@@ -60,6 +60,9 @@ namespace Server.SoloExtension
                 case "@SOLO_QUICKSELL":
                     HandleQuickSell(player);
                     return true;
+                case "@SOLO_CLEANLOWGEAR":
+                    HandleCleanLowGear(player);
+                    return true;
                 case "@SOLO_QUICKREPAIR":
                     HandleQuickRepair(player);
                     return true;
@@ -103,6 +106,7 @@ namespace Server.SoloExtension
                 lines.Add(" ");
                 lines.Add("{【安全区随身军需与神匠快捷服务】/Khaki}");
                 lines.Add("<[一键出售普通战利品 (自动锁死极品与名牌)]/@Solo_QuickSell>");
+                lines.Add("<[一键清理15级以下过渡装 (回收新手红紫装减负)]/@Solo_CleanLowGear>");
                 lines.Add("<[主号与英雄全身装备一键特修]/@Solo_QuickRepair>");
                 lines.Add("<[同名装备三合一极品重铸]/@Solo_Reforge3>");
             }
@@ -112,6 +116,10 @@ namespace Server.SoloExtension
                 lines.Add("{提示：野外回城请使用【回城卷 / 地牢逃脱卷】，终极Boss房禁止扎营。/Silver}");
                 lines.Add(" ");
                 lines.Add($"<[在此处升起篝火扎营 (消耗 {CampSetGoldCost:N0} 金币)]/@Camp_Set>");
+                lines.Add("----------------------------------------");
+                lines.Add("{【行军随身减负服务 (立刻解除背包超重)】/Khaki}");
+                lines.Add("<[随身统卖普通白装 (自动锁死极品与名牌)]/@Solo_QuickSell>");
+                lines.Add("<[一键清理15级以下过渡装 (回收新手红紫装减负)]/@Solo_CleanLowGear>");
             }
 
             lines.Add(" ");
@@ -255,6 +263,46 @@ namespace Server.SoloExtension
             else
             {
                 player.ReceiveChat($"🛡️ [军需统卖] 背包中无可出售的普通白装（已为你自动锁定保护 {protectedCount} 件极品/名牌装备）。", ChatType.Hint);
+            }
+        }
+
+        public static void HandleCleanLowGear(PlayerObject player)
+        {
+            if (player?.Info?.Inventory == null) return;
+
+            int soldCount = 0;
+            ulong totalGoldEarned = 0;
+
+            for (int i = 0; i < player.Info.Inventory.Length; i++)
+            {
+                UserItem item = player.Info.Inventory[i];
+                if (item?.Info == null) continue;
+                if (!IsEquipmentType(item.Info.Type)) continue;
+                if (IsFamousOrHighTierGear(item.Info)) continue;
+
+                // 仅清理 15 级及以下的新手过渡装备（如布衣、轻型盔甲、木剑、铁手镯、皮手套等）
+                bool isLowLevelStarter = item.Info.RequiredType != RequiredType.Level || item.Info.RequiredAmount <= 15;
+                if (!isLowLevelStarter) continue;
+
+                uint sellValue = Math.Max(10u, item.Price() / 2u);
+                if ((ulong)player.Account.Gold + totalGoldEarned + sellValue > uint.MaxValue)
+                    break;
+
+                player.Enqueue(new S.DeleteItem { UniqueID = item.UniqueID, Count = item.Count });
+                player.Info.Inventory[i] = null;
+                totalGoldEarned += sellValue;
+                soldCount++;
+            }
+
+            if (soldCount > 0)
+            {
+                player.GainGold((uint)totalGoldEarned);
+                player.RefreshBagWeight();
+                player.ReceiveChat($"🪶 [行军减负] 已一键清理 {soldCount} 件15级以下新手过渡装备，折算获得 {totalGoldEarned:N0} 金币，包袱负重已立即恢复！", ChatType.Hint);
+            }
+            else
+            {
+                player.ReceiveChat("🪶 [行军减负] 背包中没有需要清理的15级以下新手过渡装备。", ChatType.Hint);
             }
         }
 

@@ -745,15 +745,17 @@ public class UserItem
             case MonsterRarity.Rare:
                 {
                     int lines = Random.Shared.Next(1, 3);
+                    int minPerLine = lines == 1 ? 3 : 2;
                     for (int i = 0; i < lines; i++)
-                        AddRandomPrimaryStat(Random.Shared.Next(2, 5));
+                        AddRandomPrimaryStat(Random.Shared.Next(minPerLine, 5));
                 }
                 break;
             case MonsterRarity.Elite:
                 {
                     int lines = Random.Shared.Next(2, 4);
+                    int minPerLine = lines == 2 ? 3 : 2;
                     for (int i = 0; i < lines; i++)
-                        AddRandomPrimaryStat(Random.Shared.Next(2, 6));
+                        AddRandomPrimaryStat(Random.Shared.Next(minPerLine, 6));
                     if (Random.Shared.Next(100) < 30)
                         RollSpecialAddedStat();
                 }

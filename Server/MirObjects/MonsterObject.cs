@@ -1196,6 +1196,9 @@ namespace Server.MirObjects
 
             int dropLoops = SoloExtension.EcologyAndRarityModule.GetDropLoops(this);
             bool droppedGold = false;
+            int droppedEquipCount = 0;
+            int maxEquipDrops = Rarity == MonsterRarity.Lord ? 3 : (Rarity >= MonsterRarity.Rare ? 2 : 1);
+            bool rolledSignatureRarity = false;
 
             for (int loop = 0; loop < dropLoops; loop++)
             {
@@ -1221,16 +1224,26 @@ namespace Server.MirObjects
 
                             if (item == null) continue;
 
-                            if (Rarity != MonsterRarity.None)
+                            bool isEquip = item.Info != null && SoloExtension.TownAndCampModule.IsEquipmentType(item.Info.Type);
+                            if (isEquip && !drop.QuestRequired)
                             {
-                                item.RollSoloRarityStats(Rarity);
+                                if (droppedEquipCount >= maxEquipDrops)
+                                    continue;
+                                droppedEquipCount++;
                             }
-                            else if (false)
-                {
-                                item.RollSoloRarityStats(Rarity);
-                }
-                else if (Rarity != MonsterRarity.None || EliteTier == 2)
-                                item.RollFullVersionRareStats(forceRare: true, minAdd: 2, maxAdd: 6);
+
+                            if (Rarity != MonsterRarity.None && isEquip && !rolledSignatureRarity)
+                            {
+                                rolledSignatureRarity = true;
+                                MonsterRarity effectiveRarity = Rarity;
+                                if (Level < 18 && Rarity == MonsterRarity.Lord && Envir.Random.Next(100) < 75)
+                                {
+                                    effectiveRarity = MonsterRarity.Elite;
+                                }
+                                item.RollSoloRarityStats(effectiveRarity);
+                            }
+                            else if (Rarity != MonsterRarity.None || EliteTier == 2)
+                                item.RollFullVersionRareStats(forceRare: false, minAdd: 1, maxAdd: 4);
                             else if (EliteTier == 1)
                                 item.RollFullVersionRareStats(forceRare: true, minAdd: 1, maxAdd: 3);
                             else
