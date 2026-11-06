@@ -504,6 +504,11 @@ namespace Server.MirObjects
         public MapRespawn Respawn;
         public MonsterType MonsterType { get; private set; } = MonsterType.Normal;
         public byte EliteTier = 0; // 0:普通怪, 1:稀有精英(蓝), 2:远古领主(金)
+        public MonsterRarity Rarity { get; set; } = MonsterRarity.None;
+        public int EliteSubType { get; set; } = -1;
+        public string CustomDisplayName { get; set; }
+        public bool LordGuardsSummoned { get; set; }
+        public bool LordEnraged { get; set; }
         private long NextRecallTime;
 
         public override string Name
@@ -513,6 +518,27 @@ namespace Server.MirObjects
                 if (Master != null)
                     return string.Format("{0}({1})", Info.GameName, Master.Name);
 
+                if (!string.IsNullOrEmpty(CustomDisplayName)) return CustomDisplayName;
+                return Rarity switch
+                {
+                    MonsterRarity.Lord => $"[领主]血煞{Info.GameName}",
+                    MonsterRarity.Elite => $"[统领]{Info.GameName}",
+                    MonsterRarity.Rare => $"[精英]{Info.GameName}",
+                    MonsterRarity.Uncommon => $"[变异]{Info.GameName}",
+                    _ => EliteTier switch
+                    {
+                        2 => $"[领主]{Info.GameName}",
+                        1 => $"[精英]{Info.GameName}",
+                        _ => Info.GameName
+                    }
+                };
+            }
+            set { CustomDisplayName = value; }
+        }
+        private string UnusedNameHelper
+        {
+            get
+            {
                 return EliteTier switch
                 {
                     2 => $"[领主]{Info.GameName}",
@@ -524,6 +550,10 @@ namespace Server.MirObjects
         }
 
         public void RollEliteMutation()
+        {
+            SoloExtension.SoloExtensionHost.OnMonsterSpawn(this);
+        }
+        private void UnusedLegacyRollEliteMutation()
         {
             if (Info == null || Info.AI == 6 || Info.IsBoss || Master != null || Info.Stats[Stat.HP] >= 15000 || Race != ObjectType.Monster)
                 return;
@@ -600,7 +630,7 @@ namespace Server.MirObjects
             get
             {
                 MonsterRarityProfile profile = GetRarityProfile();
-                double eliteExpMultiplier = EliteTier == 2 ? 15.0 : (EliteTier == 1 ? 5.0 : 1.0);
+                double eliteExpMultiplier = SoloExtension.EcologyAndRarityModule.GetExpMultiplier(this);
                 double scaled = Info.Experience * profile.ExpMultiplier * eliteExpMultiplier;
 
                 if (scaled <= 0) return 0;
@@ -657,7 +687,7 @@ namespace Server.MirObjects
         }
         protected virtual bool CanRegen
         {
-            get { return Envir.Time >= RegenTime; }
+            get { return !LordEnraged && Envir.Time >= RegenTime; }
         }
         protected virtual bool CanMove
         {
@@ -785,7 +815,12 @@ namespace Server.MirObjects
 
             if (Master == null)
             {
-                if (EliteTier == 2)
+                if (Rarity != MonsterRarity.None)
+                {
+                    SoloExtension.EcologyAndRarityModule.ApplyRarityStats(this);
+                    return;
+                }
+                else if (Rarity != MonsterRarity.None || EliteTier == 2)
                 {
                     ScaleStat(Stat.HP, 5.5);
                     ScaleStat(Stat.MinDC, 1.5);
@@ -847,7 +882,7 @@ namespace Server.MirObjects
             if (amount == 0) return 0;
 
             MonsterRarityProfile profile = GetRarityProfile();
-            double eliteGoldMultiplier = EliteTier == 2 ? 3.0 : (EliteTier == 1 ? 1.8 : 1.0);
+            double eliteGoldMultiplier = SoloExtension.EcologyAndRarityModule.GetGoldMultiplier(this);
             double scaled = amount * profile.GoldMultiplier * eliteGoldMultiplier * Settings.GoldRate;
 
             if (scaled <= 0) return 0;
@@ -874,7 +909,7 @@ namespace Server.MirObjects
                 AttackSpeed = (ushort)Math.Min(ushort.MaxValue, (Math.Max(ushort.MinValue, AttackSpeed - MaxPetLevel * 70)));
             }
 
-            ushort minSpeed = (Master == null && EliteTier == 2) ? (ushort)300 : (ushort)400;
+            ushort minSpeed = (Master == null && (Rarity >= MonsterRarity.Elite || EliteTier == 2)) ? (ushort)280 : (ushort)400;
             if (MoveSpeed < minSpeed) MoveSpeed = minSpeed;
             if (AttackSpeed < minSpeed) AttackSpeed = minSpeed;
 
@@ -930,17 +965,17 @@ namespace Server.MirObjects
                         break;
                 }
             }
-            else if (EliteTier == 2)
+            else if (Rarity != MonsterRarity.None || EliteTier == 2)
             {
-                colour = Color.Gold;
+                colour = SoloExtension.EcologyAndRarityModule.GetRarityNameColour(this) ?? colour;
             }
             else if (EliteTier == 1)
             {
-                colour = Color.DeepSkyBlue;
+                colour = SoloExtension.EcologyAndRarityModule.GetRarityNameColour(this) ?? colour;
             }
             else if (MonsterType != MonsterType.Normal)
             {
-                colour = GetRarityProfile().NameColour;
+                colour = Rarity != MonsterRarity.None ? (SoloExtension.EcologyAndRarityModule.GetRarityNameColour(this) ?? GetRarityProfile().NameColour) : GetRarityProfile().NameColour;
             }
 
             if (Envir.Time < ShockTime)
@@ -1052,7 +1087,7 @@ namespace Server.MirObjects
                 Respawn.Count--;
 
             if (Master == null && EXPOwner != null)
-                Drop();
+                { SoloExtension.SoloExtensionHost.OnMonsterKilled(this, EXPOwner); Drop(); }
 
             Master = null;
 
@@ -1155,11 +1190,11 @@ namespace Server.MirObjects
             MonsterRarityProfile profile = GetRarityProfile();
             int ownerItemBonus = EXPOwner?.Stats[Stat.ItemDropRatePercent] ?? 0;
             int ownerGoldBonus = EXPOwner?.Stats[Stat.GoldDropRatePercent] ?? 0;
-            int eliteDropBonus = EliteTier == 2 ? 150 : (EliteTier == 1 ? 50 : 0);
+            int eliteDropBonus = SoloExtension.EcologyAndRarityModule.GetDropRateBonusPercent(this);
             int totalItemBonus = ownerItemBonus + profile.ItemDropBonusPercent + eliteDropBonus;
             int totalGoldBonus = ownerGoldBonus + profile.GoldDropBonusPercent + eliteDropBonus;
 
-            int dropLoops = EliteTier == 2 ? 6 : (EliteTier == 1 ? 3 : 1);
+            int dropLoops = SoloExtension.EcologyAndRarityModule.GetDropLoops(this);
             bool droppedGold = false;
 
             for (int loop = 0; loop < dropLoops; loop++)
@@ -1186,7 +1221,15 @@ namespace Server.MirObjects
 
                             if (item == null) continue;
 
-                            if (EliteTier == 2)
+                            if (Rarity != MonsterRarity.None)
+                            {
+                                item.RollSoloRarityStats(Rarity);
+                            }
+                            else if (false)
+                {
+                                item.RollSoloRarityStats(Rarity);
+                }
+                else if (Rarity != MonsterRarity.None || EliteTier == 2)
                                 item.RollFullVersionRareStats(forceRare: true, minAdd: 2, maxAdd: 6);
                             else if (EliteTier == 1)
                                 item.RollFullVersionRareStats(forceRare: true, minAdd: 1, maxAdd: 3);
@@ -1216,18 +1259,29 @@ namespace Server.MirObjects
             }
 
             // 精英与领主保底金币激励（不占背包格与负重，消除精英怪打完空尸体的挫败感）
-            if (EliteTier == 1 && !droppedGold)
+            if (Rarity == MonsterRarity.Uncommon && !droppedGold)
+            {
+                uint uncommonBounty = ApplyGoldModifier((uint)(Math.Max(1, (int)Level) * 25));
+                if (uncommonBounty > 0) DropGold(uncommonBounty);
+            }
+            else if ((Rarity == MonsterRarity.Rare || EliteTier == 1) && (!droppedGold || EliteSubType == 0))
             {
                 uint eliteBounty = ApplyGoldModifier((uint)(Math.Max(1, (int)Level) * 50));
                 if (eliteBounty > 0) DropGold(eliteBounty);
             }
-            else if (EliteTier == 2)
+            else if (Rarity != MonsterRarity.None || EliteTier == 2)
             {
-                uint lordBounty = ApplyGoldModifier((uint)(Math.Max(1, (int)Level) * 120));
-                int bountyPiles = droppedGold ? 2 : 3;
-                for (int p = 0; p < bountyPiles; p++)
+                uint lordBounty = ApplyGoldModifier((uint)(Math.Max(1, (int)Level) * (Rarity == MonsterRarity.Elite ? 80 : 120)));
+                int maxPiles = Rarity == MonsterRarity.Elite ? (droppedGold ? 1 : 2) : (droppedGold ? 2 : 3);
+                for (int p = 0; p < maxPiles; p++)
                 {
                     if (lordBounty > 0) DropGold(lordBounty);
+                }
+                if (false)
+                { int bountyPiles = 0;
+                for (int p = 0; p < bountyPiles; p++)
+                {
+                    if (lordBounty > 0) DropGold(lordBounty); }
                 }
             }
         }
@@ -1788,6 +1842,7 @@ namespace Server.MirObjects
 
             // Still frozen = do nothing
             if (Frozen) return;
+            SoloExtension.SoloExtensionHost.OnMonsterTick(this);
 
             if (Master != null)
             {

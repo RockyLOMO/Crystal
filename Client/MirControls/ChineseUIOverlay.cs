@@ -174,6 +174,119 @@ public static class ChineseUIOverlay
         if (panel != null) state.Panels.Add(panel);
     }
 
+    public static readonly Color PlaqueBorderColor = Color.FromArgb(255, 92, 78, 56);
+    public static readonly Color ButtonTextColor = Color.FromArgb(255, 235, 210, 155);
+    public static readonly Color ButtonHoverColor = Color.FromArgb(255, 255, 240, 180);
+    private static readonly ConditionalWeakTable<MirControl, object> AppliedControls = new();
+
+    public static void ApplyToSelectScene(SelectScene scene)
+    {
+        if (!DbLanguage.Chinese || scene == null) return;
+        MaskButton(scene.StartGameButton, "进入玛法");
+        MaskButton(scene.NewCharacterButton, "创建角色");
+        MaskButton(scene.DeleteCharacterButton, "删除角色");
+        MaskButton(scene.CreditsButton, "制作鸣谢");
+        MaskButton(scene.ExitGameButton, "退出游戏");
+
+        if (scene.NewCharacterDialog != null)
+            ApplyToNewCharacterDialog(scene.NewCharacterDialog);
+    }
+
+    public static void ApplyToNewCharacterDialog(NewCharacterDialog newCharDlg)
+    {
+        if (!DbLanguage.Chinese || newCharDlg == null) return;
+        if (AppliedControls.TryGetValue(newCharDlg, out _)) return;
+        AppliedControls.Add(newCharDlg, new object());
+
+        if (newCharDlg.TitleLabel != null)
+            MaskTitle(newCharDlg.TitleLabel, "创建新角色", width: 120, height: 22, offsetX: 0, offsetY: 2);
+
+        MaskButton(newCharDlg.OKButton, "创 建");
+        MaskButton(newCharDlg.CancelButton, "取 消");
+
+        AttachClassBadgeLabel(newCharDlg.WarriorButton, "战士", offsetY: 4);
+        AttachClassBadgeLabel(newCharDlg.WizardButton, "法师", offsetY: 4);
+        AttachClassBadgeLabel(newCharDlg.TaoistButton, "道士", offsetY: 4);
+        AttachClassBadgeLabel(newCharDlg.AssassinButton, "刺客", offsetY: 4);
+        AttachClassBadgeLabel(newCharDlg.ArcherButton, "弓手", offsetY: 4);
+        AttachClassBadgeLabel(newCharDlg.MaleButton, "男", offsetY: 4);
+        AttachClassBadgeLabel(newCharDlg.FemaleButton, "女", offsetY: 4);
+
+        SetupDynamicClassDescriptionOverlay(newCharDlg);
+    }
+
+    public static void AttachClassBadgeLabel(MirButton btn, string cnName, int offsetY = 0)
+    {
+        if (!DbLanguage.Chinese || btn == null || btn.Parent == null) return;
+        int btnWidth = btn.Size.Width > 0 ? btn.Size.Width : 44;
+        int btnHeight = btn.Size.Height > 0 ? btn.Size.Height : 42;
+
+        var badge = new MirLabel
+        {
+            Parent = btn.Parent,
+            Location = new Point(btn.Location.X + (btnWidth - 40) / 2, btn.Location.Y + btnHeight - 12 + offsetY),
+            Size = new Size(40, 16),
+            AutoSize = false,
+            DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine,
+            BackColour = Color.FromArgb(200, 18, 15, 12),
+            ForeColour = ButtonTextColor,
+            OutLine = true,
+            OutLineColour = Color.Black,
+            Text = cnName,
+            NotControl = true
+        };
+        var oldFont = badge.Font;
+        badge.Font = new Font(Settings.FontName, 8F, FontStyle.Bold);
+        oldFont.Dispose();
+
+        btn.MouseEnter += (_, _) => badge.ForeColour = ButtonHoverColor;
+        btn.MouseLeave += (_, _) => badge.ForeColour = ButtonTextColor;
+    }
+
+    public static void SetupDynamicClassDescriptionOverlay(NewCharacterDialog dlg)
+    {
+        if (!DbLanguage.Chinese || dlg?.Description == null) return;
+
+        var descLabel = dlg.Description;
+        descLabel.ForeColour = Color.FromArgb(255, 232, 218, 185);
+        descLabel.BackColour = Color.FromArgb(180, 16, 13, 10);
+        descLabel.Border = true;
+        descLabel.BorderColour = PlaqueBorderColor;
+
+        void SetClassDesc(string title, string body)
+        {
+            if (!DbLanguage.Chinese) return;
+            descLabel.Text = $"{title}\n\n{body}";
+        }
+
+        if (dlg.WarriorButton != null)
+            dlg.WarriorButton.Click += (_, _) => SetClassDesc("【近战霸主・烈火开天】",
+                "高血量、强体魄的近身格斗宗师。中期习得《刺杀剑术》《半月弯刀》，后期凭《烈火剑法》《开天斩》拥有玛法大陆最强的单点爆发，适合搭配道士或法师英雄独闯龙潭。");
+        if (dlg.WizardButton != null)
+            dlg.WizardButton.Click += (_, _) => SetClassDesc("【元素掌控・群刷清图】",
+                "操控雷电、烈焰与寒冰的远程法术大师。《雷电术》《火墙》《冰咆哮》清图效率冠绝三职业，《魔法盾》成型后生存质变，搭配战士英雄顶怪可轻松越级挑战领主。");
+        if (dlg.TaoistButton != null)
+            dlg.TaoistButton.Click += (_, _) => SetClassDesc("【万金油毒奶・单挑真神】",
+                "通晓道法自然、医毒双修的独行首选。《施毒术》破防禁回血，《召唤神兽》充当坚实肉盾，配合《幽灵盾》《神圣战甲术》《治愈术》，单人低消耗磨死一切赤月与魔龙首领。");
+        if (dlg.AssassinButton != null)
+            dlg.AssassinButton.Click += (_, _) => SetClassDesc("【暗影暴击・瞬移收割】",
+                "潜行于阴影中的致命猎手。极高攻速与暴击加成，擅长隐身切入与背刺爆发，操作上限极高。");
+        if (dlg.ArcherButton != null)
+            dlg.ArcherButton.Click += (_, _) => SetClassDesc("【远程风筝・陷阱蓄力】",
+                "百步穿杨的精准神射。依托超远射程、击退陷阱与蓄力穿透箭矢，在安全距离外瓦解强敌。");
+
+        SetClassDesc("【近战霸主・烈火开天】",
+            "高血量、强体魄的近身格斗宗师。中期习得《刺杀剑术》《半月弯刀》，后期凭《烈火剑法》《开天斩》拥有玛法大陆最强的单点爆发，适合搭配道士或法师英雄独闯龙潭。");
+    }
+
+    public static void ApplyToGameScene(GameScene scene)
+    {
+        if (!DbLanguage.Chinese || scene == null) return;
+        EnableCoordInspector(scene.MainDialog, "MainDialog");
+        EnableCoordInspector(scene.CharacterDialog, "CharacterDialog");
+        EnableCoordInspector(scene.InventoryDialog, "InventoryDialog");
+    }
+
     // Opt-in only: Alt is a normal gameplay modifier and must not produce chat
     // spam in a release client. Enable Game/ChineseOverlayInspector explicitly.
     public static void EnableCoordInspector(MirControl parent, string name)

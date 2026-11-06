@@ -835,6 +835,7 @@ namespace Server.MirObjects
         {
             key = key.ToUpper();
 
+            if (SoloExtension.SoloExtensionHost.TryHandleNpcAction(player, key)) return;
             if (!player.NPCDelayed)
             {
                 if (key != MainKey)

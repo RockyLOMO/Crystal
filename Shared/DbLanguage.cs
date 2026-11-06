@@ -59,17 +59,20 @@ public static class DbLanguage
     {
         if (original == null) return null;
         string prefix = string.Empty;
-        if (original.StartsWith("[领主]", StringComparison.Ordinal) || original.StartsWith("[精英]", StringComparison.Ordinal))
+        if (original.StartsWith('[') && original.IndexOf(']') is int closeIdx && closeIdx > 0)
         {
-            prefix = original[..4];
-            original = original[4..];
+            prefix = original[..(closeIdx + 1)];
+            original = original[(closeIdx + 1)..];
+            if (original.StartsWith("血煞", StringComparison.Ordinal))
+            {
+                prefix += "血煞";
+                original = original[2..];
+            }
         }
-        string translated = Get("Monsters", original);
-        if (translated != original) return prefix + translated;
         // The server appends a player-owned pet's owner; never translate the player's name.
         int owner = original.LastIndexOf('(');
         return prefix + (owner > 0 && original.EndsWith(')')
-            ? Get("Monsters", original[..owner]) + original[owner..] : original);
+            ? Get("Monsters", original[..owner]) + original[owner..] : Get("Monsters", original));
     }
 
     public static string NpcLine(string original)

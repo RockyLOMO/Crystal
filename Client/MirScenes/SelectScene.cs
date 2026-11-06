@@ -1,4 +1,4 @@
-﻿using Client.MirControls;
+using Client.MirControls;
 using Client.MirGraphics;
 using Client.MirNetwork;
 using Client.MirScenes.Dialogs;
@@ -11,10 +11,12 @@ namespace Client.MirScenes
     {
         public MirImageControl Background, Title;
         private NewCharacterDialog _character;
+        public NewCharacterDialog NewCharacterDialog => _character;
 
         public MirLabel ServerLabel;
         public MirAnimatedControl CharacterDisplay;
         public MirButton StartGameButton, NewCharacterButton, DeleteCharacterButton, CreditsButton, ExitGame;
+        public MirButton ExitGameButton => ExitGame;
         public CharacterButton[] CharacterButtons;
         public MirLabel LastAccessLabel, LastAccessLabelLabel;
         public List<SelectInfo> Characters = new List<SelectInfo>();
@@ -204,6 +206,7 @@ namespace Client.MirScenes
                 DrawFormat = TextFormatFlags.Left | TextFormatFlags.VerticalCenter,
                 Border = true,
             };
+            ChineseUIOverlay.ApplyToSelectScene(this);
             LastAccessLabelLabel = new MirLabel
             {
                 Location = new Point(-65, 0),
@@ -236,6 +239,7 @@ namespace Client.MirScenes
             if (_character == null || _character.IsDisposed)
             {
                 _character = new NewCharacterDialog { Parent = this };
+                ChineseUIOverlay.ApplyToNewCharacterDialog(_character);
 
                 _character.OnCreateCharacter += (o, e) =>
                 {

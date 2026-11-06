@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Client.MirControls;
 using Client.MirGraphics;
 using Client.MirSounds;
@@ -25,6 +25,7 @@ namespace Client.MirScenes.Dialogs
         public MirTextBox NameTextBox;
 
         public MirLabel Description;
+        public MirLabel DescriptionLabel => Description;
 
         public MirClass Class;
         public MirGender Gender;
@@ -232,6 +233,10 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Size = new Size(278, 170),
                 Text = WarriorDescription,
+            };
+            ChineseUIOverlay.ApplyToNewCharacterDialog(this);
+            if (false)
+            {
             };
         }
 

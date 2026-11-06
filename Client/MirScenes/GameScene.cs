@@ -1,4 +1,4 @@
-﻿using Client.MirControls;
+using Client.MirControls;
 using Client.MirGraphics;
 using Client.MirNetwork;
 using Client.MirObjects;
@@ -6871,11 +6871,11 @@ namespace Client.MirScenes
             MirLabel nameLabel = new MirLabel
             {
                 AutoSize = true,
-                ForeColour = GradeNameColor(HoverItem.Info.Grade),
+                ForeColour = (HoverItem.Info.Grade == ItemGrade.None && HoverItem.GetSoloRarityTier() > 0) ? HoverItem.GetSoloQualityColor() : GradeNameColor(HoverItem.Info.Grade),
                 Location = new Point(4, 4),
                 OutLine = true,
                 Parent = ItemLabel,
-                Text = HoverItem.Info.Grade != ItemGrade.None ? string.Format("{0}{1}{2}", HoverItem.Info.FriendlyName, "\n", GradeString) : HoverItem.Info.FriendlyName,
+                Text = HoverItem.Info.Grade != ItemGrade.None ? string.Format("{0}{1}{2}", HoverItem.Info.FriendlyName, "\n", GradeString) : (HoverItem.GetSoloRarityTier() > 0 ? string.Format("{0}{1}{2}", HoverItem.Info.FriendlyName, "\n", HoverItem.GetSoloQualityTag()) : HoverItem.Info.FriendlyName),
             };
 
             if (HoverItem.RefineAdded > 0)
@@ -8534,7 +8534,7 @@ namespace Client.MirScenes
                 MirLabel AWAKENAMELabel = new MirLabel
                 {
                     AutoSize = true,
-                    ForeColour = GradeNameColor(HoverItem.Info.Grade),
+                    ForeColour = (HoverItem.Info.Grade == ItemGrade.None && HoverItem.GetSoloRarityTier() > 0) ? HoverItem.GetSoloQualityColor() : GradeNameColor(HoverItem.Info.Grade),
                     Location = new Point(4, ItemLabel.DisplayRectangle.Bottom),
                     OutLine = true,
                     Parent = ItemLabel,

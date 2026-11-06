@@ -1,4 +1,4 @@
-﻿public enum MouseCursor : byte
+public enum MouseCursor : byte
 {
     None,
     Default,
@@ -90,7 +90,17 @@ public enum MonsterType : byte
     Normal = 0,
     Uncommon = 1,
     Rare = 2,
-    Elite = 3
+    Elite = 3,
+    Lord = 4
+}
+
+public enum MonsterRarity : byte
+{
+    None = 0,
+    Uncommon = 1,
+    Rare = 2,
+    Elite = 3,
+    Lord = 4
 }
 
 [Flags]

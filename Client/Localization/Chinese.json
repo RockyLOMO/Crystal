@@ -1246,6 +1246,7 @@
         "MonsterType_Uncommon": "变异",
         "MonsterType_Rare": "稀有",
         "MonsterType_Elite": "精英",
+        "MonsterType_Lord": "领主",
         "HeroBehaviour_Attack": "攻击",
         "HeroBehaviour_CounterAttack": "反击",
         "HeroBehaviour_Follow": "跟随",

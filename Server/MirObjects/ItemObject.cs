@@ -59,7 +59,9 @@ namespace Server.MirObjects
 
             Item = item;
 
-            if (Item.IsAdded)
+            if (Item.GetSoloRarityTier() > 0)
+                NameColour = Item.GetSoloQualityColor();
+            else if (Item.IsAdded)
                 NameColour = Color.Cyan;
 			else
 			{
@@ -86,7 +88,9 @@ namespace Server.MirObjects
 
             Item = item;
 
-			if (Item.IsAdded)
+			if (Item.GetSoloRarityTier() > 0)
+				NameColour = Item.GetSoloQualityColor();
+			else if (Item.IsAdded)
 				NameColour = Color.Cyan;
 			else
 			{

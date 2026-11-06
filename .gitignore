@@ -367,3 +367,6 @@ FodyWeavers.xsd
 
 # Local deployment reference data
 .ai/
+
+# SoloExtension runtime player profiles
+Envir/SoloData/

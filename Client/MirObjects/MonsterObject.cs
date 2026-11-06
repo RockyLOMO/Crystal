@@ -1,4 +1,4 @@
-﻿using Client.MirGraphics;
+using Client.MirGraphics;
 using Client.MirScenes;
 using Client.MirSounds;
 using S = ServerPackets;
@@ -98,7 +98,7 @@ namespace Client.MirObjects
             MasterObjectId = info.MasterObjectId;
             Rarity = info.Rarity;
 
-            if (MasterObjectId == 0 && Rarity != MonsterType.Normal)
+            if (MasterObjectId == 0 && Rarity != MonsterType.Normal && (string.IsNullOrEmpty(Name) || !Name.StartsWith("[", StringComparison.Ordinal)))
             {
                 //Moving the rarity tag processing from the server to the client allows for more complex tag displays in the future, such as adding special markers on monster health bars.
                 //Add localization for rarity text

@@ -359,6 +359,46 @@ try
     uint lordExp = expMob.Experience;
     Check(normalExp == 100 && eliteExp == 500 && lordExp == 1500,
         "EliteTier experience scaling grants 5x EXP for Elite (Tier 1) and 15x EXP for Lord (Tier 2)");
+
+    // v4.0 SoloExtension 4-Tier Monster Rarity & Equipment Quality Verification
+    expMob.EliteTier = 0;
+    expMob.Rarity = MonsterRarity.Uncommon;
+    uint uncommonExp = expMob.Experience;
+    expMob.Rarity = MonsterRarity.Rare;
+    uint rareExp = expMob.Experience;
+    expMob.Rarity = MonsterRarity.Elite;
+    uint tierEliteExp = expMob.Experience;
+    expMob.Rarity = MonsterRarity.Lord;
+    uint tierLordExp = expMob.Experience;
+    Check(uncommonExp == 250 && rareExp == 500 && tierEliteExp == 900 && tierLordExp == 1500,
+        "4-tier MonsterRarity experience scaling grants 2.5x (Uncommon), 5x (Rare), 9x (Elite), and 15x (Lord) EXP");
+
+    var eqUncommon = new UserItem(sampleInfo);
+    eqUncommon.RollSoloRarityStats(MonsterRarity.Uncommon);
+    var eqRare = new UserItem(sampleInfo);
+    eqRare.RollSoloRarityStats(MonsterRarity.Rare);
+    var eqElite = new UserItem(sampleInfo);
+    eqElite.RollSoloRarityStats(MonsterRarity.Elite);
+    var eqLord = new UserItem(sampleInfo);
+    eqLord.RollSoloRarityStats(MonsterRarity.Lord);
+    if (!eqLord.HasSpecialAddedStats()) eqLord.RollSpecialAddedStat();
+    Check(eqUncommon.GetSoloRarityTier() >= 1 && eqRare.GetSoloRarityTier() >= 2 &&
+          eqElite.GetSoloRarityTier() >= 3 && eqLord.GetSoloRarityTier() == 4 &&
+          eqLord.GetSoloQualityTag() == "【神话・传世】",
+        "4-tier equipment quality RollSoloRarityStats and GetSoloRarityTier/GetSoloQualityTag match Uncommon/Rare/Elite/Lord specs");
+
+    var profile = Server.SoloExtension.SoloPlayerProfile.GetOrLoad("solo-unit-test");
+    profile.MonsterKills["BichonWilds"] = 50;
+    profile.MonsterKills["StoneTomb"] = 100;
+    var codexTuple = Server.SoloExtension.HunterTomeModule.CalculateCodexBonuses(profile);
+    Check(codexTuple.CompletedCount == 2 && codexTuple.Offense == 2 && codexTuple.Defense == 1 && codexTuple.DropRate == 5,
+        "HunterTomeModule CalculateCodexBonuses computes permanent offense/defense/dropRate across completed chapters");
+
+    var bossMap = new Map(new MapInfo { FileName = "D717", Title = "石墓七层" });
+    var normalDungeonMap = new Map(new MapInfo { FileName = "D713", Title = "石墓三层" });
+    Check(Server.SoloExtension.TownAndCampModule.IsForbiddenBossRoom(bossMap) &&
+          !Server.SoloExtension.TownAndCampModule.IsForbiddenBossRoom(normalDungeonMap),
+        "TownAndCampModule forbids camping in ultimate Boss rooms (D717) while allowing standard dungeon floors (D713)");
 }
 finally
 {

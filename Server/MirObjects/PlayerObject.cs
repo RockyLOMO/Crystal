@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using C = ClientPackets;
 using Server.MirDatabase;
 using Server.MirEnvir;
@@ -111,7 +111,7 @@ namespace Server.MirObjects
         public bool Fishing, FishingAutocast, FishFound, FishFirstFound;
 
         public const long TurnDelay = 350, HarvestDelay = 350, FishingCastDelay = 750, FishingDelay = 200, MovementDelay = 2000;
-        public long ChatTime, ShoutTime, FishingTime, FishingFoundTime, CreatureTimeLeftTicker, RestedTime, MovementTime;
+        public long ChatTime, ShoutTime, FishingTime, FishingFoundTime, CreatureTimeLeftTicker, RestedTime, MovementTime, SoloNextTickTime;
 
         public byte ChatTick;
 
@@ -528,6 +528,7 @@ namespace Server.MirObjects
                 }
             }
             RefreshCreaturesTimeLeft();
+            SoloExtension.SoloExtensionHost.OnPlayerTick(this);
         }
         public override void Process(DelayedAction action)
         {
@@ -844,6 +845,7 @@ namespace Server.MirObjects
 
             if (CurrentMap?.Info?.NoExperience == true) return;
 
+            // Hook 2: Smooth EXP scaling via SoloExtensionHost.ApplySmoothExpMultiplier(Level, amount)
             float stageMultiplier;
             if (Level < 22)
                 stageMultiplier = 2.5f;   // [第1段] 1~21级: 新手筑基与英雄解锁期 (实际 5.0x)
@@ -858,7 +860,7 @@ namespace Server.MirObjects
             else
                 stageMultiplier = 0.15f;  // [第6段] 58级+: 传世养老期 (实际 0.3x)
 
-            amount = (uint)Math.Max(1, amount * stageMultiplier);
+            amount = SoloExtension.SoloExtensionHost.ApplySmoothExpMultiplier(Level, amount);
 
             if (Info.Married != 0)
             {
@@ -5839,6 +5841,7 @@ namespace Server.MirObjects
                 return;
             }
 
+            if (SoloExtension.SoloExtensionHost.TryUseCustomItem(this, item)) return;
             switch (item.Info.Type)
             {
                 case ItemType.Potion:
@@ -7905,6 +7908,7 @@ namespace Server.MirObjects
 
         public void CallDefaultNPC(string key)
         {
+            if (SoloExtension.SoloExtensionHost.TryHandleNpcAction(this, key)) return;
             if (NPCObjectID != Envir.DefaultNPC.LoadedObjectID) return;
 
             var script = NPCScript.Get(NPCScriptID);
@@ -7914,6 +7918,10 @@ namespace Server.MirObjects
         }
 
         public void CallNPC(uint objectID, string key)
+        {
+            if (Dead) return;
+            if (SoloExtension.SoloExtensionHost.TryHandleNpcAction(this, key)) return;
+            if (!Dead)
         {
             if (Dead) return;
 
@@ -7942,6 +7950,7 @@ namespace Server.MirObjects
             }
 
             CallNPCNextPage();
+        }
         }
         private void CallNPCNextPage()
         {

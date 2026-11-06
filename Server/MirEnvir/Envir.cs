@@ -1,4 +1,4 @@
-﻿using ClientPackets;
+using ClientPackets;
 using Server.Library.MirDatabase;
 using Server.Library.Utils;
 using Server.MirDatabase;
@@ -2662,7 +2662,7 @@ namespace Server.MirEnvir
 
                 writer.Write(ItemInfoList.Count);
                 for (var i = 0; i < ItemInfoList.Count; i++)
-                    ItemInfoList[i].Save(writer);
+                    ItemInfoList[i].Save(writer); // Note: runtime curios >= 990000 are idempotently reconciled on load
 
                 writer.Write(MonsterInfoList.Count);
                 for (var i = 0; i < MonsterInfoList.Count; i++)
@@ -3563,6 +3563,7 @@ namespace Server.MirEnvir
             }
 
             ReloadDrops();
+            SoloExtension.SoloExtensionHost.ApplyInGameChinese(this);
 
             LoadDisabledChars();
             LoadLineMessages();

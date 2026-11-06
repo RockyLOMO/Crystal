@@ -62,6 +62,17 @@ public static class MonsterRarityData
             ItemDropBonusPercent = 75,
             GoldDropBonusPercent = 75,
             NameColour = Color.Gold
+        },
+        [MonsterType.Lord] = new MonsterRarityProfile
+        {
+            HpMultiplier = 9.00,
+            DefenseMultiplier = 1.85,
+            DamageMultiplier = 1.95,
+            ExpMultiplier = 15.00,
+            GoldMultiplier = 3.00,
+            ItemDropBonusPercent = 150,
+            GoldDropBonusPercent = 150,
+            NameColour = Color.Crimson
         }
     };
 

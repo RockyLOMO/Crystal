@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 public class ItemInfo
 {
@@ -655,7 +655,7 @@ public class UserItem
             Info.Type != ItemType.Mount)
             return;
 
-        if (!forceRare && Random.Shared.Next(100) >= 10) return;
+        if (!forceRare && Random.Shared.Next(100) >= 8) return;
 
         minAdd = Math.Clamp(minAdd, 1, 6);
         maxAdd = Math.Clamp(maxAdd, minAdd, 6);
@@ -692,26 +692,157 @@ public class UserItem
 
         if (Random.Shared.Next(100) < 3 || (forceRare && minAdd >= 2 && Random.Shared.Next(100) < 20))
         {
-            int specialRoll = Random.Shared.Next(5);
-            switch (specialRoll)
-            {
-                case 0:
-                    AddedStats[Stat.CriticalRate] += Random.Shared.Next(1, 3);
-                    break;
-                case 1:
-                    AddedStats[Stat.CriticalDamage] += Random.Shared.Next(2, 6);
-                    break;
-                case 2:
-                    AddedStats[Stat.HPDrainRatePercent] += Random.Shared.Next(1, 4);
-                    break;
-                case 3:
-                    AddedStats[Stat.AttackSpeed] += 1;
-                    break;
-                case 4:
-                    AddedStats[Stat.Luck] += 1;
-                    break;
-            }
+            RollSpecialAddedStat();
         }
+    }
+
+    public void RollSpecialAddedStat()
+    {
+        int specialRoll = Random.Shared.Next(5);
+        switch (specialRoll)
+        {
+            case 0:
+                AddedStats[Stat.CriticalRate] += Random.Shared.Next(1, 3);
+                break;
+            case 1:
+                AddedStats[Stat.CriticalDamage] += Random.Shared.Next(2, 6);
+                break;
+            case 2:
+                AddedStats[Stat.HPDrainRatePercent] += Random.Shared.Next(1, 4);
+                break;
+            case 3:
+                AddedStats[Stat.AttackSpeed] += 1;
+                break;
+            case 4:
+                AddedStats[Stat.Luck] += 1;
+                break;
+        }
+    }
+
+    public void RollSoloRarityStats(MonsterRarity rarity)
+    {
+        if (Info == null) return;
+        if (Info.Type != ItemType.Weapon && Info.Type != ItemType.Armour &&
+            Info.Type != ItemType.Helmet && Info.Type != ItemType.Necklace &&
+            Info.Type != ItemType.Bracelet && Info.Type != ItemType.Ring &&
+            Info.Type != ItemType.Belt && Info.Type != ItemType.Boots &&
+            Info.Type != ItemType.Torch && Info.Type != ItemType.Amulet &&
+            Info.Type != ItemType.Mount)
+            return;
+
+        switch (rarity)
+        {
+            case MonsterRarity.None:
+                if (Random.Shared.Next(100) < 8)
+                {
+                    int v = Random.Shared.Next(1, 4);
+                    AddRandomPrimaryStat(v);
+                }
+                break;
+            case MonsterRarity.Uncommon:
+                AddRandomPrimaryStat(Random.Shared.Next(1, 4));
+                break;
+            case MonsterRarity.Rare:
+                {
+                    int lines = Random.Shared.Next(1, 3);
+                    for (int i = 0; i < lines; i++)
+                        AddRandomPrimaryStat(Random.Shared.Next(2, 5));
+                }
+                break;
+            case MonsterRarity.Elite:
+                {
+                    int lines = Random.Shared.Next(2, 4);
+                    for (int i = 0; i < lines; i++)
+                        AddRandomPrimaryStat(Random.Shared.Next(2, 6));
+                    if (Random.Shared.Next(100) < 30)
+                        RollSpecialAddedStat();
+                }
+                break;
+            case MonsterRarity.Lord:
+                {
+                    for (int i = 0; i < 3; i++)
+                        AddRandomPrimaryStat(Random.Shared.Next(3, 7));
+                    if (Random.Shared.Next(100) < 65)
+                        RollSpecialAddedStat();
+                }
+                break;
+        }
+    }
+
+    private void AddRandomPrimaryStat(int val)
+    {
+        val = Math.Clamp(val, 1, 6);
+        switch (Random.Shared.Next(5))
+        {
+            case 0: AddedStats[Stat.MaxDC] += val; break;
+            case 1: AddedStats[Stat.MaxMC] += val; break;
+            case 2: AddedStats[Stat.MaxSC] += val; break;
+            case 3: AddedStats[Stat.MaxAC] += val; break;
+            case 4: AddedStats[Stat.MaxMAC] += val; break;
+        }
+    }
+
+    public int GetPrimaryAddedPoints()
+    {
+        if (AddedStats == null || AddedStats.Count == 0) return 0;
+        return Math.Max(0, AddedStats[Stat.MaxDC])
+             + Math.Max(0, AddedStats[Stat.MaxMC])
+             + Math.Max(0, AddedStats[Stat.MaxSC])
+             + Math.Max(0, AddedStats[Stat.MaxAC])
+             + Math.Max(0, AddedStats[Stat.MaxMAC])
+             + Math.Max(0, AddedStats[Stat.MinDC])
+             + Math.Max(0, AddedStats[Stat.MinMC])
+             + Math.Max(0, AddedStats[Stat.MinSC])
+             + Math.Max(0, AddedStats[Stat.MinAC])
+             + Math.Max(0, AddedStats[Stat.MinMAC])
+             + Math.Max(0, AddedStats[Stat.Accuracy])
+             + Math.Max(0, AddedStats[Stat.Agility]);
+    }
+
+    public bool HasSpecialAddedStats()
+    {
+        if (AddedStats == null || AddedStats.Count == 0) return false;
+        return AddedStats[Stat.CriticalRate] > 0
+            || AddedStats[Stat.CriticalDamage] > 0
+            || AddedStats[Stat.HPDrainRatePercent] > 0
+            || AddedStats[Stat.AttackSpeed] > 0
+            || AddedStats[Stat.Luck] > 0;
+    }
+
+    public int GetSoloRarityTier()
+    {
+        if (AddedStats == null || AddedStats.Count == 0) return 0;
+        int pts = GetPrimaryAddedPoints();
+        bool hasSpecial = HasSpecialAddedStats();
+        if (hasSpecial && pts >= 6) return 4; // 【神话・传世】
+        if (pts >= 5 || (hasSpecial && pts >= 4)) return 3; // 【史诗】
+        if (pts >= 3 || hasSpecial) return 2; // 【稀有】
+        if (pts >= 1 || AddedStats.Count > 0) return 1; // 【精良】
+        return 0;
+    }
+
+    public string GetSoloQualityTag()
+    {
+        return GetSoloRarityTier() switch
+        {
+            4 => "【神话・传世】",
+            3 => "【史诗】",
+            2 => "【稀有】",
+            1 => "【精良】",
+            _ => string.Empty
+        };
+    }
+
+    public System.Drawing.Color GetSoloQualityColor()
+    {
+        return GetSoloRarityTier() switch
+        {
+            4 => System.Drawing.Color.Crimson,
+            3 => System.Drawing.Color.Gold,
+            2 => System.Drawing.Color.DeepSkyBlue,
+            1 => System.Drawing.Color.LimeGreen,
+            _ => System.Drawing.Color.White
+        };
     }
 
     public ushort Image
