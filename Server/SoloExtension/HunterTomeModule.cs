@@ -143,6 +143,7 @@ namespace Server.SoloExtension
 
             var profile = SoloPlayerProfile.GetOrLoad(player.Name);
             string pickModeStr = GetPickModeLabel(profile.AutoPickRangeMode);
+            string weightGuardStr = profile.AutoPickWeightProtect ? "{已开启/LimeGreen}" : "{已关闭/Red}";
             int heat = EcologyAndRarityModule.GetMapHeat(player.CurrentMap);
             var (offense, defense, dropRate, completedCount) = CalculateCodexBonuses(profile);
 
@@ -150,13 +151,13 @@ namespace Server.SoloExtension
             {
                 "{【玛法猎魔手札 · 随身奇物】/Gold}",
                 $"当前 4×4 范围自动拾取：{{{pickModeStr}/LimeGreen}}",
+                $"自动拾取严格负重保护：{weightGuardStr} {{(可在【设置(O)】面板勾选开关)/Silver}}",
                 $"本层魔物惊扰度进度：{{{heat}/100/DeepSkyBlue}} (满50出精英 / 满100出猩红领主)",
                 $"已激活猎魔图鉴加成：{{攻魔道+{offense}、双防+{defense}、爆率+{dropRate}% ({completedCount}/{Chapters.Length}章)/Gold}}",
                 "----------------------------------------",
                 "<[切换] 4×4 范围自动拾取模式 (智能极品/全部/关闭)/@Tome_TogglePick>",
                 "<[感知] 探查本层魔物惊扰度与存活领主方位/@Tome_Sense>",
-                "<[图鉴] 查阅玛法猎魔图鉴进度与永久属性加成/@Tome_Codex>",
-                "<[减负] 一键清理包袱中15级以下过渡装 (解除超重)/@Solo_CleanLowGear>"
+                "<[图鉴] 查阅玛法猎魔图鉴进度与永久属性加成/@Tome_Codex>"
             };
 
             if (player.InSafeZone)
@@ -399,10 +400,13 @@ namespace Server.SoloExtension
                         if (profile.AutoPickRangeMode == 2 && !ShouldSmartPickupItem(item))
                             continue;
 
-                        // 严格检查背包负重上限，防止范围自动拾取导致玩家超重跑不动
-                        uint totalItemWeight = (uint)(item.Weight * Math.Max(1, (int)item.Count));
-                        if (player.CurrentBagWeight + totalItemWeight > player.Stats[Stat.BagWeight])
-                            continue;
+                        // 严格检查背包负重上限（受【设置】面板“4×4拾取严格负重保护”开关控制）
+                        if (profile.AutoPickWeightProtect)
+                        {
+                            uint totalItemWeight = (uint)(item.Weight * Math.Max(1, (int)item.Count));
+                            if (player.CurrentBagWeight + totalItemWeight > player.Stats[Stat.BagWeight])
+                                continue;
+                        }
 
                         if (player.CanGainItem(item))
                         {

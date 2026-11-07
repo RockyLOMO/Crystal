@@ -12,6 +12,22 @@ namespace Server.SoloExtension
     public static class TownAndCampModule
     {
         public const uint CampSetGoldCost = 2000;
+        public const ushort DefaultCampTentNpcImage = 55; // Data\NPC\55.Lib 圣火营火盆(12帧动态火焰)
+        public const string CampTentNpcScript = "00SoloCampTent";
+
+        public static readonly (ushort Image, string Name)[] CampVisualStyles =
+        {
+            (55, "圣火营火盆 (动态火焰)"),
+            (85, "行军火盆与兵器架 (动态)"),
+            (42, "熊熊篝火堆 (动态火焰)"),
+            (156, "龙首圣火图腾柱"),
+            (175, "玛法龙纹大帅旗 (动态飘扬)"),
+            (214, "蓝晶传送祭坛"),
+            (215, "紫晶次元祭坛")
+        };
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, NPCObject> ActiveCampTents =
+            new(StringComparer.OrdinalIgnoreCase);
 
         // 禁止扎营的终极 Boss 巢穴地图标识或标题关键词
         private static readonly string[] ForbiddenBossMapKeywords =
@@ -50,6 +66,9 @@ namespace Server.SoloExtension
                 case "@CAMP_SET":
                     HandleCampSet(player);
                     return true;
+                case "@CAMP_STYLE":
+                    HandleCampCycleStyle(player);
+                    return true;
                 case "@CAMP_RETURN":
                     HandleCampReturn(player);
                     return true;
@@ -59,9 +78,6 @@ namespace Server.SoloExtension
                     return true;
                 case "@SOLO_QUICKSELL":
                     HandleQuickSell(player);
-                    return true;
-                case "@SOLO_CLEANLOWGEAR":
-                    HandleCleanLowGear(player);
                     return true;
                 case "@SOLO_QUICKREPAIR":
                     HandleQuickRepair(player);
@@ -90,12 +106,14 @@ namespace Server.SoloExtension
             string campDesc = string.IsNullOrEmpty(profile.CampMapFileName)
                 ? "{尚未扎营/Red}"
                 : $"{{{profile.CampMapTitle} ({profile.CampX}, {profile.CampY})/LimeGreen}}";
+            string styleName = GetCampStyleName(profile.CampStyleImage);
 
             var lines = new List<string>
             {
                 "{【玛法行军帐 · 篝火营地】/Gold}",
                 $"当前所在：{curMapTitle} ({player.CurrentLocation.X}, {player.CurrentLocation.Y})",
                 $"记录营地：{campDesc}",
+                $"当前营地外观：{{{styleName}/Orange}}  <[切换外观]/@Camp_Style>",
                 "----------------------------------------"
             };
 
@@ -106,20 +124,15 @@ namespace Server.SoloExtension
                 lines.Add(" ");
                 lines.Add("{【安全区随身军需与神匠快捷服务】/Khaki}");
                 lines.Add("<[一键出售普通战利品 (自动锁死极品与名牌)]/@Solo_QuickSell>");
-                lines.Add("<[一键清理15级以下过渡装 (回收新手红紫装减负)]/@Solo_CleanLowGear>");
                 lines.Add("<[主号与英雄全身装备一键特修]/@Solo_QuickRepair>");
                 lines.Add("<[同名装备三合一极品重铸]/@Solo_Reforge3>");
             }
             else
             {
-                lines.Add("你在野外或洞穴深处可升起篝火扎营，回城补给后从安全区瞬间返场。");
+                lines.Add("你在野外或洞穴深处可升起篝火扎营，在地面搭起专属行军帐篷，回城补给后可从安全区瞬间返场。");
                 lines.Add("{提示：野外回城请使用【回城卷 / 地牢逃脱卷】，终极Boss房禁止扎营。/Silver}");
                 lines.Add(" ");
                 lines.Add($"<[在此处升起篝火扎营 (消耗 {CampSetGoldCost:N0} 金币)]/@Camp_Set>");
-                lines.Add("----------------------------------------");
-                lines.Add("{【行军随身减负服务 (立刻解除背包超重)】/Khaki}");
-                lines.Add("<[随身统卖普通白装 (自动锁死极品与名牌)]/@Solo_QuickSell>");
-                lines.Add("<[一键清理15级以下过渡装 (回收新手红紫装减负)]/@Solo_CleanLowGear>");
             }
 
             lines.Add(" ");
@@ -179,8 +192,156 @@ namespace Server.SoloExtension
             profile.CampUpdatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             profile.Save(force: true);
 
-            player.ReceiveChat($"⛺ [玛法行军帐] 已在 {profile.CampMapTitle}({profile.CampX},{profile.CampY}) 升起篝火！回城补给后可在安全区双击行军帐直接返场。", ChatType.Hint);
+            SpawnOrMoveCampTent(player.Name, player.CurrentMap, player.CurrentLocation);
+
+            player.ReceiveChat($"⛺ [玛法行军帐] 已在 {profile.CampMapTitle}({profile.CampX},{profile.CampY}) 升起【{GetCampStyleName(profile.CampStyleImage)}】！回城补给后可在安全区双击行军帐直接返场。", ChatType.Hint);
             OpenCampTentDialog(player);
+        }
+
+        public static string GetCampStyleName(ushort image)
+        {
+            foreach (var s in CampVisualStyles)
+            {
+                if (s.Image == image) return s.Name;
+            }
+            return CampVisualStyles[0].Name;
+        }
+
+        public static ushort NormalizeCampStyleImage(ushort image)
+        {
+            foreach (var s in CampVisualStyles)
+            {
+                if (s.Image == image) return s.Image;
+            }
+            return DefaultCampTentNpcImage;
+        }
+
+        public static void HandleCampCycleStyle(PlayerObject player)
+        {
+            if (player == null) return;
+            var profile = SoloPlayerProfile.GetOrLoad(player.Name);
+            ushort cur = NormalizeCampStyleImage(profile.CampStyleImage);
+            int idx = 0;
+            for (int i = 0; i < CampVisualStyles.Length; i++)
+            {
+                if (CampVisualStyles[i].Image == cur)
+                {
+                    idx = (i + 1) % CampVisualStyles.Length;
+                    break;
+                }
+            }
+
+            profile.CampStyleImage = CampVisualStyles[idx].Image;
+            profile.Save(force: true);
+
+            // 若已有扎营坐标，立即实时刷新地图上的营地外观
+            if (!string.IsNullOrEmpty(profile.CampMapFileName) && Envir.Main?.MapList != null)
+            {
+                Map targetMap = Envir.Main.MapList.FirstOrDefault(m =>
+                    m?.Info != null && string.Equals(m.Info.FileName, profile.CampMapFileName, StringComparison.OrdinalIgnoreCase));
+                if (targetMap != null)
+                {
+                    SpawnOrMoveCampTent(player.Name, targetMap, new Point(profile.CampX, profile.CampY));
+                }
+            }
+
+            player.ReceiveChat($"⛺ [玛法行军帐] 营地外观已切换为：【{CampVisualStyles[idx].Name}】！", ChatType.Hint);
+            OpenCampTentDialog(player);
+        }
+
+        public static void EnsurePlayerCampTentSpawned(PlayerObject player)
+        {
+            if (player == null || string.IsNullOrWhiteSpace(player.Name)) return;
+            if (ActiveCampTents.TryGetValue(player.Name, out NPCObject existing) && existing?.CurrentMap != null)
+                return;
+
+            var profile = SoloPlayerProfile.GetOrLoad(player.Name);
+            if (string.IsNullOrEmpty(profile.CampMapFileName) || Envir.Main?.MapList == null)
+                return;
+
+            Map targetMap = Envir.Main.MapList.FirstOrDefault(m =>
+                m?.Info != null && string.Equals(m.Info.FileName, profile.CampMapFileName, StringComparison.OrdinalIgnoreCase));
+            if (targetMap == null) return;
+
+            SpawnOrMoveCampTent(player.Name, targetMap, new Point(profile.CampX, profile.CampY));
+        }
+
+        public static void SpawnOrMoveCampTent(string playerName, Map map, Point campPoint)
+        {
+            if (string.IsNullOrWhiteSpace(playerName) || map?.Info == null || map.Cells == null) return;
+
+            if (ActiveCampTents.TryRemove(playerName, out NPCObject oldTent) && oldTent != null)
+            {
+                try
+                {
+                    if (oldTent.CurrentMap != null)
+                    {
+                        oldTent.Hide();
+                        oldTent.CurrentMap.RemoveObject(oldTent);
+                    }
+                    Envir.Main?.NPCs?.Remove(oldTent);
+                }
+                catch { }
+            }
+
+            Point tentLocation = FindTentSpawnPoint(map, campPoint);
+            if (!map.ValidPoint(tentLocation)) return;
+
+            var profile = SoloPlayerProfile.GetOrLoad(playerName);
+            ushort campImage = NormalizeCampStyleImage(profile.CampStyleImage);
+
+            NPCInfo info = new NPCInfo
+            {
+                Index = 995000 + Math.Abs(playerName.GetHashCode() % 4000),
+                MapIndex = map.Info.Index,
+                Name = $"{playerName}的营地",
+                FileName = CampTentNpcScript,
+                Location = tentLocation,
+                Image = campImage,
+                Rate = 100
+            };
+
+            try
+            {
+                NPCObject tentNpc = new NPCObject(info)
+                {
+                    CurrentMap = map,
+                    NameColour = Color.Gold,
+                    Direction = MirDirection.Up,
+                    TurnTime = long.MaxValue
+                };
+                map.AddObject(tentNpc);
+                tentNpc.Show();
+                ActiveCampTents[playerName] = tentNpc;
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger(LogType.Server)?.Error($"[SoloExtension] 生成地图行军帐实体失败 ({playerName}): {ex.Message}");
+            }
+        }
+
+        private static Point FindTentSpawnPoint(Map map, Point campCenter)
+        {
+            // 优先在角色扎营坐标旁 1~2 格空位搭起帐篷，避免阻挡角色自身落脚点与返场传送坐标
+            Point[] offsets =
+            {
+                new(0, -1), new(1, -1), new(-1, -1),
+                new(1, 0), new(-1, 0), new(0, 1), new(1, 1), new(-1, 1),
+                new(0, -2), new(2, 0), new(-2, 0), new(0, 2)
+            };
+
+            foreach (Point off in offsets)
+            {
+                Point pt = new(campCenter.X + off.X, campCenter.Y + off.Y);
+                if (!map.ValidPoint(pt)) continue;
+                Cell cell = map.GetCell(pt);
+                if (cell == null) continue;
+                bool hasBlocking = cell.Objects != null && cell.Objects.Any(o => o != null && o.Blocking);
+                if (!hasBlocking && map.NPCs.All(n => n.CurrentLocation != pt))
+                    return pt;
+            }
+
+            return EcologyAndRarityModule.FindNearbyWalkablePoint(map, campCenter, 2);
         }
 
         public static void HandleCampReturn(PlayerObject player)
@@ -263,46 +424,6 @@ namespace Server.SoloExtension
             else
             {
                 player.ReceiveChat($"🛡️ [军需统卖] 背包中无可出售的普通白装（已为你自动锁定保护 {protectedCount} 件极品/名牌装备）。", ChatType.Hint);
-            }
-        }
-
-        public static void HandleCleanLowGear(PlayerObject player)
-        {
-            if (player?.Info?.Inventory == null) return;
-
-            int soldCount = 0;
-            ulong totalGoldEarned = 0;
-
-            for (int i = 0; i < player.Info.Inventory.Length; i++)
-            {
-                UserItem item = player.Info.Inventory[i];
-                if (item?.Info == null) continue;
-                if (!IsEquipmentType(item.Info.Type)) continue;
-                if (IsFamousOrHighTierGear(item.Info)) continue;
-
-                // 仅清理 15 级及以下的新手过渡装备（如布衣、轻型盔甲、木剑、铁手镯、皮手套等）
-                bool isLowLevelStarter = item.Info.RequiredType != RequiredType.Level || item.Info.RequiredAmount <= 15;
-                if (!isLowLevelStarter) continue;
-
-                uint sellValue = Math.Max(10u, item.Price() / 2u);
-                if ((ulong)player.Account.Gold + totalGoldEarned + sellValue > uint.MaxValue)
-                    break;
-
-                player.Enqueue(new S.DeleteItem { UniqueID = item.UniqueID, Count = item.Count });
-                player.Info.Inventory[i] = null;
-                totalGoldEarned += sellValue;
-                soldCount++;
-            }
-
-            if (soldCount > 0)
-            {
-                player.GainGold((uint)totalGoldEarned);
-                player.RefreshBagWeight();
-                player.ReceiveChat($"🪶 [行军减负] 已一键清理 {soldCount} 件15级以下新手过渡装备，折算获得 {totalGoldEarned:N0} 金币，包袱负重已立即恢复！", ChatType.Hint);
-            }
-            else
-            {
-                player.ReceiveChat("🪶 [行军减负] 背包中没有需要清理的15级以下新手过渡装备。", ChatType.Hint);
             }
         }
 

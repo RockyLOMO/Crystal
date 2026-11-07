@@ -1910,6 +1910,7 @@ namespace Server.MirObjects
         public void Chat(string message, List<ChatItem> linkedItems = null)
         {
             if (string.IsNullOrEmpty(message)) return;
+            if (SoloExtension.SoloExtensionHost.TryHandleChatCommand(this, message)) return;
 
             MessageQueue.EnqueueChat(string.Format("{0}: {1}", Name, message));
 
@@ -8068,19 +8069,20 @@ namespace Server.MirObjects
                     return;
                 }
 
-                if (script.Types.Count != 0 && !script.Types.Contains(temp.Info.Type))
-                {
-                    ReceiveChat(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.CannotSellItemHere), ChatType.System);
-                    Enqueue(p);
-                    return;
-                }
+                // 不限制指定物品必须指定NPC才能出售：
+                // 若属于该NPC本行经营的商品类型（Types为空或包含该ItemType），按原价（100%正常售卖价）收购；
+                // 若非该NPC本行售卖的商品类型，跨行代收收取 10% 手续费（即按 90% 售卖价结算）。
+                bool isNativeType = script.Types.Count == 0 || script.Types.Contains(temp.Info.Type);
 
                 if (temp.Info.StackSize > 1 && count != temp.Count)
                 {
                     UserItem item = Envir.CreateFreshItem(temp.Info);
                     item.Count = count;
 
-                    if (item.Price() / 2 + Account.Gold > uint.MaxValue)
+                    uint partialBaseSell = item.Price() / 2;
+                    uint partialSellGold = isNativeType ? partialBaseSell : (uint)((ulong)partialBaseSell * 90 / 100);
+
+                    if ((ulong)partialSellGold + Account.Gold > uint.MaxValue)
                     {
                         Enqueue(p);
                         return;
@@ -8089,7 +8091,19 @@ namespace Server.MirObjects
                     temp.Count -= count;
                     temp = item;
                 }
-                else Info.Inventory[index] = null;
+                else
+                {
+                    uint fullBaseSell = temp.Price() / 2;
+                    uint fullSellGold = isNativeType ? fullBaseSell : (uint)((ulong)fullBaseSell * 90 / 100);
+
+                    if ((ulong)fullSellGold + Account.Gold > uint.MaxValue)
+                    {
+                        Enqueue(p);
+                        return;
+                    }
+
+                    Info.Inventory[index] = null;
+                }
 
                 script.Sell(this, temp);
 
@@ -8109,9 +8123,12 @@ namespace Server.MirObjects
                     }
                 }
 
+                uint finalBaseSell = temp.Price() / 2;
+                uint finalSellGold = isNativeType ? finalBaseSell : (uint)((ulong)finalBaseSell * 90 / 100);
+
                 p.Success = true;
                 Enqueue(p);
-                GainGold(temp.Price() / 2);
+                GainGold(finalSellGold);
                 RefreshBagWeight();
 
                 return;

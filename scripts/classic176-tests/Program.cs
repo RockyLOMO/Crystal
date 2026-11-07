@@ -70,21 +70,24 @@ internal static class Program
             var panels = scene.Controls.Where(c => c.GetType().Name is "ExtensionDock" or "StoneWing").ToArray();
             var dockButtons = panels.SelectMany(p => p.Controls.OfType<MirButton>()).ToArray();
             bool split = width >= 992;
-            Check(dockButtons.Length == 9 && dockButtons.All(b => b.Size.Height == (split ? 24 : 22)),
-                $"{width}: all nine actions remain accessible at the correct button height");
+            Check(dockButtons.Length == 13 && dockButtons.SelectMany(b => b.Controls.OfType<MirLabel>()).Count(l =>
+                l.Text is "属性" or "商城" or "菜单" or "英雄") == 4,
+                $"{width}: all thirteen actions remain accessible with one entry per migrated action");
             if (split)
             {
                 Check(panels.Length == 2 && panels.All(p => p.Size.Height == 144 && p.Location.Y == 624 && p.IsMouseOver(p.DisplayLocation.Add(new Point(1, 1)))) &&
                     panels[0].DisplayRectangle.Right == main.DisplayRectangle.Left && panels[1].DisplayRectangle.Left == main.DisplayRectangle.Right &&
                     panels[0].Location.X == 0 && panels[1].DisplayRectangle.Right == width,
                     $"{width}: two stone wings fill both side gaps exactly and remain mouse reachable");
-                Check(panels[0].Controls.OfType<MirButton>().Count() == 4 && panels[1].Controls.OfType<MirButton>().Count() == 5 &&
+                Check(panels[0].Controls.OfType<MirButton>().Count() == 7 && panels[1].Controls.OfType<MirButton>().Count() == 6 &&
                     panels.All(p => p.GetType().Name == "StoneWing"),
-                    $"{width}: social/map actions are left, hero/quest/mount actions are right, center dock removed");
+                    $"{width}: character/social actions are left, hero/travel actions are right, center dock removed");
+                Check(dockButtons.All(b => b.DisplayRectangle.Bottom <= b.Parent.DisplayLocation.Y + 108),
+                    $"{width}: compact rows do not cover the status wells");
                 Check(panels.All(p => !p.IsMouseOver(new Point(p.Location.X + p.Size.Width / 2, p.Location.Y - 1))),
                     $"{width}: transparent map area above the wings has no wing hit target");
             }
-            else Check(panels.Length == 1 && panels[0].GetType().Name == "ExtensionDock" && panels[0].Size == new Size(348, 22),
+            else Check(panels.Length == 1 && panels[0].GetType().Name == "ExtensionDock" && panels[0].Size == new Size(280, 44),
                 $"{width}: narrow viewport retains compact action dock without clipped side controls");
             Check(dockButtons.All(b => b.Parent.DisplayRectangle.Contains(b.DisplayRectangle)),
                 $"{width}: every action stays inside its parent's hit rectangle");
@@ -107,7 +110,7 @@ internal static class Program
                 Check(chat.Size == new Size(388, 126 + size * 48) && chat.DisplayRectangle.Bottom == 761,
                     $"{width}: chat size {size} retains its bottom anchor");
                 Check(scene.ChatControl.DisplayRectangle.Bottom == chat.DisplayRectangle.Top &&
-                    scene.ChatControl.Size.Height == 18 && (split ? panels.All(p => p.Location.Y == 624) : panels[0].DisplayRectangle.Bottom < scene.BeltDialog.DisplayRectangle.Top),
+                    scene.ChatControl.Size.Height == 14 && (split ? panels.All(p => p.Location.Y == 624) : panels[0].DisplayRectangle.Bottom < scene.BeltDialog.DisplayRectangle.Top),
                     $"{width}: chat channel strip avoids messages and wing/fallback placement remains correct at size {size}");
                 Check(chat.ChatTextBox.Location.X + chat.ChatTextBox.Size.Width <= chat.Size.Width &&
                     chat.ChatTextBox.Location.Y + chat.ChatTextBox.Size.Height <= chat.Size.Height,
@@ -116,7 +119,7 @@ internal static class Program
                 Check(chat.ChatLines.All(l => l.Size.Width <= chat.Size.Width - 14), $"{width}: Chinese chat wraps within new width");
                 chat.UpdateBackground(); chat.ChangeSize();
             }
-            Check(chat.WindowSize == 0 && scene.ChatControl.Location.Y == chat.Location.Y - 18,
+            Check(chat.WindowSize == 0 && scene.ChatControl.Location.Y == chat.Location.Y - 14,
                 $"{width}: chat expansion cycle restores control bar position");
             for (int i = 0; i < 30; i++) chat.ReceiveChat($"历史消息{i}", ChatType.Normal);
             chat.StartIndex = 10; chat.Update();
@@ -126,7 +129,8 @@ internal static class Program
             chat.WindowSize = 0; chat.UpdateBackground(); chat.Update();
             scene.HeroBeltDialog = new HeroBeltDialog { Parent = scene, Visible = false };
             Classic176HUDLayout.AlignHeroBelt(scene);
-            Check(scene.HeroBeltDialog.DisplayRectangle.Bottom < scene.BeltDialog.DisplayRectangle.Top,
+            Check(scene.HeroBeltDialog.DisplayRectangle.Bottom < scene.BeltDialog.DisplayRectangle.Top &&
+                (split || scene.HeroBeltDialog.DisplayRectangle.Bottom < panels[0].DisplayRectangle.Top),
                 $"{width}: late-created hero belt sits above player belt and chat");
             var belt = scene.BeltDialog;
             Check(!belt.DrawControlTexture && !belt.Border && !belt.CloseButton.Visible && belt.Grid.All(c => !c.Border),
@@ -151,13 +155,19 @@ internal static class Program
                 $"{width}: all inventory cells remain inside belt hit area");
             GameScene.User = new UserObject((uint)width) { Name = "HUD测试", Level = 30, HP = 50, MP = 30, MaxExperience = 100 };
             GameScene.User.Stats[Stat.HP] = 100; GameScene.User.Stats[Stat.MP] = 60; GameScene.User.Stats[Stat.BagWeight] = 100;
+            GameScene.User.CurrentBagWeight = 141;
             main.Process();
-            Check(main.LevelLabel.Location.X >= 666 && main.LevelLabel.Size == new Size(33, 18) && !main.LevelLabel.AutoSize,
-                $"{width}: level digits occupy the gauge field to the right of its baked Lv caption");
+            Check(main.LevelLabel.Location.X > 664 && main.LevelLabel.Location.Y == 143 &&
+                (main.LevelLabel.DrawFormat & TextFormatFlags.HorizontalCenter) == 0 && !main.LevelLabel.AutoSize,
+                $"{width}: level digits sit left-aligned beyond the baked Lv caption");
             var header = main.Controls.OfType<MirButton>().Where(b => b.Controls.OfType<MirLabel>().Any(l => l.Text is "属性" or "商城" or "英雄")).ToArray();
-            Check(header.Length == 3 && header.All(b => b.Location.Y == 108 && b.Size == new Size(36, 22)) &&
-                header.All(b => b.DisplayRectangle.Bottom < main.LevelLabel.DisplayRectangle.Top),
-                $"{width}: right-panel actions align above the level, EXP and weight gauges");
+            Check(header.Length == 0 && main.MenuButton.Parent == panels[0] && main.GameShopButton.Parent == panels[0] &&
+                dockButtons.Contains(main.QuestButton),
+                $"{width}: right stone gauges are clear and native menu/shop/quest handlers are retained");
+            var weight = main.Controls.OfType<MirLabel>().Single(l => l.Location.Y == 209);
+            Check(weight.Location.X == main.LevelLabel.Location.X && main.GoldLabel.Location.X == weight.Location.X &&
+                weight.DrawFormat == main.LevelLabel.DrawFormat && main.GoldLabel.DrawFormat == weight.DrawFormat,
+                $"{width}: level, bag weight and gold share a left-aligned numeric baseline");
             Check(!main.HealthOrb.Visible && main.CharacterName.Text == "HUD测试", $"{width}: normal status processing preserves adapted HUD");
             // Existing popup actions and absent/disposed hero guards.
             foreach (string caption in new[] { "英包", "英装" })
@@ -167,10 +177,14 @@ internal static class Program
                 button.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
             }
             Check(true, $"{width}: hero inventory/equipment safely ignore absent hero");
-            var mode = main.Controls.OfType<MirButton>().Single(b => b.Controls.OfType<MirLabel>().Any(l => l.Text == "英雄"));
+            var mode = dockButtons.Single(b => b.Controls.OfType<MirLabel>().Any(l => l.Text == "英雄"));
             mode.Sound = SoundList.None;
             mode.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
             Check(!scene.HeroMenuPanel.Visible, $"{width}: mode menu stays closed without live hero dialogs");
+            main.MenuButton.Sound = SoundList.None;
+            bool menuWasVisible = scene.MenuDialog.Visible;
+            main.MenuButton.InvokeMouseClick(EventArgs.Empty);
+            Check(scene.MenuDialog.Visible != menuWasVisible, $"{width}: migrated menu button keeps its original toggle action");
         }
         Set("UseClassic176HUD", false);
         using (var original = new GameScene())
@@ -210,11 +224,88 @@ internal static class Program
                 sprite.End(); device.EndScene();
                 var textureSize = (Size)typeof(MirControl).GetField("TextureSize", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(scene.ChatDialog)!;
                 Check(textureSize == scene.ChatDialog.Size, $"Direct3D: chat size {size} recreates texture at the new dimensions");
+                Check(scene.ChatControl.Controls.OfType<MirButton>().Where(b => b.Visible).All(b =>
+                    scene.ChatControl.DisplayRectangle.Contains(b.DisplayRectangle)),
+                    $"Direct3D: loaded channel icons stay within the lowered strip at chat size {size}");
                 string preview = size == 0 ? args[3] : Path.ChangeExtension(args[3], $"size{size}.png");
                 Surface.ToFile((Surface)dx.GetField("MainSurface")!.GetValue(null)!, preview, ImageFileFormat.Png);
                 scene.ChatDialog.ChangeSize();
             }
             Console.WriteLine($"Direct3D HUD preview (no map or login): {args[3]}");
+            var npc = scene.NPCDialog;
+            var npcLines = new List<string>
+            {
+                "欢迎测试",
+                "<一键安全回收杂物/@SAFE>",
+                "前缀 <装备/@GEAR> 后缀 {红色/Red}",
+                "<补给/@SUPPLY>   <特修/@REPAIR>",
+                "坐标 [NPC:1|传送向导] 和 [ITEM:1|金创药]",
+                "(帮助/http://example.invalid)",
+                "Test <A&B/@EN> end"
+            };
+            npc.NewText(new List<string>(npcLines));
+            npc.Location = new Point(10, 10); npc.Visible = true;
+            Check(npc.TextLabel[1].Text == "一键安全回收杂物" && !npc.TextLabel[1].DrawControlTexture &&
+                npc.TextLabel[0].DrawControlTexture, "NPC: complete service metadata remains, styled base glyphs are not redrawn");
+            Check(npc.TextLabel[2].Controls.OfType<MirLabel>().Select(l => l.Text).SequenceEqual(new[] { "前缀 ", " 后缀 " }),
+                "NPC: normal prefix and suffix remain visible around multiple styled spans");
+            Check(npc.TextButtons.Count == 9 && npc.TextButtons.All(b => b.Text.Length > 0 && b.DrawControlTexture),
+                "NPC: actions, colors, entity links and web links each have one visible styled run");
+            Check(npc.TextButtons.All(b => b.DrawFormat.HasFlag(TextFormatFlags.NoPrefix)),
+                "NPC: ampersands in English options remain literal visible characters");
+            var yellow = npc.TextButtons[0];
+            typeof(MirControl).GetMethod("OnMouseEnter", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(yellow, null);
+            Check(yellow.ForeColour == Color.Red, "NPC: original option hover event remains attached");
+            typeof(MirControl).GetMethod("OnMouseLeave", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(yellow, null);
+            Check(yellow.ForeColour == Color.Yellow, "NPC: leaving the option restores yellow without another text layer");
+            Client.CMain.MPoint = yellow.DisplayLocation.Add(new Point(yellow.Size.Width / 2, yellow.Size.Height / 2));
+            scene.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, Client.CMain.MPoint.X, Client.CMain.MPoint.Y, 0));
+            Check(MirControl.MouseControl == yellow, "NPC: original clickable option remains reachable through scene routing");
+            Client.CMain.MPoint = new Point(1000, 400);
+            scene.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, 1000, 400, 0));
+            typeof(MirControl).GetMethod("OnMouseLeave", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(yellow, null);
+            device.Clear(ClearFlags.Target, Color.FromArgb(30, 38, 30), 0, 0);
+            device.BeginScene(); sprite.Begin(SpriteFlags.AlphaBlend);
+            npc.Draw(); sprite.End(); device.EndScene();
+            string npcPreview = Path.ChangeExtension(args[3], "npc.png");
+            Surface.ToFile((Surface)dx.GetField("MainSurface")!.GetValue(null)!, npcPreview, ImageFileFormat.Png);
+            using (var rendered = new Bitmap(npcPreview))
+            {
+                int white = 0, yellowInk = 0;
+                for (int y = yellow.DisplayRectangle.Top; y < yellow.DisplayRectangle.Bottom; y++)
+                    for (int x = yellow.DisplayRectangle.Left; x < yellow.DisplayRectangle.Right; x++)
+                    {
+                        var pixel = rendered.GetPixel(x, y);
+                        if (pixel.R > 190 && pixel.G > 190 && pixel.B > 190) white++;
+                        if (pixel.R > 180 && pixel.G > 150 && pixel.B < 60) yellowInk++;
+                    }
+                Check(yellowInk > 20 && white == 0, $"NPC: rendered option contains yellow ink and no duplicate white glyphs ({yellowInk} yellow, {white} white pixels)");
+            }
+            var oldLine = npc.TextLabel[2];
+            var oldRuns = oldLine.Controls.ToArray();
+            int controlCount = npc.Controls.Count;
+            for (int i = 0; i < 20; i++) npc.NewText(new List<string>(npcLines));
+            Check(oldLine.IsDisposed && oldRuns.All(l => l.IsDisposed) && npc.Controls.Count == controlCount,
+                "NPC: repeated page refresh disposes old runs without accumulating or repainting stale text");
+            npc.NewText(new List<string> { "提示 {红字/Red}" + new string('中', 40) + "<越界选项/@OFFSCREEN>" });
+            Check(npc.TextLabel[0].Controls.Where(c => c.Visible).All(c => npc.TextLabel[0].DisplayRectangle.Contains(c.DisplayRectangle)) &&
+                npc.TextButtons.Where(c => c.Visible).All(c => npc.TextLabel[0].DisplayRectangle.Contains(c.DisplayRectangle)) &&
+                !npc.TextButtons.Last().Visible,
+                "NPC: long formatted lines clip to the original text area and offscreen options have no hit target");
+            using (var dpiBitmap = new Bitmap(1, 1))
+            {
+                dpiBitmap.SetResolution(144, 144);
+                using var dpiGraphics = Graphics.FromImage(dpiBitmap);
+                Client.CMain.Graphics = dpiGraphics;
+                try
+                {
+                    npc.NewText(new List<string> { "前缀 <装备/@GEAR> 后缀" });
+                    Check(npc.TextLabel[0].Controls.OfType<MirLabel>().All(l => Math.Abs(l.Font.Size - npc.TextButtons[0].Font.Size) < .01),
+                        "NPC: normal and styled text use the same effective font at 150 percent DPI");
+                }
+                finally { Client.CMain.Graphics = graphics; }
+            }
+            Console.WriteLine($"NPC single-pass text preview: {npcPreview}");
             Console.WriteLine($"Total checks including rendering: {passed}");
         }
     }

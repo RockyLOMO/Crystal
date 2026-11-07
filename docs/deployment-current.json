@@ -1,5 +1,5 @@
 {
-  "CheckedAtUtc": "2026-11-06T16:53:56.1390626Z",
+  "CheckedAtUtc": "2026-11-07T11:42:17.4448510+00:00",
   "Status": "deployed-running",
   "Source": {
     "Path": "D:\\projs\\mir2",
@@ -95,9 +95,9 @@
     "DefaultEndpoint": "s.f-li.cn:7000"
   },
   "CurrentProcessState": {
-    "ServerRunning": false,
-    "ClientRunning": false,
-    "Reason": "Closed normally after verification; server network was stopped before this work"
+    "ServerRunning": true,
+    "ClientRunning": true,
+    "Reason": "NPC text fix deployed; client reopened for authorized recheck; server kept running; latest login pending"
   },
   "Localization": {
     "DetailedReport": "README.md",
@@ -190,8 +190,8 @@
     "VersionMirrorsUpdated": true,
     "ServerStarted": true,
     "DistributionUpdated": false,
-    "ChecksPassed": 347,
-    "GameplayAcceptance": "Side wings deployed; startup and handshake passed; latest in-game visual recheck pending",
+    "ChecksPassed": 412,
+    "GameplayAcceptance": "NPC duplicate styled text fixed; level shifted up 2px; latest live recheck pending",
     "RuntimeAcceptance": "classic176-hud-validation.json#RuntimeAcceptance",
     "AlignmentBackup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255",
     "DetailLayoutBackup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426",
@@ -204,6 +204,22 @@
       "ServerProcessId": 21704,
       "ClientErrorBytes": 513990,
       "CheckedAt": "2026-11-07T00:53:34.7111644+08:00"
+    },
+    "PolishLayout": {
+      "Evidence": "classic176-hud-validation.json#PolishLayout",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-polish-20261107-125911",
+      "ClientProcessId": 7164,
+      "ServerProcessId": 18064,
+      "ClientErrorBytes": 625929,
+      "CheckedAt": "2026-11-07T12:59:54.5778253+08:00"
+    },
+    "NpcTextCorrection": {
+      "Evidence": "classic176-hud-validation.json#NpcTextCorrection",
+      "Backup": "D:\\private-server\\mir2\\backups\\classic176-npc-text-20261107-194106",
+      "ClientProcessId": 13964,
+      "ServerProcessId": 22360,
+      "ClientErrorBytes": 625929,
+      "CheckedAt": "2026-11-07T19:41:26.8894819+08:00"
     }
   },
   "HunterTomeUnifiedPickup": {

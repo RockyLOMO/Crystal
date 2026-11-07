@@ -82,10 +82,11 @@ internal static class Program
             "legacy AutoPickUp=true is harmless: the setting and standalone option no longer exist");
         var sellSetting = settings.GetField("AutoSellNormalEquipment")!;
         var repairSetting = settings.GetField("AutoSpecialRepairEquipment")!;
-        sellSetting.SetValue(null, true); repairSetting.SetValue(null, true);
+        var weightGuardSetting = settings.GetField("AutoPickWeightProtection")!;
+        sellSetting.SetValue(null, true); repairSetting.SetValue(null, true); weightGuardSetting.SetValue(null, true);
         using var options = new OptionDialog();
         var services = options.Controls.OfType<NpcAutoServiceOptions>().Single();
-        Check(services.AutoSellBox.Checked && services.AutoRepairBox.Checked, "NPC option switches reflect the existing enabled settings");
+        Check(services.AutoSellBox.Checked && services.AutoRepairBox.Checked && services.AutoPickWeightProtectBox.Checked, "NPC and pickup option switches reflect the existing enabled settings");
         Check(services.Location.Y >= 350 && services.Controls.All(c => c.Location.Y >= 0 && c.Location.Y + c.Size.Height <= services.Size.Height)
             && services.Location.Y + services.Size.Height <= options.Size.Height, "NPC options extend below the original art and stay inside the dialog hit area");
         services.AutoSellBox.Sound = SoundList.None; services.AutoRepairBox.Sound = SoundList.None;

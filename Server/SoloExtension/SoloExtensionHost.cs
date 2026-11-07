@@ -158,6 +158,17 @@ namespace Server.SoloExtension
                     "<离开/@exit>\r\n");
             }
 
+            string campTentScriptPath = Path.Combine(Settings.NPCPath, TownAndCampModule.CampTentNpcScript + ".txt");
+            if (!File.Exists(campTentScriptPath))
+            {
+                File.WriteAllText(campTentScriptPath,
+                    "[@MAIN]\r\n" +
+                    "#SAY\r\n" +
+                    "篝火正旺，行军大帐已稳固扎立。\\\r\n\\\r\n" +
+                    "<【打开玛法行军帐界面】/@Camp_Menu>\\\r\n" +
+                    "<离开/@exit>\r\n");
+            }
+
             SpawnSoloNpcIfAbsent(envir, "0", "玛法军需官", quartermasterScript, new Point(328, 265), 15);
             SpawnSoloNpcIfAbsent(envir, "3", "玛法军需官", quartermasterScript, new Point(333, 325), 15);
             SpawnSoloNpcIfAbsent(envir, "3", "盟重神匠", smithScript, new Point(326, 325), 12);
@@ -267,6 +278,7 @@ namespace Server.SoloExtension
             player.SoloNextTickTime = now + 1000;
 
             EnsureStarterCurios(player);
+            TownAndCampModule.EnsurePlayerCampTentSpawned(player);
             HunterTomeModule.SyncCodexBonuses(player);
             HunterTomeModule.ProcessRangeAutoPickup(player);
         }
@@ -353,6 +365,18 @@ namespace Server.SoloExtension
         {
             if (player == null || string.IsNullOrWhiteSpace(key)) return false;
 
+            string trimmed = key.Trim().TrimStart('[').TrimEnd(']');
+            if (string.Equals(trimmed, "@MAIN", StringComparison.OrdinalIgnoreCase))
+            {
+                NPCObject clickedNpc = NPCObject.Get(player.NPCObjectID);
+                if (clickedNpc?.Info != null &&
+                    string.Equals(clickedNpc.Info.FileName, TownAndCampModule.CampTentNpcScript, StringComparison.OrdinalIgnoreCase))
+                {
+                    TownAndCampModule.OpenCampTentDialog(player);
+                    return true;
+                }
+            }
+
             if (TownAndCampModule.TryHandleNpcCommand(player, key))
                 return true;
 
@@ -360,6 +384,34 @@ namespace Server.SoloExtension
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Hook 5b: PlayerObject.Chat(string message)
+        /// 拦截客户端【设置】面板发送的 @SOLOWEIGHTGUARD 指令，同步 4×4 自动拾取严格负重保护开关。
+        /// </summary>
+        public static bool TryHandleChatCommand(PlayerObject player, string message)
+        {
+            if (player == null || string.IsNullOrWhiteSpace(message)) return false;
+            if (!message.StartsWith("@SOLOWEIGHTGUARD", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            string[] parts = message.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var profile = SoloPlayerProfile.GetOrLoad(player.Name);
+            bool enable = parts.Length < 2
+                ? !profile.AutoPickWeightProtect
+                : (parts[1] == "1" || parts[1].Equals("true", StringComparison.OrdinalIgnoreCase) || parts[1].Equals("on", StringComparison.OrdinalIgnoreCase));
+            bool silent = parts.Length >= 3 && parts[2].Equals("SILENT", StringComparison.OrdinalIgnoreCase);
+
+            profile.AutoPickWeightProtect = enable;
+            profile.Save(force: true);
+
+            if (!silent)
+            {
+                string stateText = enable ? "已开启（接近背包负重上限时自动停止拾取装备）" : "已关闭";
+                player.ReceiveChat($"⚙️ [设置] 4×4 自动拾取严格负重保护：{stateText}。", ChatType.Hint);
+            }
+            return true;
         }
 
         /// <summary>

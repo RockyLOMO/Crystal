@@ -399,7 +399,8 @@ namespace Client.MirScenes.Dialogs
 
             for (int i = 0; i < TextLabel.Length; i++)
             {
-                if (TextLabel[i] != null) TextLabel[i].Text = "";
+                TextLabel[i]?.Dispose();
+                TextLabel[i] = null;
             }
 
             TextButtons.Clear();
@@ -426,6 +427,7 @@ namespace Client.MirScenes.Dialogs
                 }
 
                 string currentLine = lines[i];
+                var styledSpans = new List<NpcInlineTextLayout.Span>();
                 List<Match> matchList = R.Matches(currentLine).Cast<Match>().ToList();
                 matchList.AddRange(C.Matches(currentLine).Cast<Match>());
                 matchList.AddRange(L.Matches(currentLine).Cast<Match>());
@@ -469,10 +471,8 @@ namespace Client.MirScenes.Dialogs
                         int matchLength = match.Length;
                         currentLine = currentLine.Remove(matchStart, matchLength).Insert(matchStart, displayName);
 
-                        string textUpToLink = currentLine.Substring(0, matchStart);
-                        Point offset = CalculateLinkOffset(textUpToLink, TextLabel[i]);
-
-                        NewLink(displayName, linkType, linkIdx, TextLabel[i].Location.Add(offset));
+                        NewLink(displayName, linkType, linkIdx, TextLabel[i].Location);
+                        styledSpans.Add(new NpcInlineTextLayout.Span(matchStart, displayName.Length, TextButtons[^1]));
 
                         continue;
                     }
@@ -486,20 +486,20 @@ namespace Client.MirScenes.Dialogs
                         string action = match.Groups[3].Captures[0].Value;
 
                         currentLine = currentLine.Remove(capture.Index - 1 - offSet, capture.Length + 2).Insert(capture.Index - 1 - offSet, txt);
-                        string text2 = currentLine.Substring(0, capture.Index - 1 - offSet) + " ";
-                        Size size2 = TextRenderer.MeasureText(CMain.Graphics, text2, TextLabel[i].Font, TextLabel[i].Size, TextFormatFlags.TextBoxControl);
+                        int start = capture.Index - 1 - offSet;
 
                         if (R.Match(match.Value).Success)
-                            NewButton(txt, action, TextLabel[i].Location.Add(new Point(size2.Width - 10, 0)));
+                            NewButton(txt, action, TextLabel[i].Location);
 
                         if (C.Match(match.Value).Success)
-                            NewColour(txt, action, TextLabel[i].Location.Add(new Point(size2.Width - 10, 0)));
+                            NewColour(txt, action, TextLabel[i].Location);
 
                         if (L.Match(match.Value).Success)
-                            NewButton(txt, null, TextLabel[i].Location.Add(new Point(size2.Width - 10, 0)), action);
+                            NewButton(txt, null, TextLabel[i].Location, action);
+                        styledSpans.Add(new NpcInlineTextLayout.Span(start, txt.Length, TextButtons[^1]));
                     }
                 }
-                TextLabel[i].Text = currentLine;
+                NpcInlineTextLayout.Apply(TextLabel[i], currentLine, styledSpans);
                 TextLabel[i].MouseWheel += NPCDialog_MouseWheel;
             }
         }

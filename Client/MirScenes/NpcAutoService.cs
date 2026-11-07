@@ -23,8 +23,16 @@ internal static class NpcAutoService
             session.PreferencesChanged();
     }
 
+    public static void SyncWeightProtection(bool silent)
+    {
+        if (!Network.Connected) return;
+        string suffix = silent ? " SILENT" : "";
+        Network.Enqueue(new C.Chat { Message = $"@SOLOWEIGHTGUARD {(Settings.AutoPickWeightProtection ? 1 : 0)}{suffix}" });
+    }
+
     public static void OnPacket(GameScene scene, Packet packet)
     {
+        if (packet is S.UserInformation) SyncWeightProtection(silent: true);
         // Repairing worn equipment can restore stats lost at zero durability, including manual repairs.
         if (packet is S.ItemRepaired wornRepair && GameScene.User is { } user
             && user.Equipment.Any(item => item?.UniqueID == wornRepair.UniqueID)) user.RefreshStats();

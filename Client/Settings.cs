@@ -1,4 +1,4 @@
-﻿using Client.MirSounds;
+using Client.MirSounds;
 
 namespace Client
 {
@@ -165,6 +165,7 @@ namespace Client
         public static bool UseClassic176HUD = true;
         public static bool AutoSellNormalEquipment = true;
         public static bool AutoSpecialRepairEquipment = true;
+        public static bool AutoPickWeightProtection = true;
 
         public static int[,] SkillbarLocation = new int[2, 2] { { 0, 0 }, { 216, 0 } };
 
@@ -283,6 +284,7 @@ namespace Client
             UseClassic176HUD = Reader.ReadBoolean("Game", "UseClassic176HUD", UseClassic176HUD);
             AutoSellNormalEquipment = Reader.ReadBoolean("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
             AutoSpecialRepairEquipment = Reader.ReadBoolean("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
+            AutoPickWeightProtection = Reader.ReadBoolean("Game", "AutoPickWeightProtection", AutoPickWeightProtection);
             TransparentChat = Reader.ReadBoolean("Game", "TransparentChat", TransparentChat);
             DisplayDamage = Reader.ReadBoolean("Game", "DisplayDamage", DisplayDamage);
             TargetDead = Reader.ReadBoolean("Game", "TargetDead", TargetDead);
@@ -399,6 +401,7 @@ namespace Client
             Reader.Write("Game", "UseClassic176HUD", UseClassic176HUD);
             Reader.Write("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
             Reader.Write("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
+            Reader.Write("Game", "AutoPickWeightProtection", AutoPickWeightProtection);
             Reader.Write("Game", "TransparentChat", TransparentChat);
             Reader.Write("Game", "DisplayDamage", DisplayDamage);
             Reader.Write("Game", "TargetDead", TargetDead);

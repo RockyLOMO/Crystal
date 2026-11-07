@@ -17,6 +17,7 @@ public static class Classic176HUDLayout
     public static readonly Point ChatLocation = new(207, 118);
     public static readonly Size ChatSize = new(388, 126);
     public const int WingHeight = 144;
+    public const int GaugeTextX = 670, ChannelHeight = 14;
     private static readonly int[] BeltSlots = [5, 48, 92, 135, 179, 223];
     private static readonly Color Bronze = Color.FromArgb(240, 32, 27, 21);
     private static readonly Color Ink = Color.FromArgb(235, 216, 173);
@@ -61,13 +62,14 @@ public static class Classic176HUDLayout
             if (MapObject.User is { } user) health.Text = $"HP {user.HP}/{user.Stats[Stat.HP]}  MP {user.MP}/{user.Stats[Stat.MP]}";
         };
         main.LevelLabel.AutoSize = false;
-        main.LevelLabel.Location = new Point(666, 143);
+        main.LevelLabel.Location = new Point(GaugeTextX, 143);
         main.LevelLabel.Size = new Size(33, 18);
-        main.LevelLabel.DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
+        main.LevelLabel.DrawFormat = TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding;
         main.CharacterName.Location = new Point(26, 232);
         main.CharacterName.Size = new Size(130, 16);
-        main.GoldLabel.Location = new Point(665, 231);
+        main.GoldLabel.Location = new Point(GaugeTextX, 233);
         main.GoldLabel.Size = new Size(120, 16);
+        main.GoldLabel.DrawFormat = main.LevelLabel.DrawFormat;
         main.AModeLabel.Location = new Point(8, -52);
         main.PModeLabel.Location = new Point(8, -36);
         main.SModeLabel.Location = new Point(8, -20);
@@ -77,23 +79,8 @@ public static class Classic176HUDLayout
         RoundSeat(main.InventoryButton, 9, 682, 41);
         RoundSeat(main.SkillButton, 10, 722, 21);
         RoundSeat(main.OptionButton, 11, 764, 11);
-        StoneButton(main.MenuButton, "菜单", 752, 100);
-        SizeButton(main.MenuButton, new Size(32, 30));
-        var status = Button(main, "属性", new Point(630, 108), new Size(36, 22), () =>
-        {
-            scene.CharacterDialog.Show();
-            scene.CharacterDialog.StatusButton.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
-        }, false);
-        status.Hint = "人物属性";
-        // Retain the shop and quest entries in the right-hand top strip.
-        StoneButton(main.GameShopButton, "商城", 670, 108);
-        SizeButton(main.GameShopButton, new Size(36, 22));
-        Button(main, "英雄", new Point(710, 108), new Size(36, 22), () =>
-        {
-            if (GameScene.Hero != null && scene.HeroDialog is { IsDisposed: false } &&
-                scene.HeroInventoryDialog is { IsDisposed: false }) scene.HeroMenuPanel.Toggle();
-        }, false);
-        var weight = Label(main, new Point(665, 205), new Size(76, 16), "");
+        var weight = Label(main, new Point(GaugeTextX, 209), new Size(76, 16), "");
+        weight.DrawFormat = main.LevelLabel.DrawFormat;
         weight.BeforeDraw += (_, _) =>
         {
             if (MapObject.User is { } user) weight.Text = $"{user.CurrentBagWeight}/{user.Stats[Stat.BagWeight]}";
@@ -148,12 +135,12 @@ public static class Classic176HUDLayout
         {
             left = new StoneWing { Parent = scene, Location = new Point(0, Settings.ScreenHeight - WingHeight), Size = new Size(leftWidth, WingHeight) };
             right = new StoneWing { Parent = scene, Location = new Point(rightX, Settings.ScreenHeight - WingHeight), Size = new Size(rightWidth, WingHeight) };
-            WingCaption(left, "社交与地图");
+            WingCaption(left, "人物与社交");
             WingCaption(right, "英雄与旅途");
-            var map = WingLine(left, 108);
-            var coordinates = WingLine(left, 124);
-            var hero = WingLine(right, 108);
-            var stats = WingLine(right, 124);
+            var map = WingLine(left, 112);
+            var coordinates = WingLine(left, 128);
+            var hero = WingLine(right, 112);
+            var stats = WingLine(right, 128);
             map.BeforeDraw += (_, _) => map.Text = DbLanguage.Get("Maps", scene.MapControl?.Title ?? "当前位置");
             coordinates.BeforeDraw += (_, _) =>
             {
@@ -176,19 +163,30 @@ public static class Classic176HUDLayout
         }
         else
         {
-            // An 800px viewport has no side space. Keep all nine actions accessible.
+            // An 800px viewport has no side space. Use two rows above the six native slots.
             left = right = new ExtensionDock
             {
-                Parent = scene, Size = new Size(348, 22), BackColour = Bronze, DrawControlTexture = true,
+                Parent = scene, Size = new Size(280, 44), BackColour = Bronze, DrawControlTexture = true,
                 Border = true, BorderColour = Color.FromArgb(110, 92, 65)
             };
         }
-        string[] captions = ["交易", "组队", "行会", "地图", "召英", "英包", "英装", "任务", "坐骑"];
+        string[] captions = ["属性", "商城", "菜单", "交易", "组队", "行会", "地图", "英雄", "召英", "英包", "英装", "任务", "坐骑"];
         Action[] actions = [
+            () =>
+            {
+                scene.CharacterDialog.Show();
+                scene.CharacterDialog.StatusButton.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
+            },
+            null, null, // Reparent the existing shop/menu buttons with their original handlers.
             () => Network.Enqueue(new C.TradeRequest()),
             () => Toggle(scene.GroupDialog),
             () => Toggle(scene.GuildDialog),
             () => scene.MiniMapDialog.Toggle(),
+            () =>
+            {
+                if (GameScene.Hero != null && scene.HeroDialog is { IsDisposed: false } &&
+                    scene.HeroInventoryDialog is { IsDisposed: false }) scene.HeroMenuPanel.Toggle();
+            },
             () => Network.Enqueue(new C.Chat { Message = "@SUMMONHERO" }),
             () => { if (GameScene.Hero != null && scene.HeroInventoryDialog is { IsDisposed: false } dialog) Toggle(dialog); },
             () => { if (GameScene.Hero != null && scene.HeroDialog is { IsDisposed: false } dialog) { if (dialog.Visible) dialog.Hide(); else { dialog.Show(); dialog.ShowCharacterPage(); } } },
@@ -197,21 +195,22 @@ public static class Classic176HUDLayout
         ];
         for (int i = 0; i < captions.Length; i++)
         {
-            MirControl parent = i < 4 ? left : right;
-            int localIndex = i < 4 ? i : i - 4;
-            int count = i < 4 ? 4 : 5;
-            int columns = i < 4 || rightWidth < 232 ? 2 : 3;
-            int buttonWidth = split ? Math.Min(76, (parent.Size.Width - 16 - 6 * (columns - 1)) / columns) : 36;
+            MirControl parent = i < 7 ? left : right;
+            int localIndex = split ? (i < 7 ? i : i - 7) : i;
+            int count = split ? (i < 7 ? 7 : 6) : captions.Length;
+            int columns = split ? (parent.Size.Width >= 232 ? 3 : 2) : 7;
+            int gap = split ? 6 : 2;
+            int buttonWidth = split ? Math.Min(76, (parent.Size.Width - 16 - gap * (columns - 1)) / columns) : 36;
+            int buttonHeight = split && parent.Size.Width < 232 ? 18 : 22;
             int row = localIndex / columns;
             int rowItems = Math.Min(columns, count - row * columns);
-            var point = split
-                ? new Point((parent.Size.Width - rowItems * buttonWidth - (rowItems - 1) * 6) / 2 + localIndex % columns * (buttonWidth + 6), 30 + row * 26)
-                : new Point(i * 38 + (i >= 4 ? 8 : 0), 0);
-            var size = new Size(buttonWidth, split ? 24 : 22);
+            var point = new Point((parent.Size.Width - rowItems * buttonWidth - (rowItems - 1) * gap) / 2 +
+                localIndex % columns * (buttonWidth + gap), (split ? 29 : 0) + row * (buttonHeight + (split ? 2 : 0)));
+            var size = new Size(buttonWidth, buttonHeight);
             MirButton button;
-            if (i == 7)
+            if (i is 1 or 2 or 11)
             {
-                button = main.QuestButton;
+                button = i == 1 ? main.GameShopButton : i == 2 ? main.MenuButton : main.QuestButton;
                 button.Parent = parent;
                 StoneButton(button, captions[i], point.X, point.Y, true);
                 SizeButton(button, size);
@@ -219,9 +218,6 @@ public static class Classic176HUDLayout
             else button = Button(parent, captions[i], point, size, actions[i]);
             button.Border = split;
         }
-        if (!split)
-            _ = new MirControl { Parent = left, Location = new Point(154, 4), Size = new Size(1, 14),
-                BackColour = Color.FromArgb(110, 92, 65), DrawControlTexture = true, NotControl = true };
     }
 
     public static bool LayoutChat(ChatDialog chat)
@@ -254,8 +250,8 @@ public static class Classic176HUDLayout
         var bar = scene.ChatControl;
         bar.AutoSize = false;
         bar.DrawImage = false;
-        bar.Size = new Size(ChatSize.Width, 18);
-        bar.Location = new Point(chat.Location.X, chat.Location.Y - 18);
+        bar.Size = new Size(ChatSize.Width, ChannelHeight);
+        bar.Location = new Point(chat.Location.X, chat.Location.Y - ChannelHeight);
         bar.SizeButton.Location = new Point(338, 1);
         bar.SettingsButton.Location = new Point(362, 1);
         var belt = scene.BeltDialog;
@@ -263,7 +259,7 @@ public static class Classic176HUDLayout
         belt.DrawControlTexture = belt.Border = extra > 0;
         foreach (var cell in belt.Grid) cell.Border = extra > 0;
         var dock = scene.Controls.OfType<ExtensionDock>().FirstOrDefault();
-        if (dock != null) dock.Location = scene.MainDialog.Location.Add(new Point(227, 22 - extra));
+        if (dock != null) dock.Location = scene.MainDialog.Location.Add(new Point(270, 6 - extra));
         AlignHeroBelt(scene);
         return true;
     }
@@ -271,7 +267,10 @@ public static class Classic176HUDLayout
     public static void AlignHeroBelt(GameScene scene)
     {
         if (scene.MainDialog.Library != Libraries.Prguse176 || scene.HeroBeltDialog is not { IsDisposed: false } belt) return;
-        belt.Location = new Point(scene.MainDialog.Location.X + 460, scene.ChatControl.Location.Y - 47 - belt.Size.Height);
+        int top = scene.BeltDialog.Location.Y;
+        var dock = scene.Controls.OfType<ExtensionDock>().FirstOrDefault();
+        if (dock != null) top = Math.Min(top, dock.Location.Y);
+        belt.Location = new Point(scene.MainDialog.Location.X + 460, top - 3 - belt.Size.Height);
     }
 
     public static void AdaptChatColours(ChatDialog chat, ChatType type, ref Color background, ref Color foreground)
@@ -380,6 +379,19 @@ public static class Classic176HUDLayout
 
     private static void WingCaption(MirControl wing, string text)
     {
+        // Recessed wells quiet the repeated stone and separate actions from status text.
+        foreach (var rectangle in new[] { new Rectangle(7, 26, wing.Size.Width - 14, 82), new Rectangle(7, 110, wing.Size.Width - 14, 31) })
+            _ = new MirControl
+            {
+                Parent = wing, Location = rectangle.Location, Size = rectangle.Size, NotControl = true,
+                DrawControlTexture = true, BackColour = Color.FromArgb(210, 19, 18, 16),
+                Border = true, BorderColour = Color.FromArgb(100, 84, 58)
+            };
+        _ = new MirControl
+        {
+            Parent = wing, Location = new Point(4, 4), Size = new Size(wing.Size.Width - 8, wing.Size.Height - 8),
+            NotControl = true, Border = true, BorderColour = Color.FromArgb(115, 96, 65)
+        };
         var label = Label(wing, new Point(8, 9), new Size(wing.Size.Width - 16, 16), text);
         label.ForeColour = Color.FromArgb(245, 225, 184);
     }
@@ -407,7 +419,7 @@ public static class Classic176HUDLayout
 
         private void Tile(Rectangle source, int x, int y, int width, int height)
         {
-            Color tint = source == Stone ? Color.FromArgb(255, 190, 190, 190) : Color.White;
+            Color tint = source == Stone ? Color.FromArgb(255, 120, 120, 120) : Color.FromArgb(220, 205, 180);
             for (int row = 0; row < height; row += source.Height)
                 for (int column = 0; column < width; column += source.Width)
                 {

@@ -25,9 +25,13 @@ namespace Server.SoloExtension
         public int CampX { get; set; }
         public int CampY { get; set; }
         public string CampUpdatedAt { get; set; } = string.Empty;
+        public ushort CampStyleImage { get; set; } = 55; // 默认 55 (圣火营火盆·动态火焰)
 
         // 【玛法猎魔手札】4x4 范围自动拾取模式：0 = 关闭，1 = 全部拾取，2 = 仅拾取金币/药水/材料与精良以上极品（默认 2）
         public int AutoPickRangeMode { get; set; } = 2;
+
+        // 【设置】4x4 自动拾取严格负重保护开关（默认开启，接近包袱负重上限时自动停止捡装备）
+        public bool AutoPickWeightProtect { get; set; } = true;
 
         // 【玛法猎魔手札】怪物图鉴累计击杀数 (Key: 怪物种族分组标识, Value: 累计击杀数)
         public Dictionary<string, int> MonsterKills { get; set; } = new(StringComparer.OrdinalIgnoreCase);
