@@ -164,6 +164,8 @@ namespace Client
         public static string Language = "Chinese";
         public static bool ChineseOverlayInspector = false;
         public static bool UseClassic176HUD = true;
+        public static bool UseClassic176Login = false;
+        public static bool UseClassic176Select = false;
         public static bool AutoSellNormalEquipment = true;
         public static bool AutoSpecialRepairEquipment = true;
         public static bool AutoPickWeightProtection = true;
@@ -283,6 +285,8 @@ namespace Client
             FontName = Reader.ReadString("Game", "FontName", FontName);
             ChineseOverlayInspector = Reader.ReadBoolean("Game", "ChineseOverlayInspector", ChineseOverlayInspector);
             UseClassic176HUD = Reader.ReadBoolean("Game", "UseClassic176HUD", UseClassic176HUD);
+            UseClassic176Login = Reader.ReadBoolean("Game", "UseClassic176Login", UseClassic176Login);
+            UseClassic176Select = Reader.ReadBoolean("Game", "UseClassic176Select", UseClassic176Select);
             AutoSellNormalEquipment = Reader.ReadBoolean("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
             AutoSpecialRepairEquipment = Reader.ReadBoolean("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
             AutoPickWeightProtection = Reader.ReadBoolean("Game", "AutoPickWeightProtection", AutoPickWeightProtection);
@@ -401,6 +405,8 @@ namespace Client
             Reader.Write("Game", "FontName", FontName);
             Reader.Write("Game", "ChineseOverlayInspector", ChineseOverlayInspector);
             Reader.Write("Game", "UseClassic176HUD", UseClassic176HUD);
+            Reader.Write("Game", "UseClassic176Login", UseClassic176Login);
+            Reader.Write("Game", "UseClassic176Select", UseClassic176Select);
             Reader.Write("Game", "AutoSellNormalEquipment", AutoSellNormalEquipment);
             Reader.Write("Game", "AutoSpecialRepairEquipment", AutoSpecialRepairEquipment);
             Reader.Write("Game", "AutoPickWeightProtection", AutoPickWeightProtection);

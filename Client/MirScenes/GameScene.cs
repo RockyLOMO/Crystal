@@ -11693,7 +11693,7 @@ namespace Client.MirScenes
 
                         GameScene.CanRun = true;
 
-                        if (CanRun(direction, out direction) && CMain.Time > GameScene.NextRunTime && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow removed
+                        if (CanRun(direction, out direction, allowSideways: true) && CMain.Time > GameScene.NextRunTime && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow removed
                         {
                             int distance = User.RidingMount || (User.Sprint && !User.Sneaking) ? 3 : 2;
                             User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = direction, Location = Functions.PointMove(User.CurrentLocation, direction, distance) };
@@ -12082,6 +12082,10 @@ namespace Client.MirScenes
 
         public bool EmptyCell(Point p)
         {
+            if (M2CellInfo == null || p.X < 0 || p.Y < 0 ||
+                p.X >= M2CellInfo.GetLength(0) || p.Y >= M2CellInfo.GetLength(1))
+                return false;
+
             if ((M2CellInfo[p.X, p.Y].BackImage & 0x20000000) != 0 || (M2CellInfo[p.X, p.Y].FrontImage & 0x8000) != 0)
                 return false;
 
@@ -12170,7 +12174,7 @@ namespace Client.MirScenes
             return false;
         }
 
-        private bool CanRun(MirDirection dir, out MirDirection outDir)
+        private bool CanRun(MirDirection dir, out MirDirection outDir, bool allowSideways = false)
         {
             outDir = dir;
             int distance = User.RidingMount || (User.Sprint && !User.Sneaking) ? 3 : 2;
@@ -12189,20 +12193,25 @@ namespace Client.MirScenes
             if (CanRunWithDoors(dir))
                 return true;
 
-            if (CMain.Random.Next(2) == 0)
+            bool clockwiseFirst = CMain.Random.Next(2) == 0;
+            MirDirection clockwise = dir, counterclockwise = dir;
+            // Right-button steering can immediately run parallel to a wall. Auto chase
+            // retains its existing 45-degree limit; every candidate still needs 2/3 clear cells.
+            for (int turn = 1; turn <= (allowSideways ? 2 : 1); turn++)
             {
-                outDir = Functions.NextDir(dir);
+                clockwise = Functions.NextDir(clockwise);
+                counterclockwise = Functions.PreviousDir(counterclockwise);
+                // Keep an established wall-parallel heading instead of randomly
+                // reversing along the wall on every held-button input.
+                if (turn == 2 && (User.Direction == clockwise || User.Direction == counterclockwise) &&
+                    CanRunWithDoors(User.Direction))
+                {
+                    outDir = User.Direction;
+                    return true;
+                }
+                outDir = clockwiseFirst ? clockwise : counterclockwise;
                 if (CanRunWithDoors(outDir)) return true;
-
-                outDir = Functions.PreviousDir(dir);
-                if (CanRunWithDoors(outDir)) return true;
-            }
-            else
-            {
-                outDir = Functions.PreviousDir(dir);
-                if (CanRunWithDoors(outDir)) return true;
-
-                outDir = Functions.NextDir(dir);
+                outDir = clockwiseFirst ? counterclockwise : clockwise;
                 if (CanRunWithDoors(outDir)) return true;
             }
 

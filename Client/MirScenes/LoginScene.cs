@@ -46,6 +46,7 @@ namespace Client.MirScenes
                     _login.Hide();
                     if(_ViewKey != null && !_ViewKey.IsDisposed) _ViewKey.Dispose();
                     _account = new NewAccountDialog { Parent = _background };
+                    Classic176LoginLayout.ApplyAccount(_account);
                     _account.Disposing += (o1, e1) => _login.Show();
                 };
 
@@ -59,6 +60,7 @@ namespace Client.MirScenes
                 if (_ViewKey != null && !_ViewKey.IsDisposed) return;
 
                 _ViewKey = new InputKeyDialog(_login) { Parent = _background };
+                Classic176LoginLayout.ApplyKeyboard(_ViewKey, _login);
             };
 
             Version = new MirLabel
@@ -88,6 +90,7 @@ namespace Client.MirScenes
                     Network.Connect();
                     _connectBox.Show();
                 };
+            Classic176LoginLayout.Apply(this, _background, _login);
         }
 
         public override void Process()
@@ -169,6 +172,7 @@ namespace Client.MirScenes
             _login.Hide();
             if (_ViewKey != null && !_ViewKey.IsDisposed) _ViewKey.Dispose();
             _password = new ChangePasswordDialog { Parent = _background };
+            Classic176LoginLayout.ApplyPassword(_password);
             _password.AccountIDTextBox.Text = autoFillID;
             _password.CurrentPasswordTextBox.Text = autoFillPassword;
             _password.Disposing += (o1, e1) => _login.Show();
@@ -641,6 +645,7 @@ namespace Client.MirScenes
                 {
                     if (button != null && !button.IsDisposed) button.Dispose();
                 }
+                _buttons.Clear();
             }
 
             private void UpdateKeys()
@@ -689,6 +694,7 @@ namespace Client.MirScenes
 
                     _buttons.Add(alphButton);
                 }
+                Classic176LoginLayout.ApplyKeyboardKeys(this);
             }
 
             private void SecureKeyPress(char chr)

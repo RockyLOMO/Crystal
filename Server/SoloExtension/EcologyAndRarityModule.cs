@@ -135,8 +135,11 @@ namespace Server.SoloExtension
 
                 case MonsterRarity.Lord:
                     ScaleStat(mob, Stat.HP, 9.0);
-                    ScaleStat(mob, Stat.MinDC, 1.70);
-                    ScaleStat(mob, Stat.MaxDC, 1.95);
+                    // Raise only the lord's physical/magic attack by about 20%.
+                    ScaleStat(mob, Stat.MinDC, 2.04);
+                    ScaleStat(mob, Stat.MaxDC, 2.34);
+                    ScaleStat(mob, Stat.MinMC, 1.20);
+                    ScaleStat(mob, Stat.MaxMC, 1.20);
                     mob.AttackSpeed = (ushort)Math.Max(250, mob.Info.AttackSpeed - (mob.LordEnraged ? 280 : 200));
                     mob.MoveSpeed = (ushort)Math.Max(350, mob.Info.MoveSpeed - 200);
                     mob.CoolEye = true;

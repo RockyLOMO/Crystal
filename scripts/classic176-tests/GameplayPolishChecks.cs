@@ -126,10 +126,76 @@ internal static class GameplayPolishChecks
             check(MirControl.MouseControl == popup && user.QueuedAction == null, "Run: an overlapping popup blocks movement instead of being treated as a bottom rectangle");
         }
         check(!BottomHudInput.CanContinue(scene, scene.BeltDialog, MouseButtons.Left), "Run: left clicks retain their normal HUD behavior");
+        // A wall blocks the forward and diagonal two-cell runs, while north/south
+        // remain open. The first real input must run sideways without a walking warmup.
+        CMain.Ctrl = CMain.Shift = CMain.Alt = false;
+        CMain.MPoint = new Point((MapControl.OffSetX + 5) * MapControl.CellWidth + MapControl.CellWidth / 2,
+            MapControl.OffSetY * MapControl.CellHeight + MapControl.CellHeight / 2);
+        MapControl.MouseLocation = CMain.MPoint; MirControl.MouseControl = map;
+        MapControl.MapButtons = MouseButtons.Right;
+        for (int y = 38; y <= 42; y++) map.M2CellInfo[42, y].BackImage = 0x20000000;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action == MirAction.Running &&
+            user.QueuedAction.Location.X == 40 && Math.Abs(user.QueuedAction.Location.Y - 40) == 2,
+            "Run: first right-button input beside a wall immediately takes a clear sideways two-cell run");
+        user.Direction = user.QueuedAction.Direction;
+        bool steadyHeading = true;
+        for (int input = 0; input < 20; input++)
+        {
+            user.QueuedAction = null; checkInput.Invoke(map, null);
+            steadyHeading &= user.QueuedAction?.Action == MirAction.Running && user.QueuedAction.Direction == user.Direction;
+        }
+        check(steadyHeading, "Run: holding toward a wall keeps the established parallel heading without random reversals");
+        map.M2CellInfo[40, 38].BackImage = map.M2CellInfo[40, 42].BackImage = 0x20000000;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running,
+            "Run: a free first cell cannot turn a blocked second cell into a run");
+        map.M2CellInfo[40, 38].BackImage = map.M2CellInfo[40, 42].BackImage = 0;
+        user.Sprint = true;
+        map.M2CellInfo[40, 37].BackImage = map.M2CellInfo[40, 43].BackImage = 0x20000000;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running,
+            "Run: sprinting still requires a clear third cell on a sideways route");
+        user.Sprint = false;
+        MapControl.Objects[1001] = new PlayerObject { CurrentLocation = new Point(40, 38) };
+        MapControl.Objects[1002] = new PlayerObject { CurrentLocation = new Point(40, 42) };
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running,
+            "Run: blocking map objects prevent sideways running through their cells");
+        MapControl.Objects.Clear();
+        map.M2CellInfo[40, 38].DoorIndex = map.M2CellInfo[40, 42].DoorIndex = 1;
+        map.Doors.Add(new Door { index = 1, DoorState = DoorState.Closed });
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running,
+            "Run: a closed door blocks a sideways run while the original door-open request is retained");
+        map.Doors.Clear(); map.M2CellInfo[40, 38].DoorIndex = map.M2CellInfo[40, 42].DoorIndex = 0;
+        user.CurrentBagWeight = user.Stats[Stat.BagWeight] + 1;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running, "Run: overweight still prevents sideways running");
+        user.CurrentBagWeight = 0; user.Sneaking = true;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running, "Run: ordinary sneaking still prevents sideways running");
+        user.Sneaking = false; user.InTrapRock = true;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running, "Run: trap rock still prevents sideways running");
+        user.InTrapRock = false; GameScene.NextRunTime = CMain.Time + 2500;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running, "Run: the existing post-hit running cooldown is preserved");
+        GameScene.NextRunTime = 0;
+        check(!map.EmptyCell(new Point(-1, 40)) && !map.EmptyCell(new Point(80, 40)) &&
+            !map.EmptyCell(new Point(40, -1)) && !map.EmptyCell(new Point(40, 80)),
+            "Run: map edges are blocked without indexing outside the cell array");
+        user.CurrentLocation = new Point(0, 0);
+        CMain.MPoint = new Point((MapControl.OffSetX - 5) * MapControl.CellWidth,
+            (MapControl.OffSetY - 5) * MapControl.CellHeight); MapControl.MouseLocation = CMain.MPoint;
+        user.QueuedAction = null; checkInput.Invoke(map, null);
+        check(user.QueuedAction?.Action != MirAction.Running,
+            "Run: outward steering at the corner safely rejects all out-of-map run candidates");
+        user.CurrentLocation = new Point(40, 40);
         MapControl.MapButtons = MouseButtons.None; MirScene.ActiveScene = originalScene;
 
-        check(LocalNightVisibility.Range(3, lights.Count, true, LightSetting.Night, false) == 5,
-            "Night: the local player's normal radius grows by two grades from the original");
+        check(LocalNightVisibility.Range(3, lights.Count, true, LightSetting.Night, false) == 6,
+            "Night: the local player's normal radius grows by three grades from the original");
         check(LocalNightVisibility.Range(3, lights.Count, false, LightSetting.Night, false) == 3 &&
             LocalNightVisibility.Range(3, lights.Count, true, LightSetting.Day, false) == 3 &&
             LocalNightVisibility.Range(3, lights.Count, true, LightSetting.Night, true) == 3,
@@ -137,15 +203,15 @@ internal static class GameplayPolishChecks
         check(LocalNightVisibility.Range(lights.Count - 1, lights.Count, true, LightSetting.Night, false) == lights.Count - 1,
             "Night: the largest equipped light stays inside the texture table");
         device.Clear(ClearFlags.Target, Color.Black, 0, 0); device.BeginScene(); sprite.Begin(SpriteFlags.AlphaBlend);
-        sprite.Draw(lights[4], null, Vector3.Zero, new Vector3(90, 210, 0), Color.White);
-        sprite.Draw(lights[5], null, Vector3.Zero, new Vector3(700, 180, 0), Color.White);
+        sprite.Draw(lights[5], null, Vector3.Zero, new Vector3(20, 160, 0), Color.White);
+        sprite.Draw(lights[6], null, Vector3.Zero, new Vector3(660, 130, 0), Color.White);
         using var before = new MirLabel { Text = "此前夜间光圈", Location = new Point(250, 120), AutoSize = true };
         using var after = new MirLabel { Text = "再次扩大后", Location = new Point(900, 120), AutoSize = true };
         before.Draw(); after.Draw(); sprite.End(); device.EndScene();
         Surface.ToFile(surface, Path.ChangeExtension(preview, "night.png"), ImageFileFormat.Png);
-        var oldLight = lights[4].GetLevelDescription(0); var newLight = lights[5].GetLevelDescription(0);
-        check(oldLight.Width == 525 && oldLight.Height == 399 && newLight.Width == 605 && newLight.Height == 460,
-            "Night: actual base textures expand again from 525x399 to 605x460 without changing their gradient");
+        var oldLight = lights[5].GetLevelDescription(0); var newLight = lights[6].GetLevelDescription(0);
+        check(oldLight.Width == 605 && oldLight.Height == 460 && newLight.Width == 685 && newLight.Height == 521,
+            "Night: actual base textures expand again from 605x460 to 685x521 without changing their gradient");
         typeof(ChineseUIOverlay).GetMethod("Prepare", BindingFlags.Static | BindingFlags.NonPublic)!
             .Invoke(null, new object[] { scene.NPCDropDialog.HoldButton });
         check(scene.NPCDropDialog.HoldButton.Hint.Contains("自动确认") &&

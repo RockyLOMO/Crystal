@@ -234,10 +234,8 @@ namespace Client.MirScenes.Dialogs
                 Size = new Size(278, 170),
                 Text = WarriorDescription,
             };
-            ChineseUIOverlay.ApplyToNewCharacterDialog(this);
-            if (false)
-            {
-            };
+            if (!(MirScene.ActiveScene is SelectScene && Classic176SelectLayout.ApplyCharacter(this)))
+                ChineseUIOverlay.ApplyToNewCharacterDialog(this);
         }
 
         public override void Show()

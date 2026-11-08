@@ -234,6 +234,8 @@
                 MapCells = new CellInfo[Width, Height];
                 offset = 52;
                 for (int x = 0; x < Width; x++)
+                {
+                    if ((x & 31) == 0) MirNetwork.Network.SendKeepAliveDirect();
                     for (int y = 0; y < Height; y++)
                     {//12
                         MapCells[x, y] = new CellInfo();
@@ -259,6 +261,7 @@
 
 
                     }
+                }
             }
             catch (Exception ex)
             {

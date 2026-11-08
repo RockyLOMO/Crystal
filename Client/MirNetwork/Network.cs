@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Client.MirControls;
 using C = ClientPackets;
@@ -20,6 +20,9 @@ namespace Client.MirNetwork
 
         static byte[] _rawData = new byte[0];
         static readonly byte[] _rawBytes = new byte[8 * 1024];
+        private static readonly object _sendLock = new object();
+        private static volatile bool _isSending = false;
+        private static System.Threading.Timer _keepAliveTimer;
 
         public static void Connect()
         {
@@ -47,6 +50,7 @@ namespace Client.MirNetwork
             try
             {
                 _client = new TcpClient { NoDelay = true };
+                _keepAliveTimer ??= new System.Threading.Timer(_ => SendKeepAliveDirect(), null, 2000, 2000);
                 _client?.BeginConnect(Settings.IPAddress, Settings.Port, Connection, null);
             }
             catch (ObjectDisposedException ex)
@@ -150,13 +154,18 @@ namespace Client.MirNetwork
         {
             if (_client == null || !_client.Connected || data.Count == 0) return;
             
-            try
+            lock (_sendLock)
             {
-                _client.Client.BeginSend(data.ToArray(), 0, data.Count, SocketFlags.None, SendData, null);
-            }
-            catch
-            {
-                Disconnect();
+                try
+                {
+                    _isSending = true;
+                    _client.Client.BeginSend(data.ToArray(), 0, data.Count, SocketFlags.None, SendData, null);
+                }
+                catch
+                {
+                    _isSending = false;
+                    Disconnect();
+                }
             }
         }
         private static void SendData(IAsyncResult result)
@@ -167,8 +176,11 @@ namespace Client.MirNetwork
             }
             catch
             { }
+            finally
+            {
+                _isSending = false;
+            }
         }
-
         public static void Disconnect()
         {
             if (_client == null) return;
@@ -176,6 +188,7 @@ namespace Client.MirNetwork
             _client?.Close();
 
             TimeConnected = 0;
+            _isSending = false;
             Connected = false;
             _sendList = null;
             _client = null;
@@ -256,17 +269,27 @@ namespace Client.MirNetwork
         public static void SendKeepAliveDirect()
         {
             if (_client == null || !_client.Connected) return;
-            try
+            if (_isSending) return;
+            lock (_sendLock)
             {
-                long now = System.Diagnostics.Stopwatch.GetTimestamp();
-                if ((now - _lastKeepAliveDirect) < System.Diagnostics.Stopwatch.Frequency * 2) return;
-                _lastKeepAliveDirect = now;
+                if (_isSending) return;
+                try
+                {
+                    long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                    if ((now - _lastKeepAliveDirect) < System.Diagnostics.Stopwatch.Frequency * 2) return;
+                    _lastKeepAliveDirect = now;
 
-                var p = new ClientPackets.KeepAlive();
-                byte[] bytes = System.Linq.Enumerable.ToArray(p.GetPacketBytes());
-                _client.Client.Send(bytes, 0, bytes.Length, System.Net.Sockets.SocketFlags.None);
+                    var p = new ClientPackets.KeepAlive();
+                    byte[] bytes = System.Linq.Enumerable.ToArray(p.GetPacketBytes());
+                    _isSending = true;
+                    _client.Client.Send(bytes, 0, bytes.Length, System.Net.Sockets.SocketFlags.None);
+                }
+                catch { }
+                finally
+                {
+                    _isSending = false;
+                }
             }
-            catch { }
         }
     }
 }

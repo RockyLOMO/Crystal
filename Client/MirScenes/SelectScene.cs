@@ -206,7 +206,6 @@ namespace Client.MirScenes
                 DrawFormat = TextFormatFlags.Left | TextFormatFlags.VerticalCenter,
                 Border = true,
             };
-            ChineseUIOverlay.ApplyToSelectScene(this);
             LastAccessLabelLabel = new MirLabel
             {
                 Location = new Point(-65, 0),
@@ -216,6 +215,7 @@ namespace Client.MirScenes
                 DrawFormat = TextFormatFlags.Left | TextFormatFlags.VerticalCenter,
                 Border = true,
             };
+            if (!Classic176SelectLayout.Apply(this)) ChineseUIOverlay.ApplyToSelectScene(this);
             UpdateInterface();
         }
 
@@ -239,7 +239,7 @@ namespace Client.MirScenes
             if (_character == null || _character.IsDisposed)
             {
                 _character = new NewCharacterDialog { Parent = this };
-                ChineseUIOverlay.ApplyToNewCharacterDialog(_character);
+                if (!Classic176SelectLayout.ApplyCharacter(_character)) ChineseUIOverlay.ApplyToNewCharacterDialog(_character);
 
                 _character.OnCreateCharacter += (o, e) =>
                 {
@@ -540,6 +540,7 @@ namespace Client.MirScenes
                 LastAccessLabelLabel.Visible = false;
                 StartGameButton.Enabled = false;
             }
+            Classic176SelectLayout.RefreshCards(this);
         }
 
 
