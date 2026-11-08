@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Client.MirControls;
 using C = ClientPackets;
@@ -252,13 +252,19 @@ namespace Client.MirNetwork
                 _sendList.Enqueue(p);
         }
 
+        private static long _lastKeepAliveDirect;
         public static void SendKeepAliveDirect()
         {
             if (_client == null || !_client.Connected) return;
             try
             {
+                long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                if ((now - _lastKeepAliveDirect) < System.Diagnostics.Stopwatch.Frequency * 2) return;
+                _lastKeepAliveDirect = now;
+
                 var p = new ClientPackets.KeepAlive();
-                BeginSend(new List<byte>(p.GetPacketBytes()));
+                byte[] bytes = System.Linq.Enumerable.ToArray(p.GetPacketBytes());
+                _client.Client.Send(bytes, 0, bytes.Length, System.Net.Sockets.SocketFlags.None);
             }
             catch { }
         }
