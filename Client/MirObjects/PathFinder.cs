@@ -181,14 +181,6 @@ namespace Client.MirObjects
         private void CreateGrid()
         {
             Grid = new Node[Map.Width, Map.Height];
-
-            for (int x = 0; x < Map.Width; x++)
-            {
-                for (int y = 0; y < Map.Height; y++)
-                {
-                    Grid[x, y] = new Node(Map, x, y);
-                }
-            }
         }
 
         public List<Node> FindPath(Point start, Point target, int MaxNodes = 0)
@@ -268,7 +260,7 @@ namespace Client.MirObjects
 
         private Node GetNode(Point location)
         {
-            return Grid[location.X, location.Y];
+            return Grid[location.X, location.Y] ??= new Node(Map, location.X, location.Y);
         }
 
         private List<Node> GetNeighbours(Node node)
@@ -285,7 +277,7 @@ namespace Client.MirObjects
 
                     if (checkX >= 0 && checkX < Grid.GetLength(0) && checkY >= 0 && checkY < Grid.GetLength(1))
                     {
-                        neighbours.Add(Grid[checkX, checkY]);
+                        neighbours.Add(Grid[checkX, checkY] ??= new Node(Map, checkX, checkY));
                     }
                 }
             }
