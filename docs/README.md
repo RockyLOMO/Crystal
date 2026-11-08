@@ -2,6 +2,22 @@
 
 日期：2026-11-08（Asia/Singapore）。当前为本机试验部署，安卓兼容环境适配另行验证。
 
+## 领主攻击、夜视三次扩大、贴墙起跑及经典登录前端（2026-11-08，已备份部署本机）
+
+用户确认已退出手机游戏后重新检查，7000端口无已建立连接、桌面客户端已退出，服务端在最终部署前已停止。已取得一致数据备份并更新本机，启用经典登录及选角两个独立开关；7项变更文件哈希一致，12项原EXE、Shared、原UI图库、HUD图库及公告保护文件哈希保持。未写入分发目录。
+
+血煞领主物攻上下限在原倍率上提高约20%：MinDC 1.70→2.04、MaxDC 1.95→2.34，MinMC/MaxMC ×1.20；基础魔攻为0时仍为0。HP、防御、速度、狂暴规则、经验和掉落保持原值，其他稀有度及宠物不受影响。真实 RefreshAll 覆盖重复刷新不叠乘及共享 MonsterInfo 不变。
+
+本人非致盲夜间光圈在上一版基础上再加一档，普通纹理 **605×460→685×521**，相对原版共三档，宽高约再增13%、面积约增28%；亮度及其他对象范围保留。[第三次光圈对比](night-visibility-third-preview.png) 为实际 DX 纹理渲染。右键贴障碍时，在前方和左右45°均不能跑后尝试左右90°，找到完整2格／骑乘或疾行3格通道就直接Running；沿墙方向保持，避免反复随机折返。没有完整通道时仍只走或停，不能穿墙。动态人物、闭门、负重、陷阱、潜行、受击2.5秒禁跑及地图边界均继续限制；自动追击原45°策略保留。
+
+前端按 mir2-mobile/docs/Crystal-Mir2-176-Login-UI-Plan.md 实施：新增独立皮肤类和三图 Classic176FrontEnd.Lib，使用已核验十周年 ChrSel.wil:22 的800×600石门背景，以及 Prguse:1 中无字石纹；转换器逐像素往返校验通过，原偏移归零。旧选角背景烘焙两槽，故采用四张独立角色卡适配 Crystal，保留原 ChrSel 五职业／双性别动画；这是十周年素材适配，未宣称原两角色位完整复刻。账号、注册、改密、软键盘、四槽创建/删除/进入原控件及事件保留，无新增协议包或账号存档修改；成功后的原19帧计时仍负责单次切场。两个 Game 开关 UseClassic176Login/UseClassic176Select 独立、源码默认False，本机部署显式True；缺图库或尺寸不匹配返回原界面并记录原因，原HUD开关独立。静态背景不将局部门板帧冒充整幅开门动画。
+
+[登录](classic176-login-preview.png) · [测试输入及密码遮挡](classic176-login-input-preview.png) · [注册](classic176-register-preview.png) · [改密](classic176-password-preview.png) · [安全键盘](classic176-keyboard-preview.png) · [四槽选角](classic176-select-preview.png) · [创建角色](classic176-create-preview.png)。这些是隔离真实DX渲染，示例账号和角色均为虚构，没有向正式服务端提交注册、改密、创建或删除。素材索引与SHA-256见 [映射记录](classic176-frontend-assets.json)。
+
+**670项检查通过**：HUD/任务/夜间/实际移动367、前端218、领主26、输入25、中文覆盖34。前端几何覆盖800×600、1024×768、1280×720、1366×768、1920×1080，真实Scene鼠标路由、原单次登录发包、错误恢复、版本校验先后、有限切场、四槽空态、五职业男女、键盘重排和取消/释放均通过。双端Release发布通过，发布Client.dll配现有运行Shared.dll复跑218+367项、Server.Library.dll配运行Shared.dll复跑26项通过。在已提交6cbb0d5a的后台心跳修复基础上重新发布，再将全部670项以发布DLL配现有运行Shared.dll复跑通过。测试数据未生成到D:\projs根目录。真实登录进图、实际领主强度、夜间体验、全屏/设备重置和安卓兼容层尚未验证。
+
+程序及配置备份 `D:\private-server\mir2\backups\lord-run-frontend-20261108-140602`，一致数据备份 `D:\private-server\mir2\backups\20261108-060602Z`。服务端PID 12072已启动并监听7000/3000，Connected/版本握手/心跳均通过；客户端PID 19420已打开并跨命令确认响应，首4秒启动检查Error.txt为963,161字节；后续至14:09:44为964,189字节，新增1,028字节、两次D3DERR_DEVICELOST（14:08:03/14:08:27本地时间），客户端与服务端仍响应。原FullScreen=True保留，未修改设备恢复代码；发生原因及实际画面恢复未验证。初次Start-Process启动检查曾响应后退出，无新增错误；改用独立Win32_Process.Create启动后持续存在。实际窗口外观、账号登录进图、夜间视野和战斗体验仍待用户复验。程序/配置回退：退出客户端、正常停服，按该备份manifest.json中Backup→Destination恢复原有文件；关闭Game两个前端开关也可只回退登录/选角皮肤。新增图库可留备用，程序回退不覆盖账号数据；未演练回退。详见 [验证记录](classic176-hud-validation.json) 的 LordRunFrontEnd。
+
 ## 测试目录、回血归属、公告清单及夜间二次扩大（2026-11-08，已更新本机）
 
 `D:\projs\Configs` 是空目录，`D:\projs\Envir` 仅含 228 字节的测试角色 `Solo_retry-regression.json`。性能测试在子夹具后恢复调用目录，再执行真实玩家处理，触发相对 Envir/SoloData 存档；Settings 静态 InIReader 初始化也会创建相对 Configs，无须启动服务端。已用 scripts/Directory.Build.targets 将 TestWorkspace.cs 编入全部 10 个测试项目，ModuleInitializer 在游戏静态初始化之前进入本仓库 `.ai/test-runs/<测试名>/<唯一运行目录>`；显式路径参数仍按原调用目录解析。生产 Client/Server 和素材转换器不使用此初始化。各夹具统一使用 RunDirectory，递归清理由经过边界验证的 DeleteFixture 处理，找不到源码根则失败而不回退向调用目录写数据。

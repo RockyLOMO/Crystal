@@ -1,7 +1,7 @@
 {
-  "CheckedAt": "2026-11-08T00:38:02.7924355+08:00",
-  "Status": "deployed-running-night-radius-two-test-workspace-fixed",
-  "SourceHead": "7786e56e0ee92c189a53f19deafa8a37dbdcff57",
+  "CheckedAt": "2026-11-08T14:09:06.680567+08:00",
+  "Status": "deployed-running-awaiting-live-gameplay",
+  "SourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
   "IncludesUncommittedChanges": true,
   "SourceArt": [
     {
@@ -1675,5 +1675,354 @@
     },
     "DistributionUpdated": false,
     "EvidenceDirectory": "T:\\TEMP\\ai\\20261108\\mir2-workspace-healing-night"
+  },
+  "LordRunFrontEnd": {
+    "CheckedAt": "2026-11-08T14:09:06.680567+08:00",
+    "Status": "deployed-running-awaiting-live-gameplay",
+    "SourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
+    "IncludesUncommittedChanges": true,
+    "Changes": {
+      "Lord": "DC 1.70/1.95 -> 2.04/2.34; MC x1.20; HP/defense/speed/rewards unchanged",
+      "Night": "Local non-blind Night only; base texture 605x460 -> 685x521; +3 grades from original",
+      "Run": "Right-button steering can choose +/-90 degrees after forward and +/-45 fail; full 2/3-cell collision and door checks; preserve established parallel heading; safe map bounds",
+      "Frontend": "Independent Classic176FrontEnd.Lib; verified ten-year ChrSel.wil:22 gate with stone crop; native login/register/password/keyboard and four-slot/five-class events preserved"
+    },
+    "Checks": {
+      "Classic176": 367,
+      "Frontend": 218,
+      "LordBalance": 26,
+      "ClientInput": 25,
+      "UIOverlay": 34,
+      "Total": 670
+    },
+    "Builds": {
+      "ClientReleasePublish": "PASS",
+      "ServerReleasePublish": "PASS"
+    },
+    "RuntimeSharedCompatibility": {
+      "ClientFrontend": 218,
+      "ClientHUDAndGameplay": 367,
+      "ServerLord": 26,
+      "ClientInput": 25,
+      "UIOverlay": 34,
+      "Total": 670
+    },
+    "FrontendDimensions": [
+      "800x600",
+      "1024x768",
+      "1280x720",
+      "1366x768",
+      "1920x1080"
+    ],
+    "FrontendValidated": [
+      "missing-atlas fallback",
+      "independent flags",
+      "accepted ClientVersion before login",
+      "single login packet and repeated Enter suppression",
+      "login rejection restores submit",
+      "finite 19-frame transition",
+      "four native slots and empty state",
+      "all five classes and both genders",
+      "register/password cancel",
+      "36-key reshuffle without growth",
+      "real scene mouse routing",
+      "creation preview lifecycle and dispose"
+    ],
+    "SourceDefaults": {
+      "UseClassic176Login": false,
+      "UseClassic176Select": false
+    },
+    "CandidateAtlas": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Assets\\Classic176FrontEnd.Lib",
+    "AtlasSHA256": "86E3354E4B592FE2D6D2B1CD51A69595E692844D1C3A7E57C997A6C144A98233",
+    "AssetMapping": "classic176-frontend-assets.json",
+    "Previews": [
+      "classic176-login-preview.png",
+      "classic176-login-input-preview.png",
+      "classic176-register-preview.png",
+      "classic176-password-preview.png",
+      "classic176-keyboard-preview.png",
+      "classic176-select-preview.png",
+      "classic176-create-preview.png",
+      "night-visibility-third-preview.png"
+    ],
+    "Preflight": {
+      "CheckedAt": "2026-11-08T13:37:02.1949210+08:00",
+      "SourceHead": "556110b0b3df47056ae70a4c0f87d523ab96026f",
+      "ClientRunning": false,
+      "ServerPid": 21484,
+      "ErrorBytes": 963161
+    },
+    "Deployment": {
+      "Updated": true,
+      "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602",
+      "DataBackup": "D:\\private-server\\mir2\\backups\\20261108-060602Z",
+      "Manifest": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\manifest.json",
+      "Files": [
+        {
+          "Source": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Client\\Client.dll",
+          "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\Client\\Client.dll",
+          "BeforeHash": "35F2FF2FE7040B3A9DE7415D6208DDE441CF647C85AD49E16EF883FFAB47D7E8",
+          "AfterHash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Client\\Client.pdb",
+          "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\Client\\Client.pdb",
+          "BeforeHash": "D1ED4CC9B5F0C426362D0E7069518D03A3AA94107FF90143D6B9ACBDBA9D78BB",
+          "AfterHash": "4A129610281C08374F2B1DB0C87FB2834DF18C18AC213C8216E5D89674DB5945"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Server\\Server.Library.dll",
+          "Destination": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\Server\\Server.Library.dll",
+          "BeforeHash": "94CE47179AE3FFA9CBCE0BCE962ECE715BEE2B6CC441D97169883DC4C7CA8E67",
+          "AfterHash": "B60A7CD3FE9544FD51A0B2AE7193F941033B3B5F1883BF0027A70C78B43F04B4"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Server\\Server.Library.pdb",
+          "Destination": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\Server\\Server.Library.pdb",
+          "BeforeHash": "6E3F2CF77ABC7C73D008FE9A0452D1C67F7472B86F8B34EF397960FC7FB847A0",
+          "AfterHash": "EF2FD8DF96A00CC045D7B376E2C8CC49D7DF6D9F50ACE02722681E2B706B14D8"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Client\\Client.dll",
+          "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\ClientVersion\\Client.dll",
+          "BeforeHash": "1147E051494EA704734CFE4C1B8500ABC49A838BC8256EB937A03521B6CEF448",
+          "AfterHash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\LordRunFrontEnd-20261108\\Assets\\Classic176FrontEnd.Lib",
+          "Destination": "D:\\private-server\\mir2-client\\Data\\Classic176FrontEnd.Lib",
+          "Existed": false,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\Client\\Data\\Classic176FrontEnd.Lib",
+          "BeforeHash": null,
+          "AfterHash": "86E3354E4B592FE2D6D2B1CD51A69595E692844D1C3A7E57C997A6C144A98233"
+        },
+        {
+          "Source": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\prepared-Mir2Config.ini",
+          "Destination": "D:\\private-server\\mir2-client\\Mir2Config.ini",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602\\Client\\Mir2Config.ini",
+          "BeforeHash": "C687015A9B62DCD55A0948B3166D32FC0CDBBABC4132B75C4408C5BD5C6E3358",
+          "AfterHash": "5D68D97A6536709AA510DB46A9A9EBF5DB1E5BC4EAED8AAB7EA558897598AAA3"
+        }
+      ],
+      "Protected": [
+        {
+          "Path": "D:\\private-server\\mir2-client\\Client.exe",
+          "Hash": "366A7047B41A7CF4BD828B76FF9E060B162468DF0792B6F23659013DD8C7FFC3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Shared.dll",
+          "Hash": "59284BF57A8F3DE1B7B0DCB9635B46A0926E1BB1B4BD66DBD30B52C8417F66FB"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.exe",
+          "Hash": "9816A37C2377D1868C3D02F1A4AB16E469CD316A3C447C042D85D61ED71788A3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.dll",
+          "Hash": "E11957D8A0653C9FEE67052F714A429B9FC64AD2C8F3897A1FE8ECDB771F6B35"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
+          "Hash": "3CCBE3B598B46D89269FDA10C98327A30113A3677A3423DC7A79D4ED067CBAA8"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+          "Hash": "366A7047B41A7CF4BD828B76FF9E060B162468DF0792B6F23659013DD8C7FFC3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib",
+          "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Title.Lib",
+          "Hash": "BD3E9485548E9B3CB5D4CB261C9A01A07752FB41FCEA7F5D8569E602FEAED648"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\ChrSel.Lib",
+          "Hash": "4BE898A0DAE083802959EE4B1D2C093320FBC0A46EC68B30AC5FC856744A8197"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+          "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Envir\\LineMessage.txt",
+          "Hash": "FAB9F762A58D63E314942B2C0AD2313B62B4B4164636ADE476C6D9E09630F96B"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Envir\\Notice.txt",
+          "Hash": "636C3CA2D150D54586410C0C7690CDCB8E3EE2E5C0039B4DCA4EC7FFA19BB4D2"
+        }
+      ],
+      "DeployedHashesMatched": 7,
+      "ProtectedHashesUnchanged": 12,
+      "ServerWasStoppedAtPreflight": true,
+      "ServerStarted": true,
+      "RuntimeFlags": {
+        "UseClassic176Login": true,
+        "UseClassic176Select": true
+      },
+      "Startup": {
+        "CheckedAt": "2026-11-08T14:07:43.4036715+08:00",
+        "ClientProcessId": 19420,
+        "ClientResponding": true,
+        "ServerProcessId": 12072,
+        "ErrorBytesBefore": 963161,
+        "ErrorBytesAfter": 963161,
+        "Gameplay": "NOT VERIFIED",
+        "VersionHandshake": "PASS",
+        "KeepAlive": "PASS"
+      },
+      "PostStartupHashes": {
+        "Files": [
+          {
+            "Path": "D:\\private-server\\mir2-client\\Client.dll",
+            "Matches": true,
+            "Hash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE"
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Client.pdb",
+            "Matches": true,
+            "Hash": "4A129610281C08374F2B1DB0C87FB2834DF18C18AC213C8216E5D89674DB5945"
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+            "Matches": true,
+            "Hash": "B60A7CD3FE9544FD51A0B2AE7193F941033B3B5F1883BF0027A70C78B43F04B4"
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+            "Matches": true,
+            "Hash": "EF2FD8DF96A00CC045D7B376E2C8CC49D7DF6D9F50ACE02722681E2B706B14D8"
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+            "Matches": true,
+            "Hash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE"
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Classic176FrontEnd.Lib",
+            "Matches": true,
+            "Hash": "86E3354E4B592FE2D6D2B1CD51A69595E692844D1C3A7E57C997A6C144A98233"
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini",
+            "Matches": true,
+            "Hash": "5D68D97A6536709AA510DB46A9A9EBF5DB1E5BC4EAED8AAB7EA558897598AAA3"
+          }
+        ],
+        "Protected": [
+          {
+            "Path": "D:\\private-server\\mir2-client\\Client.exe",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Shared.dll",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.exe",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.dll",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Title.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\ChrSel.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Envir\\LineMessage.txt",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Envir\\Notice.txt",
+            "Matches": true
+          }
+        ]
+      },
+      "DesktopLaunch": "Persistent Win32_Process.Create; initial Start-Process smoke process exited before follow-up without new Error.txt data; replacement PID verified across commands",
+      "Followup": {
+        "CheckedAt": "2026-11-08T14:09:44.8495266+08:00",
+        "ErrorBytesBefore": 963161,
+        "ErrorBytesAfter": 964189,
+        "DeviceLostEvents": 2,
+        "ClientResponding": true,
+        "ServerResponding": true,
+        "ErrorTail": "[2026-11-08 06:08:03] SlimDX.Direct3D9.Direct3D9Exception: D3DERR_DEVICELOST: Device lost (-2005530520)\r\n   at SlimDX.Result.Throw[T](Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 119\r\n   at SlimDX.Result.Record[T](Int32 hr, Boolean failed, Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 125\r\n   at Client.CMain.RenderEnvironment() in D:\\projs\\mir2\\Client\\Forms\\CMain.cs:line 406\r\n[2026-11-08 06:08:27] SlimDX.Direct3D9.Direct3D9Exception: D3DERR_DEVICELOST: Device lost (-2005530520)\r\n   at SlimDX.Result.Throw[T](Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 119\r\n   at SlimDX.Result.Record[T](Int32 hr, Boolean failed, Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 125\r\n   at Client.CMain.RenderEnvironment() in D:\\projs\\mir2\\Client\\Forms\\CMain.cs:line 406\r\n",
+        "FullScreen": true,
+        "Cause": "NOT VERIFIED; preserve existing fullscreen preference; no GPU recovery code changed in this deployment"
+      }
+    },
+    "DistributionUpdated": false,
+    "RealAccountOrCharacterChanges": false,
+    "Acceptance": {
+      "Gameplay": "NOT VERIFIED",
+      "LiveLoginAndSelection": "NOT VERIFIED",
+      "FullscreenDeviceReset": "NOT VERIFIED",
+      "AndroidWine": "NOT VERIFIED",
+      "ExactOriginalTwoSlotArt": "Not claimed: four-slot Crystal adaptation",
+      "DeviceRecovery": "NOT VERIFIED: two subsequent D3DERR_DEVICELOST entries; process remains responding"
+    },
+    "InitialCandidateSourceHead": "556110b0b3df47056ae70a4c0f87d523ab96026f"
+  },
+  "CurrentAcceptance": {
+    "Evidence": "LordRunFrontEnd",
+    "Startup": {
+      "CheckedAt": "2026-11-08T14:07:43.4036715+08:00",
+      "ClientProcessId": 19420,
+      "ClientResponding": true,
+      "ServerProcessId": 12072,
+      "ErrorBytesBefore": 963161,
+      "ErrorBytesAfter": 963161,
+      "Gameplay": "NOT VERIFIED",
+      "VersionHandshake": "PASS",
+      "KeepAlive": "PASS"
+    },
+    "Gameplay": "NOT VERIFIED",
+    "ActualAccountLogin": "NOT VERIFIED",
+    "Followup": {
+      "CheckedAt": "2026-11-08T14:09:44.8495266+08:00",
+      "ErrorBytesBefore": 963161,
+      "ErrorBytesAfter": 964189,
+      "DeviceLostEvents": 2,
+      "ClientResponding": true,
+      "ServerResponding": true,
+      "ErrorTail": "[2026-11-08 06:08:03] SlimDX.Direct3D9.Direct3D9Exception: D3DERR_DEVICELOST: Device lost (-2005530520)\r\n   at SlimDX.Result.Throw[T](Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 119\r\n   at SlimDX.Result.Record[T](Int32 hr, Boolean failed, Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 125\r\n   at Client.CMain.RenderEnvironment() in D:\\projs\\mir2\\Client\\Forms\\CMain.cs:line 406\r\n[2026-11-08 06:08:27] SlimDX.Direct3D9.Direct3D9Exception: D3DERR_DEVICELOST: Device lost (-2005530520)\r\n   at SlimDX.Result.Throw[T](Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 119\r\n   at SlimDX.Result.Record[T](Int32 hr, Boolean failed, Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 125\r\n   at Client.CMain.RenderEnvironment() in D:\\projs\\mir2\\Client\\Forms\\CMain.cs:line 406\r\n",
+      "FullScreen": true,
+      "Cause": "NOT VERIFIED; preserve existing fullscreen preference; no GPU recovery code changed in this deployment"
+    }
   }
 }

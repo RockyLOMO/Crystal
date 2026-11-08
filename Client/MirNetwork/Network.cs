@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Client.MirControls;
 using C = ClientPackets;
@@ -22,6 +22,7 @@ namespace Client.MirNetwork
         static readonly byte[] _rawBytes = new byte[8 * 1024];
         private static readonly object _sendLock = new object();
         private static volatile bool _isSending = false;
+        private static long _lastPacketSent;
         private static System.Threading.Timer _keepAliveTimer;
 
         public static void Connect()
@@ -50,7 +51,7 @@ namespace Client.MirNetwork
             try
             {
                 _client = new TcpClient { NoDelay = true };
-                _keepAliveTimer ??= new System.Threading.Timer(_ => SendKeepAliveDirect(), null, 2000, 2000);
+                _keepAliveTimer ??= new System.Threading.Timer(_ => SendKeepAliveDirect(), null, 3500, 3500);
                 _client?.BeginConnect(Settings.IPAddress, Settings.Port, Connection, null);
             }
             catch (ObjectDisposedException ex)
@@ -158,6 +159,7 @@ namespace Client.MirNetwork
             {
                 try
                 {
+                    _lastPacketSent = System.Diagnostics.Stopwatch.GetTimestamp();
                     _isSending = true;
                     _client.Client.BeginSend(data.ToArray(), 0, data.Count, SocketFlags.None, SendData, null);
                 }
@@ -265,7 +267,6 @@ namespace Client.MirNetwork
                 _sendList.Enqueue(p);
         }
 
-        private static long _lastKeepAliveDirect;
         public static void SendKeepAliveDirect()
         {
             if (_client == null || !_client.Connected) return;
@@ -276,8 +277,8 @@ namespace Client.MirNetwork
                 try
                 {
                     long now = System.Diagnostics.Stopwatch.GetTimestamp();
-                    if ((now - _lastKeepAliveDirect) < System.Diagnostics.Stopwatch.Frequency * 2) return;
-                    _lastKeepAliveDirect = now;
+                    if ((now - _lastPacketSent) < System.Diagnostics.Stopwatch.Frequency * 7 / 2) return;
+                    _lastPacketSent = now;
 
                     var p = new ClientPackets.KeepAlive();
                     byte[] bytes = System.Linq.Enumerable.ToArray(p.GetPacketBytes());

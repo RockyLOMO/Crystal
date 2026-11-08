@@ -1,5 +1,5 @@
 {
-  "CheckedAtUtc": "2026-11-07T16:39:20.9940228+00:00",
+  "CheckedAtUtc": "2026-11-08T06:09:06.717716+00:00",
   "Status": "deployed-running",
   "Source": {
     "Path": "D:\\projs\\mir2",
@@ -8,9 +8,9 @@
     "Fork": "https://github.com/RockyLOMO/Crystal",
     "Branch": "rx-server",
     "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
-    "DeployedSourceHead": "ba22e9c6",
+    "DeployedSourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
     "IncludesUncommittedChanges": true,
-    "ClientDeployedSourceHead": "f1e1b993",
+    "ClientDeployedSourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
     "ClientIncludesUncommittedChanges": true
   },
   "Runtime": {
@@ -47,13 +47,14 @@
     "PlayerTextStructure": "PASS: 3340 entries",
     "LatestVersionHandshake": "PASS",
     "LatestKeepAlive": "PASS",
-    "LatestClientStartup": "Responding; zero new Error.txt bytes; graceful shutdown",
+    "LatestClientStartup": "Responding; initial 4-second smoke had no new errors, later two D3DERR_DEVICELOST entries (1028 bytes); visual recovery not verified",
     "StartupMapWarnings": "None observed during this run",
     "LatestSoundHashCheck": "1608 unchanged",
     "LatestEnvirTextHashCheck": "2600 unchanged",
     "ClientSettingsIntegration": "PASS: 2 checks",
     "LatestLibMetadataCheck": "1440 unchanged",
-    "UIOverlay": "PASS: 93 rules / 166 regions / 24 interaction checks"
+    "UIOverlay": "PASS: 93 rules / 166 regions / 24 interaction checks",
+    "LordRunFrontEndChecks": 670
   },
   "Content": {
     "DatabaseRelease": "29.01.25",
@@ -97,7 +98,9 @@
   "CurrentProcessState": {
     "ServerRunning": true,
     "ClientRunning": true,
-    "Reason": "Second night-radius build deployed; client reopened for recheck, server kept running. Test data relocated inside repository."
+    "ServerProcessId": 12072,
+    "ClientProcessId": 19420,
+    "Reason": "Lord/night/obstacle-run/classic-front-end deployed and started; live gameplay awaiting user acceptance"
   },
   "Localization": {
     "DetailedReport": "README.md",
@@ -143,7 +146,7 @@
     "GracefulShutdown": "PASS",
     "FinalRunning": false
   },
-  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\20261031-132541Z",
+  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602",
   "ClientUIOverlay": {
     "Evidence": "ui-overlay-validation.json",
     "ClientBackup": "D:\\private-server\\mir2\\backups\\before-ui-overlay-20261031-232845",
@@ -190,8 +193,8 @@
     "VersionMirrorsUpdated": true,
     "ServerStarted": true,
     "DistributionUpdated": false,
-    "ChecksPassed": 639,
-    "GameplayAcceptance": "Second night radius revision deployed; live nighttime visual recheck pending",
+    "ChecksPassed": 670,
+    "GameplayAcceptance": "Third night radius, immediate wall-parallel right run and classic front-end deployed; live recheck pending",
     "RuntimeAcceptance": "classic176-hud-validation.json#RuntimeAcceptance",
     "AlignmentBackup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255",
     "DetailLayoutBackup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426",
@@ -259,5 +262,29 @@
     "ServerRestarted": false,
     "ChecksPassed": 639,
     "CheckedAt": "2026-11-08T00:38:02.7924355+08:00"
+  },
+  "LordRunFrontEnd": {
+    "Evidence": "classic176-hud-validation.json#LordRunFrontEnd",
+    "CheckedAt": "2026-11-08T14:09:06.680567+08:00",
+    "Status": "deployed-running-awaiting-live-gameplay",
+    "Backup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602",
+    "DataBackup": "D:\\private-server\\mir2\\backups\\20261108-060602Z",
+    "ChecksPassed": 670,
+    "ClientUpdated": true,
+    "ServerUpdated": true,
+    "ClientProcessId": 19420,
+    "ServerProcessId": 12072,
+    "DistributionUpdated": false,
+    "GameplayAcceptance": "NOT VERIFIED",
+    "Followup": {
+      "CheckedAt": "2026-11-08T14:09:44.8495266+08:00",
+      "ErrorBytesBefore": 963161,
+      "ErrorBytesAfter": 964189,
+      "DeviceLostEvents": 2,
+      "ClientResponding": true,
+      "ServerResponding": true,
+      "FullScreen": true,
+      "Cause": "NOT VERIFIED; preserve existing fullscreen preference; no GPU recovery code changed in this deployment"
+    }
   }
 }

@@ -518,7 +518,7 @@ namespace Server.MirDatabase
 
             if (rate < 1) rate = 1;
 
-            if (Envir.Random.Next(rate) != 0)
+            if (!SoloExtension.QuestItemDropRate.Succeeds(this, rate, Envir.Random.Next(rate)))
             {
                 return null;
             }

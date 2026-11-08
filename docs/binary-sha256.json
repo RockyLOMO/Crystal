@@ -9,7 +9,7 @@
   },
   {
     "Path": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
-    "Hash": "4773F10DE676CD1D2DA679F6009A131F3346CE05023344A28D659AE0A229B840"
+    "Hash": "B60A7CD3FE9544FD51A0B2AE7193F941033B3B5F1883BF0027A70C78B43F04B4"
   },
   {
     "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
@@ -21,7 +21,7 @@
   },
   {
     "Path": "D:\\private-server\\mir2-client\\Client.dll",
-    "Hash": "044AEC1325F4EDB251C142828C0B9638949B69E4E1223B0A59A68F511C9108C4"
+    "Hash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE"
   },
   {
     "Path": "D:\\private-server\\mir2-client\\Shared.dll",
@@ -73,11 +73,11 @@
   },
   {
     "Path": "D:\\private-server\\mir2-client\\Client.pdb",
-    "Hash": "6535341DD06E4AD671715F270D154BDCAD1BBCEA2E3699A4875D62C8EC497407"
+    "Hash": "4A129610281C08374F2B1DB0C87FB2834DF18C18AC213C8216E5D89674DB5945"
   },
   {
     "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
-    "Hash": "044AEC1325F4EDB251C142828C0B9638949B69E4E1223B0A59A68F511C9108C4"
+    "Hash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE"
   },
   {
     "Path": "D:\\private-server\\mir2-client\\Localization\\Overlay.zh-CN.json",
@@ -85,6 +85,10 @@
   },
   {
     "Path": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
-    "Hash": "C00B9E0A188CA2FA27580FCA64F98AF91A9E484B358D4B02B7945A7275312353"
+    "Hash": "EF2FD8DF96A00CC045D7B376E2C8CC49D7DF6D9F50ACE02722681E2B706B14D8"
+  },
+  {
+    "Path": "D:\\private-server\\mir2-client\\Data\\Classic176FrontEnd.Lib",
+    "Hash": "86E3354E4B592FE2D6D2B1CD51A69595E692844D1C3A7E57C997A6C144A98233"
   }
 ]

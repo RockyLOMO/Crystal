@@ -309,6 +309,7 @@ namespace Client.MirScenes
         }
         private void Login(S.LoginSuccess p)
         {
+            if (!Classic176LoginLayout.TryBeginOpening(_background)) return;
             Enabled = false;
             _login.Dispose();
             if(_ViewKey != null && !_ViewKey.IsDisposed) _ViewKey.Dispose();
