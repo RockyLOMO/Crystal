@@ -1,4 +1,4 @@
-﻿using Client.MirGraphics;
+using Client.MirGraphics;
 using Client.MirNetwork;
 using Client.MirObjects;
 using Client.MirScenes;
@@ -52,7 +52,7 @@ namespace Client.MirControls
         {
             get
             {
-                if ((GridType == MirGridType.Craft) && _itemSlot >= 0 && _itemSlot < ItemArray.Length)
+                if ((GridType == MirGridType.Craft) && _itemSlot >= 0 && ItemArray != null && _itemSlot < ItemArray.Length)
                     return CraftDialog.ShadowItems[_itemSlot];
 
                 return null;
@@ -66,9 +66,9 @@ namespace Client.MirControls
                 switch (GridType)
                 {
                     case MirGridType.Inventory:
-                        return MapObject.User.Inventory;
+                        return MapObject.User?.Inventory;
                     case MirGridType.Equipment:
-                        return MapObject.User.Equipment;
+                        return MapObject.User?.Equipment;
                     case MirGridType.Storage:
                         return GameScene.Storage;
                     case MirGridType.Inspect:
@@ -76,15 +76,15 @@ namespace Client.MirControls
                     case MirGridType.GuildStorage:
                         return GameScene.GuildStorage;
                     case MirGridType.Trade:
-                        return GameScene.User.Trade;
+                        return GameScene.User?.Trade;
                     case MirGridType.GuestTrade:
                         return GuestTradeDialog.GuestItems;
                     case MirGridType.Mount:
-                        return MapObject.User.Equipment[(int)EquipmentSlot.Mount].Slots;
+                        return (MapObject.User?.Equipment != null && MapObject.User.Equipment.Length > (int)EquipmentSlot.Mount && MapObject.User.Equipment[(int)EquipmentSlot.Mount] != null) ? MapObject.User.Equipment[(int)EquipmentSlot.Mount].Slots : null;
                     case MirGridType.Fishing:
-                        return MapObject.User.Equipment[(int)EquipmentSlot.Weapon].Slots;
+                        return (MapObject.User?.Equipment != null && MapObject.User.Equipment.Length > (int)EquipmentSlot.Weapon && MapObject.User.Equipment[(int)EquipmentSlot.Weapon] != null) ? MapObject.User.Equipment[(int)EquipmentSlot.Weapon].Slots : null;
                     case MirGridType.QuestInventory:
-                        return MapObject.User.QuestInventory;
+                        return MapObject.User?.QuestInventory;
                     case MirGridType.AwakenItem:
                         return NPCAwakeDialog.Items;
                     case MirGridType.Mail:
@@ -96,13 +96,13 @@ namespace Client.MirControls
                     case MirGridType.Socket:
                         return GameScene.SelectedItem?.Slots;
                     case MirGridType.HeroEquipment:
-                        return MapObject.Hero.Equipment;
+                        return MapObject.Hero?.Equipment;
                     case MirGridType.HeroInventory:
-                        return MapObject.Hero.Inventory;
+                        return MapObject.Hero?.Inventory;
                     case MirGridType.HeroHPItem:
-                        return MapObject.Hero.HPItem;
+                        return MapObject.Hero?.HPItem;
                     case MirGridType.HeroMPItem:
-                        return MapObject.Hero.MPItem;
+                        return MapObject.Hero?.MPItem;
 
                     default:
                         throw new NotImplementedException();

@@ -4,7 +4,7 @@ using Server.MirEnvir;
 using Server.MirObjects;
 using S = ServerPackets;
 
-var directory = Path.Combine(Path.GetTempPath(), "ai", DateTime.Now.ToString("yyyyMMdd"), "mir2-npc-service-tests", Guid.NewGuid().ToString("N"));
+var directory = Path.Combine(TestWorkspace.RunDirectory, "fixture");
 Directory.CreateDirectory(directory);
 Directory.SetCurrentDirectory(directory);
 var env = Envir.Main;

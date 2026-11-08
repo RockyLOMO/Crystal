@@ -14,6 +14,7 @@ internal static class Program
     private static void Main(string[] args)
     {
         if (args.Length is < 3 or > 4) throw new ArgumentException("Pass repo root, client dependency directory, Prguse176.Lib and optional new preview PNG path.");
+        args = args.Select(TestWorkspace.ResolvePath).ToArray();
         foreach (string file in new[] { "msvcr100.dll", "msvcp100.dll", "d3dx9_43.dll", "d3dcompiler_43.dll" })
             File.Copy(Path.Combine(args[1], file), Path.Combine(AppContext.BaseDirectory, file), true);
         Run(args);
@@ -22,8 +23,11 @@ internal static class Program
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void Run(string[] args)
     {
-        string fixture = Path.Combine(Path.GetTempPath(), "ai", DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(8)).ToString("yyyyMMdd"), "mir2-classic-tests-" + Guid.NewGuid().ToString("N"));
+        string fixture = Path.Combine(TestWorkspace.RunDirectory, "fixture");
         Directory.CreateDirectory(Path.Combine(fixture, "Data"));
+        Directory.CreateDirectory(Path.Combine(fixture, "Localization"));
+        File.Copy(Path.Combine(args[0], "Client", "Localization", "Overlay.zh-CN.json"),
+            Path.Combine(fixture, "Localization", "Overlay.zh-CN.json"));
         Directory.SetCurrentDirectory(fixture);
         using var bitmap = new Bitmap(1, 1);
         using var graphics = Graphics.FromImage(bitmap);
@@ -306,6 +310,8 @@ internal static class Program
                 finally { Client.CMain.Graphics = graphics; }
             }
             Console.WriteLine($"NPC single-pass text preview: {npcPreview}");
+            GameplayPolishChecks.Run(scene, Check, args[3], device, sprite,
+                (Surface)dx.GetField("MainSurface")!.GetValue(null)!, (List<Texture>)dx.GetField("Lights")!.GetValue(null)!);
             Console.WriteLine($"Total checks including rendering: {passed}");
         }
     }

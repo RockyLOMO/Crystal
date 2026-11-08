@@ -1,6 +1,6 @@
 {
-  "CheckedAt": "2026-11-07T19:41:26.8894819+08:00",
-  "Status": "deployed-running-npc-single-pass-text-awaiting-user-recheck",
+  "CheckedAt": "2026-11-08T00:38:02.7924355+08:00",
+  "Status": "deployed-running-night-radius-two-test-workspace-fixed",
   "SourceHead": "7786e56e0ee92c189a53f19deafa8a37dbdcff57",
   "IncludesUncommittedChanges": true,
   "SourceArt": [
@@ -37,18 +37,18 @@
     ]
   },
   "Validation": {
-    "ClassicHudChecks": 331,
+    "ClassicHudChecks": 355,
     "RestoreDrill": "NOT PERFORMED",
     "AssetConversion": "PASS: all nonempty images pixel-verified after black transparency",
     "ClientPublish": "PASS win-x64 self-contained",
-    "OverlayRegressionChecks": 25,
-    "Gameplay": "NPC duplicate-render cause reproduced and fixed; pixel/interaction checks passed; latest live options/Lv recheck pending",
+    "OverlayRegressionChecks": 34,
+    "Gameplay": "Night radius expanded again; live nighttime recheck pending. Healing ownership verified offline; original screenshot event lacks packet capture.",
     "NativeRender": "PASS three chat heights",
     "AndroidWine": "NOT VERIFIED",
-    "TotalChecks": 412,
+    "TotalChecks": 639,
     "NpcAutomationChecks": 56
   },
-  "StagePath": "D:\\projs\\mir2\\Build\\Classic176HUD-20261107-npc-text\\Client",
+  "StagePath": "D:\\projs\\mir2\\Build\\NightVisibility-20261108\\Client",
   "ClientChanges": [
     {
       "Area": "Client",
@@ -115,8 +115,8 @@
     "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
     "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll"
   ],
-  "LiveClient": "Text-fix build PID 13964 responding; Error.txt unchanged at 625929 bytes after startup",
-  "LiveServer": "PID 22360 remains running unchanged; handshake/keepalive passed; server binaries unchanged",
+  "LiveClient": "PID 8140 responding; Error.txt unchanged at 792479 bytes after startup",
+  "LiveServer": "PID 11732 kept running; version/heartbeat PASS; server binaries and announcements unchanged",
   "Distribution": "UNCHANGED",
   "DeploymentBackup": "D:\\private-server\\mir2\\backups\\classic176-hud-20261106-211607",
   "Rollback": "See backup manifest; restore seven existing files after closing both ends; new independent lib can remain. [Game] UseClassic176HUD=False plus restart reverts layout.",
@@ -973,5 +973,707 @@
     "DistributionUpdated": false,
     "LiveVisualAcceptance": "PENDING user in-game NPC options and Lv recheck",
     "EvidenceDirectory": "T:\\TEMP\\ai\\20261107\\mir2-npc-text"
+  },
+  "QuestRunNightCamp": {
+    "CheckedAt": "2026-11-07T23:07:02.8389968+08:00",
+    "SourceHead": "fe07f6ae61371bb626a9645bb8bcc16a1398556e",
+    "IncludesUncommittedChanges": true,
+    "QuestText": {
+      "Limits": "Existing row heights retained; formatted runs stay single-line and clip inside the original text area",
+      "PixelCheck": {
+        "Yellow": 191,
+        "DuplicateWhite": 0
+      },
+      "Preview": "quest-single-pass-text-preview.png",
+      "Fix": "Reuse single-pass inline runs, preserve resolved metadata and link events; clone corresponding title font; release old line children",
+      "Covered": "QuestListDialog and QuestDetailDialog share QuestMessage",
+      "Cause": "Full white base row plus independent colored/link labels"
+    },
+    "RightRun": {
+      "MapLocationRefresh": true,
+      "NoNewLatch": true,
+      "RealGameplay": "NOT VERIFIED",
+      "Fix": "Continue only map-origin held Right gestures over approved bottom HUD ancestors; topmost hit fallback handles ActiveControl capture clearing MouseControl",
+      "ActualOfflineQueuedAction": "Running in all four HUD targets",
+      "Coverage": [
+        "Belt item cell",
+        "Chat body",
+        "Chat channel button",
+        "Stone wing button",
+        "Right release",
+        "Focus loss",
+        "Overlapping popup",
+        "Left clicks"
+      ]
+    },
+    "Night": {
+      "AreaGrowthPercent": 39,
+      "IndexBoost": 1,
+      "Scope": "Local player, Night, not Blindness",
+      "ServerSightUnchanged": true,
+      "GlobalLightCentering": "Existing global light table offset difference not changed",
+      "BaseTextureBefore": [
+        445,
+        338
+      ],
+      "BaseTextureAfter": [
+        525,
+        399
+      ],
+      "Preview": "night-visibility-preview.png",
+      "OtherObjectLightsUnchanged": true,
+      "BrightnessUnchanged": true,
+      "LinearGrowthPercent": 18
+    },
+    "Hold": {
+      "Before": "暂存",
+      "Contexts": [
+        "Sell",
+        "Repair",
+        "Special repair",
+        "Consign"
+      ],
+      "After": "连续",
+      "Hint": "连续处理：放入物品后自动确认，再次点击关闭。",
+      "Meaning": "Automatically confirm each item placed in the service slot"
+    },
+    "Camp": {
+      "NewProfileDefault": 164,
+      "Animation": "11 frames x 250ms, direction independent",
+      "AddedCanvasTent": 221,
+      "UserSelectedImage": 164,
+      "LegacyDefault55MapsTo": 164,
+      "Candidates": "camp-visual-candidates.png",
+      "AssetsUpdated": false,
+      "CoordinatesAndGoldCostChanged": false,
+      "SourceMetadata": [
+        {
+          "id": 42,
+          "path": "D:\\private-server\\mir2-client\\Data\\NPC\\42.Lib",
+          "version": 3,
+          "imagecount": 20,
+          "frames": [
+            {
+              "action": 0,
+              "start": 0,
+              "count": 4,
+              "skip": 0,
+              "interval": 450,
+              "effectstart": 0,
+              "effectcount": 0,
+              "effectskip": 0,
+              "effectinterval": 0,
+              "reverse": false,
+              "blend": false
+            },
+            {
+              "action": 19,
+              "start": 12,
+              "count": 10,
+              "skip": 0,
+              "interval": 200,
+              "effectstart": 0,
+              "effectcount": 0,
+              "effectskip": 0,
+              "effectinterval": 0,
+              "reverse": false,
+              "blend": false
+            }
+          ],
+          "samples": [
+            {
+              "index": 0,
+              "width": 76,
+              "height": 100,
+              "x": -15,
+              "y": -97,
+              "bytes": 30400
+            },
+            {
+              "index": 1,
+              "width": 80,
+              "height": 108,
+              "x": -17,
+              "y": -105,
+              "bytes": 34560
+            },
+            {
+              "index": 2,
+              "width": 84,
+              "height": 112,
+              "x": -21,
+              "y": -109,
+              "bytes": 37632
+            },
+            {
+              "index": 3,
+              "width": 120,
+              "height": 108,
+              "x": -62,
+              "y": -103,
+              "bytes": 51840
+            },
+            {
+              "index": 4,
+              "width": 96,
+              "height": 116,
+              "x": -27,
+              "y": -111,
+              "bytes": 44544
+            },
+            {
+              "index": 5,
+              "width": 96,
+              "height": 120,
+              "x": -23,
+              "y": -116,
+              "bytes": 46080
+            },
+            {
+              "index": 6,
+              "width": 64,
+              "height": 104,
+              "x": -17,
+              "y": -99,
+              "bytes": 26624
+            },
+            {
+              "index": 7,
+              "width": 56,
+              "height": 88,
+              "x": -15,
+              "y": -83,
+              "bytes": 19712
+            }
+          ]
+        },
+        {
+          "id": 221,
+          "path": "D:\\private-server\\mir2-client\\Data\\NPC\\221.Lib",
+          "version": 3,
+          "imagecount": 2,
+          "frames": [
+            {
+              "action": 0,
+              "start": 0,
+              "count": 1,
+              "skip": -1,
+              "interval": 1500,
+              "effectstart": 0,
+              "effectcount": 0,
+              "effectskip": 0,
+              "effectinterval": 0,
+              "reverse": false,
+              "blend": false
+            }
+          ],
+          "samples": [
+            {
+              "index": 0,
+              "width": 352,
+              "height": 254,
+              "x": -150,
+              "y": -135,
+              "bytes": 357632
+            },
+            {
+              "index": 1,
+              "width": 352,
+              "height": 254,
+              "x": -150,
+              "y": -135,
+              "bytes": 357632
+            }
+          ]
+        },
+        {
+          "id": 164,
+          "path": "D:\\private-server\\mir2-client\\Data\\NPC\\164.Lib",
+          "version": 3,
+          "imagecount": 11,
+          "frames": [
+            {
+              "action": 0,
+              "start": 0,
+              "count": 11,
+              "skip": -11,
+              "interval": 250,
+              "effectstart": 0,
+              "effectcount": 0,
+              "effectskip": 0,
+              "effectinterval": 0,
+              "reverse": false,
+              "blend": false
+            }
+          ],
+          "samples": [
+            {
+              "index": 0,
+              "width": 284,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 254464
+            },
+            {
+              "index": 1,
+              "width": 256,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 229376
+            },
+            {
+              "index": 2,
+              "width": 228,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 204288
+            },
+            {
+              "index": 3,
+              "width": 220,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 197120
+            },
+            {
+              "index": 4,
+              "width": 232,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 207872
+            },
+            {
+              "index": 5,
+              "width": 240,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 215040
+            },
+            {
+              "index": 6,
+              "width": 256,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 229376
+            },
+            {
+              "index": 7,
+              "width": 268,
+              "height": 224,
+              "x": 0,
+              "y": -139,
+              "bytes": 240128
+            }
+          ]
+        }
+      ],
+      "LegacyIncomplete42MapsTo": 164,
+      "ExistingValidSelectionsPreserved": true,
+      "Name": "红龙行军战旗"
+    },
+    "Tests": {
+      "NpcAutomation": 56,
+      "Overlay": 34,
+      "ClientBuild": "Release win-x64 self-contained PASS",
+      "Total": 512,
+      "ClientPublishedRuntimeShared": "Same 355 checks PASS",
+      "ClientInput": 25,
+      "HudNpcQuestRunNightHold": 355,
+      "ServerPublishedRuntimeShared": "Same 42 checks PASS",
+      "ServerBuild": "Release win-x64 framework-dependent PASS",
+      "TomeAndCamp": 42
+    },
+    "Deployment": {
+      "CheckedAt": "2026-11-07T23:06:30.772389+08:00",
+      "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630",
+      "Stage": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107",
+      "Entries": [
+        {
+          "NewSHA256": "F5AA2930DE4548EEA472781FE9D340DCDAC90FD59A7E6AD733538C88ABAFAA6A",
+          "OldSHA256": "39FCE63020648CC9EED76B0FA211B8D154E08133DDF088F5E55C91499C6A2B86",
+          "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+          "Area": "Client",
+          "Source": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107\\Client\\Client.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630\\Client\\Client.dll",
+          "Relative": "Client.dll"
+        },
+        {
+          "NewSHA256": "8471B4DF1CA1742BF6AD0814A7BBF49BCAA829D6A5A6E069B7BE262F53BBE7A6",
+          "OldSHA256": "78BA32A8CDB4C38DCA34E9A5F0F7276F31AB90227D7B9933E24C7303D25C3E11",
+          "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+          "Area": "Client",
+          "Source": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107\\Client\\Client.pdb",
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630\\Client\\Client.pdb",
+          "Relative": "Client.pdb"
+        },
+        {
+          "NewSHA256": "C7510C4ED5DFBA0A7553E5875CBD4F0D83A4199342AFE93B0E465E113D9B73FB",
+          "OldSHA256": "7A7AAF96760D495B9FEDDA7489738A644A8CF0018E6EB4BA3DA73BA58085F6DF",
+          "Destination": "D:\\private-server\\mir2-client\\Localization\\Overlay.zh-CN.json",
+          "Area": "Client",
+          "Source": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107\\Client\\Localization\\Overlay.zh-CN.json",
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630\\Client\\Localization\\Overlay.zh-CN.json",
+          "Relative": "Localization\\Overlay.zh-CN.json"
+        },
+        {
+          "NewSHA256": "4773F10DE676CD1D2DA679F6009A131F3346CE05023344A28D659AE0A229B840",
+          "OldSHA256": "F9368A3680E76280376810DD241E3F564A3D192695204A22D7019E46DA888EA5",
+          "Destination": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+          "Area": "Server",
+          "Source": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107\\Server\\Server.Library.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630\\Server\\Server.Library.dll",
+          "Relative": "Server.Library.dll"
+        },
+        {
+          "NewSHA256": "C00B9E0A188CA2FA27580FCA64F98AF91A9E484B358D4B02B7945A7275312353",
+          "OldSHA256": "9AD60EE104E5308C942DF76CDDDD7C4366C390FE92622352B718D7220430EF92",
+          "Destination": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+          "Area": "Server",
+          "Source": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107\\Server\\Server.Library.pdb",
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630\\Server\\Server.Library.pdb",
+          "Relative": "Server.Library.pdb"
+        },
+        {
+          "NewSHA256": "F5AA2930DE4548EEA472781FE9D340DCDAC90FD59A7E6AD733538C88ABAFAA6A",
+          "OldSHA256": "39FCE63020648CC9EED76B0FA211B8D154E08133DDF088F5E55C91499C6A2B86",
+          "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+          "Area": "ClientVersion",
+          "Source": "D:\\projs\\mir2\\Build\\GameplayPolish-20261107\\Client\\Client.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630\\ClientVersion\\Client.dll",
+          "Relative": "Client.dll"
+        }
+      ],
+      "PreservedFiles": [
+        {
+          "Algorithm": "SHA256",
+          "Hash": "CF4B1EB385D61D0CFA5649FCF4BF25C8EA16E206A43AFD1FF3F082856D186793",
+          "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "7DA63580B2114D9B5EEDEA4353268A0CC0BAA3CD9B92EDE434192796BBFE9C47",
+          "Path": "D:\\private-server\\mir2-client\\Localization\\Chinese.json"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "1FCA2597EDE86D5E7BD1741E2907749D18BE9471831061F56B202F7486018425",
+          "Path": "D:\\private-server\\mir2-client\\Client.exe"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "BE0203B865BF143220FE8DD1FD6CFB277E2A5B0F71E64EA2F4120D469316DBD5",
+          "Path": "D:\\private-server\\mir2-client\\Shared.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "510EBC77315089075FC472C9EF745BE2E16C6DECE970C307D6859CE074CCE861",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse2.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "564B950C2B786D53804B662C3385CCA75929AFDC17396B282B5493CA48E83316",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse3.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "0322364F9BBBD265AB8AA0E416B4FBB8DE33CA72C822451CAA0AFAAB26C0B477",
+          "Path": "D:\\private-server\\mir2-client\\Data\\NPC\\164.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "CA72221C70FA8DAF9E038C039F52886571ED90041058455F5A78A40CF4B96311",
+          "Path": "D:\\private-server\\mir2-client\\Data\\NPC\\221.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "6BFB58DD328610DF12D076D8A167EA74F1B2F9C244CD9558766DAD97C9E1C46D",
+          "Path": "D:\\private-server\\mir2\\Server\\Server.exe"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "ECE84808B4A3948D5919A6397243E48E76B36244FD83F5B65235F6C2333DD1E2",
+          "Path": "D:\\private-server\\mir2\\Server\\Server.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "CD48EA6AF982DA9229E445649172203DB478DB09C902B35D96D622643B29CDE2",
+          "Path": "D:\\private-server\\mir2\\Server\\Shared.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "1FCA2597EDE86D5E7BD1741E2907749D18BE9471831061F56B202F7486018425",
+          "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe"
+        }
+      ],
+      "ConsistentDataBackup": "D:\\private-server\\mir2\\backups\\20261107-150542Z",
+      "PreStopConnections": 0,
+      "OldServerProcessId": 15404,
+      "ServerStoppedGracefully": true,
+      "ClientErrorBaseline": 792479,
+      "Rollback": "Exit client; gracefully stop server; restore each Entries.Backup to Entries.Destination. Account/data backup is separate and must not be restored for a program rollback."
+    },
+    "Runtime": {
+      "CheckedAt": "2026-11-07T23:07:02.8389968+08:00",
+      "ClientProcessId": 22036,
+      "ClientResponding": true,
+      "ClientExited": false,
+      "ServerProcessId": 11732,
+      "ServerResponding": true,
+      "ClientErrorAfterStartup": 792479,
+      "VersionHandshake": "PASS",
+      "Heartbeat": "PASS",
+      "RealGameplay": "NOT VERIFIED; pending task text, held right run, night visibility, continuous services and camp appearance recheck"
+    },
+    "DistributionUpdated": false,
+    "RealGameplayAcceptance": "NOT VERIFIED for this revision; user in-game check pending",
+    "EvidenceDirectory": "T:\\TEMP\\ai\\20261107\\mir2-quest-run-night"
+  },
+  "WorkspaceHealingNight": {
+    "CheckedAt": "2026-11-08T00:38:02.7924355+08:00",
+    "SourceHead": "fe07f6ae61371bb626a9645bb8bcc16a1398556e",
+    "IncludesUncommittedChanges": true,
+    "TestWorkspace": {
+      "OldRootsAbsentAfterTests": true,
+      "LegacyMove": {
+        "CheckedAt": "2026-11-08T00:33:59.0552677+08:00",
+        "Entries": [
+          {
+            "Source": "D:\\projs\\Configs",
+            "Destination": "D:\\projs\\mir2\\.ai\\legacy-test-artifacts\\20261108-1f8fa9f09521408da8806e446353bf95\\Configs"
+          },
+          {
+            "Source": "D:\\projs\\Envir",
+            "Destination": "D:\\projs\\mir2\\.ai\\legacy-test-artifacts\\20261108-1f8fa9f09521408da8806e446353bf95\\Envir"
+          }
+        ],
+        "FileSHA256": "EDD4F2061E9F7054D4851ACCB2743C9DC671F4EEAD714634E933C95E30A28EE4",
+        "ProcessReferences": 0,
+        "ServiceReferences": 0,
+        "TaskReferences": 0,
+        "ProductionRuntime": "D:\\private-server\\mir2\\Server unchanged",
+        "Rollback": "Move archived Configs and Envir back only if needed; do not merge into production game data"
+      },
+      "ProductionProjects": "Excluded",
+      "RunRoot": "D:\\projs\\mir2\\.ai\\test-runs",
+      "CallerUsedForVerification": "D:\\projs",
+      "LegacyProfileBytes": 228,
+      "Bootstrap": "scripts/TestWorkspace.cs via scripts/Directory.Build.targets for all 10 *-tests projects",
+      "CallerArguments": "Resolved against original CallerDirectory",
+      "Cause": "Performance tests restored caller CWD before a real player pipeline wrote retry-regression; Settings.InIReader creates relative Configs upon static initialization",
+      "DeleteScope": "Only child directories of the unique test run",
+      "ExplicitOutputPaths": "Preserved; converter excluded"
+    },
+    "Healing": {
+      "GameplayCodeChanged": false,
+      "MaxHp250": 6,
+      "PacketsUseRecoveringObjectId": true,
+      "ClientBindsByPacketId": true,
+      "ClientDrawUsesOwnerRectangle": true,
+      "CombatTargetChanges": "Player +6 / monster +2 and +6 remain on packet objects; unknown ID ignored",
+      "ChecksPassed": 19,
+      "EvidenceLog": "healing.log",
+      "LiveScreenshotEvent": "No packet capture of that particular event; exact visual instance cannot be determined",
+      "ExistingDisplayCap": "Calculated +6 can restore only 1 HP near full health; existing display behavior, no gameplay change",
+      "MaxHp60": 2,
+      "ServerNaturalRegen": "floor(MaxHP * 0.022) + 1 every 10 seconds; ordinary hits do not postpone it"
+    },
+    "Announcements": {
+      "Type": "LineMessage",
+      "ScriptEvents": {
+        "Level20": "恭喜<$USERNAME>达到20级！",
+        "Level40And60": "Pages exist but no GOTO in this script reaches them; not confirmed active",
+        "SabukTaxes": "By the order of <$CONQUESTOWNER(1)> Sabuk Taxes are <$CONQUESTRATE(1)>!",
+        "Awakening": "【全服通告】勇士借用魔龙觉醒灵魂的力量，成功淬炼出一件流光溢彩的传世神兵！"
+      },
+      "Modified": false,
+      "Mode": "Random one entry every 10 minutes",
+      "OtherPeriodic": "Online player count Hint every five minutes",
+      "Notice": "Notice.txt is an update notice popup, not periodic chat; LoginNotice.txt has no active read path found",
+      "Path": "D:\\private-server\\mir2\\Server\\Envir\\LineMessage.txt",
+      "Lines": [
+        "Welcome to Crystal Mir 2 released by Suprcode.",
+        "Make sure to follow JevLomcn on github for the latest Database releases.",
+        "www.LOMCN.net",
+        "Now in Net.8"
+      ],
+      "Personal": "Welcome, attack/pet mode and SoloExtension service output are personal, not global"
+    },
+    "Night": {
+      "PreviousTexture": [
+        525,
+        399
+      ],
+      "GrowthFromPreviousPercent": 15,
+      "RadiusBoostFromOriginal": 2,
+      "LiveAcceptance": "PENDING",
+      "Scope": "Local player, Night, not blindness; brightness/other objects unchanged",
+      "Preview": "night-visibility-second-preview.png",
+      "NewTexture": [
+        605,
+        460
+      ]
+    },
+    "Tests": {
+      "TomeCamp": 42,
+      "Build": "Release win-x64 self-contained PASS",
+      "AllTenSuitesPassed": true,
+      "Total": 639,
+      "ClientInput": 25,
+      "PublishedDllWithRuntimeShared": "355 checks PASS",
+      "Localization": 40,
+      "DamageStyle": 9,
+      "NpcAuto": 56,
+      "NpcService": 12,
+      "UiOverlay": 34,
+      "HealingOwnership": 19,
+      "Scheduling": 47,
+      "HudNpcQuestNight": 355
+    },
+    "Deployment": {
+      "CheckedAt": "2026-11-08T00:37:44.2887881+08:00",
+      "Backup": "D:\\private-server\\mir2\\backups\\night-radius-2-20261108-003744",
+      "Stage": "D:\\projs\\mir2\\Build\\NightVisibility-20261108\\Client",
+      "Entries": [
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NightVisibility-20261108\\Client\\Client.dll",
+          "Relative": "Client.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\night-radius-2-20261108-003744\\Client\\Client.dll",
+          "NewSHA256": "044AEC1325F4EDB251C142828C0B9638949B69E4E1223B0A59A68F511C9108C4",
+          "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+          "OldSHA256": "F5AA2930DE4548EEA472781FE9D340DCDAC90FD59A7E6AD733538C88ABAFAA6A",
+          "Area": "Client"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NightVisibility-20261108\\Client\\Client.pdb",
+          "Relative": "Client.pdb",
+          "Backup": "D:\\private-server\\mir2\\backups\\night-radius-2-20261108-003744\\Client\\Client.pdb",
+          "NewSHA256": "6535341DD06E4AD671715F270D154BDCAD1BBCEA2E3699A4875D62C8EC497407",
+          "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+          "OldSHA256": "8471B4DF1CA1742BF6AD0814A7BBF49BCAA829D6A5A6E069B7BE262F53BBE7A6",
+          "Area": "Client"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NightVisibility-20261108\\Client\\Client.dll",
+          "Relative": "Client.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\night-radius-2-20261108-003744\\ClientVersion\\Client.dll",
+          "NewSHA256": "044AEC1325F4EDB251C142828C0B9638949B69E4E1223B0A59A68F511C9108C4",
+          "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+          "OldSHA256": "F5AA2930DE4548EEA472781FE9D340DCDAC90FD59A7E6AD733538C88ABAFAA6A",
+          "Area": "ClientVersion"
+        }
+      ],
+      "PreservedFiles": [
+        {
+          "Algorithm": "SHA256",
+          "Hash": "CF4B1EB385D61D0CFA5649FCF4BF25C8EA16E206A43AFD1FF3F082856D186793",
+          "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "7DA63580B2114D9B5EEDEA4353268A0CC0BAA3CD9B92EDE434192796BBFE9C47",
+          "Path": "D:\\private-server\\mir2-client\\Localization\\Chinese.json"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "1FCA2597EDE86D5E7BD1741E2907749D18BE9471831061F56B202F7486018425",
+          "Path": "D:\\private-server\\mir2-client\\Client.exe"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "BE0203B865BF143220FE8DD1FD6CFB277E2A5B0F71E64EA2F4120D469316DBD5",
+          "Path": "D:\\private-server\\mir2-client\\Shared.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "510EBC77315089075FC472C9EF745BE2E16C6DECE970C307D6859CE074CCE861",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse2.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "564B950C2B786D53804B662C3385CCA75929AFDC17396B282B5493CA48E83316",
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse3.Lib"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "6BFB58DD328610DF12D076D8A167EA74F1B2F9C244CD9558766DAD97C9E1C46D",
+          "Path": "D:\\private-server\\mir2\\Server\\Server.exe"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "ECE84808B4A3948D5919A6397243E48E76B36244FD83F5B65235F6C2333DD1E2",
+          "Path": "D:\\private-server\\mir2\\Server\\Server.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "4773F10DE676CD1D2DA679F6009A131F3346CE05023344A28D659AE0A229B840",
+          "Path": "D:\\private-server\\mir2\\Server\\Server.Library.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "CD48EA6AF982DA9229E445649172203DB478DB09C902B35D96D622643B29CDE2",
+          "Path": "D:\\private-server\\mir2\\Server\\Shared.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "1FCA2597EDE86D5E7BD1741E2907749D18BE9471831061F56B202F7486018425",
+          "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "FAB9F762A58D63E314942B2C0AD2313B62B4B4164636ADE476C6D9E09630F96B",
+          "Path": "D:\\private-server\\mir2\\Server\\Envir\\LineMessage.txt"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "636C3CA2D150D54586410C0C7690CDCB8E3EE2E5C0039B4DCA4EC7FFA19BB4D2",
+          "Path": "D:\\private-server\\mir2\\Server\\Envir\\Notice.txt"
+        }
+      ],
+      "ServerProcessId": 11732,
+      "ClientErrorBaseline": 792479,
+      "RuntimeDependencyTest": "Published Client.dll with existing runtime Shared.dll: 355 PASS",
+      "Rollback": "Exit client; restore Entries.Backup to Entries.Destination. No account data rollback."
+    },
+    "Runtime": {
+      "CheckedAt": "2026-11-08T00:38:02.7924355+08:00",
+      "ClientProcessId": 8140,
+      "ClientResponding": true,
+      "ClientExited": false,
+      "ServerProcessId": 11732,
+      "ClientErrorAfterStartup": 792479,
+      "VersionHandshake": "PASS",
+      "Heartbeat": "PASS",
+      "ServerRestarted": false,
+      "RealGameplay": "Pending live night-visibility recheck; screenshot healing event itself has no captured packet"
+    },
+    "DistributionUpdated": false,
+    "EvidenceDirectory": "T:\\TEMP\\ai\\20261108\\mir2-workspace-healing-night"
   }
 }

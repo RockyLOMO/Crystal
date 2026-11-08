@@ -152,7 +152,7 @@ namespace Server.SoloExtension
                 "{【玛法猎魔手札 · 随身奇物】/Gold}",
                 $"当前 4×4 范围自动拾取：{{{pickModeStr}/LimeGreen}}",
                 $"自动拾取严格负重保护：{weightGuardStr} {{(可在【设置(O)】面板勾选开关)/Silver}}",
-                $"本层魔物惊扰度进度：{{{heat}/100/DeepSkyBlue}} (满50出精英 / 满100出猩红领主)",
+                $"本层魔物惊扰度进度：{{{heat}/DeepSkyBlue}}/100 (满50出精英、满100出猩红领主)",
                 $"已激活猎魔图鉴加成：{{攻魔道+{offense}、双防+{defense}、爆率+{dropRate}% ({completedCount}/{Chapters.Length}章)/Gold}}",
                 "----------------------------------------",
                 "<[切换] 4×4 范围自动拾取模式 (智能极品/全部/关闭)/@Tome_TogglePick>",

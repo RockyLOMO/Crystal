@@ -191,7 +191,7 @@ DespawnAll();
 
 // Use real NPC construction and disk scripts: owner lookup must work before
 // ParseQuests/ParseSpeech run, while failed construction must never be scheduled.
-var npcFixturePath = Path.Combine(Path.GetTempPath(), "ai", "20261101", "mir2-quest-binding", Guid.NewGuid().ToString("N"));
+var npcFixturePath = Path.Combine(TestWorkspace.RunDirectory, "npc-script");
 var originalWorkingDirectory = Directory.GetCurrentDirectory();
 var originalScriptIndex = env.ScriptIndex;
 var originalQuests = env.QuestInfoList.ToArray();
@@ -245,7 +245,7 @@ finally
     env.QuestInfoList.Clear();
     env.QuestInfoList.AddRange(originalQuests);
     Directory.SetCurrentDirectory(originalWorkingDirectory);
-    Directory.Delete(npcFixturePath, recursive: true);
+    TestWorkspace.DeleteFixture(npcFixturePath);
 }
 
 // Exercise the real delayed-NPC pipeline: grant gold, then fail after that

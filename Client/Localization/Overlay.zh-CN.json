@@ -381,7 +381,8 @@
     {
       "Library": "Title",
       "Indices": [
-        197
+        197,
+        737
       ],
       "Button": true,
       "Rects": [
@@ -403,7 +404,9 @@
     {
       "Library": "Title",
       "Indices": [
-        738
+        738,
+        169,
+        168
       ],
       "Button": true,
       "Rects": [
@@ -425,7 +428,8 @@
     {
       "Library": "Title",
       "Indices": [
-        739
+        739,
+        198
       ],
       "Button": true,
       "Rects": [
@@ -1781,7 +1785,7 @@
       "Button": true,
       "Rects": [
         {
-          "Text": "暂存",
+          "Text": "连续",
           "Rect": [
             5,
             4,

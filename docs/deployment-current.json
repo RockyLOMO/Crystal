@@ -1,5 +1,5 @@
 {
-  "CheckedAtUtc": "2026-11-07T11:42:17.4448510+00:00",
+  "CheckedAtUtc": "2026-11-07T16:39:20.9940228+00:00",
   "Status": "deployed-running",
   "Source": {
     "Path": "D:\\projs\\mir2",
@@ -97,7 +97,7 @@
   "CurrentProcessState": {
     "ServerRunning": true,
     "ClientRunning": true,
-    "Reason": "NPC text fix deployed; client reopened for authorized recheck; server kept running; latest login pending"
+    "Reason": "Second night-radius build deployed; client reopened for recheck, server kept running. Test data relocated inside repository."
   },
   "Localization": {
     "DetailedReport": "README.md",
@@ -190,8 +190,8 @@
     "VersionMirrorsUpdated": true,
     "ServerStarted": true,
     "DistributionUpdated": false,
-    "ChecksPassed": 412,
-    "GameplayAcceptance": "NPC duplicate styled text fixed; level shifted up 2px; latest live recheck pending",
+    "ChecksPassed": 639,
+    "GameplayAcceptance": "Second night radius revision deployed; live nighttime visual recheck pending",
     "RuntimeAcceptance": "classic176-hud-validation.json#RuntimeAcceptance",
     "AlignmentBackup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255",
     "DetailLayoutBackup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426",
@@ -226,6 +226,38 @@
     "Evidence": "tome-pickup-validation.json",
     "ClientUpdated": true,
     "ServerRestarted": false,
-    "DistributionUpdated": false
+    "DistributionUpdated": false,
+    "SupersededBy": "GameplayFixes: independent step pickup restored by latest user request"
+  },
+  "GameplayFixes": {
+    "Evidence": "gameplay-fixes-validation.json",
+    "CheckedAt": "2026-11-07T22:17:36.3810821+08:00",
+    "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614",
+    "ChecksPassed": 429,
+    "ClientUpdated": true,
+    "ServerUpdated": true,
+    "ServerProcessId": 15404,
+    "DistributionUpdated": false,
+    "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "QuestRunNightCamp": {
+    "Evidence": "classic176-hud-validation.json#QuestRunNightCamp",
+    "Backup": "D:\\private-server\\mir2\\backups\\quest-run-night-camp-20261107-230630",
+    "DataBackup": "D:\\private-server\\mir2\\backups\\20261107-150542Z",
+    "ClientProcessId": 22036,
+    "ServerProcessId": 11732,
+    "CampImage": 164,
+    "TestsPassed": 512,
+    "CheckedAt": "2026-11-07T23:07:02.8389968+08:00"
+  },
+  "WorkspaceHealingNight": {
+    "Evidence": "classic176-hud-validation.json#WorkspaceHealingNight",
+    "Backup": "D:\\private-server\\mir2\\backups\\night-radius-2-20261108-003744",
+    "LegacyArchive": "D:\\projs\\mir2\\.ai\\legacy-test-artifacts\\20261108-1f8fa9f09521408da8806e446353bf95",
+    "ClientProcessId": 8140,
+    "ServerProcessId": 11732,
+    "ServerRestarted": false,
+    "ChecksPassed": 639,
+    "CheckedAt": "2026-11-08T00:38:02.7924355+08:00"
   }
 }

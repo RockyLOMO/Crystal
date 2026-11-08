@@ -5,7 +5,7 @@ using Server.MirDatabase;
 using Server.MirEnvir;
 using Server.MirObjects;
 
-string root = args.Length > 0 ? Path.GetFullPath(args[0]) : Directory.GetCurrentDirectory();
+string root = args.Length > 0 ? TestWorkspace.ResolvePath(args[0]) : TestWorkspace.RepositoryRoot;
 int passed = 0;
 void Check(bool ok, string message)
 {

@@ -2551,7 +2551,7 @@ namespace Client.MirScenes.Dialogs
         public MirButton HPViewOn, HPViewOff;
         public MirButton NewMoveOn, NewMoveOff;
         public MirButton ObserveOn, ObserveOff;
-        public MirCheckBox SmartShiftBox;
+        public MirCheckBox SmartShiftBox, AutoPickUpBox;
         public MirImageControl SoundBar, MusicSoundBar;
         public MirImageControl VolumeBar, MusicVolumeBar;
 
@@ -2835,6 +2835,15 @@ namespace Client.MirScenes.Dialogs
             };
             SmartShiftBox.Click += (o, e) => Settings.SmartShift = SmartShiftBox.Checked;
 
+            AutoPickUpBox = new MirCheckBox
+            {
+                Index = 2086, UnTickedIndex = 2086, TickedIndex = 2087,
+                Parent = this, Location = new Point(142, 322), Library = Libraries.Prguse,
+                LabelText = DbLanguage.Chinese ? "踩点自动捡物" : "Step auto-pickup",
+                Hint = DbLanguage.Chinese ? "只捡脚下物品。附近范围拾取由玛法猎魔手札单独控制；全部关闭需同时关闭两处。" : "Pick up items underfoot. Nearby pickup is controlled separately by the Hunter Tome."
+            };
+            AutoPickUpBox.Click += (o, e) => { Settings.AutoPickUp = AutoPickUpBox.Checked; Settings.Save(); };
+
             NpcAutoServiceOptions.Attach(this);
         }
 
@@ -3035,6 +3044,7 @@ namespace Client.MirScenes.Dialogs
             }
 
             if (SmartShiftBox != null) SmartShiftBox.Checked = Settings.SmartShift;
+            if (AutoPickUpBox != null) AutoPickUpBox.Checked = Settings.AutoPickUp;
         }
 
     }

@@ -531,7 +531,7 @@
         "OldMovementStyle": "[旧移动方式]",
         "KeyboardKeybind": "键盘 ({0})",
         "FencingSkillDescription": "基本剑术\n\n被动技能\n\n命中率会根据练习等级提高。\n\n当前技能等级 {0}\n下一等级 {1}",
-        "SlayingSkillDescription": "攻杀剑术\n\n被动技能\n\n击中的准确度和破坏力会随着熟练等级的提升而增加。\n\n当前技能等级 {0}\n下一等级 {1}",
+        "SlayingSkillDescription": "攻杀剑术\n\n被动技能\n\n击中的准确度和破坏力会随着熟练等级的提升而增加。\n\n当前技能等级 {0}\n下阶段修炼所需人物等级 {1}\n人物等级不足时，熟练度暂停增长。",
         "ThrustingSkillDescription": "刺杀剑术\n\n切换技能\n\n延长攻击距离，破坏力会随着熟练等级的提升而增加。\n当前技能等级 {0}\n下一等级 {1}",
         "RageSkillDescription": "暴怒\n\n增益技能\n魔法值消耗 {2}\n\n激发内力在一段时间内提升力量。攻击力和持续时间取决于技能等级。技能使用后需等待才能再次施展。\n\n当前技能等级 {0}\n下一等级 {1}",
         "ProtectionFieldSkillDescription": "护身领域\n\n增益技能\n魔法值消耗 {2}\n\n凝聚内力覆盖全身，提升抵御敌人攻击的能力。防御力和持续时间取决于技能等级。技能使用后需等待才能再次施展。\n\n当前技能等级 {0}\n下一等级 {1}",

@@ -11,7 +11,7 @@ using Server.SoloExtension;
 
 // No account data or game server is loaded. Profile writes stay under this unique fixture.
 string originalDirectory = Directory.GetCurrentDirectory();
-string fixture = Path.Combine(Path.GetTempPath(), "ai", DateTime.Now.ToString("yyyyMMdd"), "mir2-tome-pickup", Guid.NewGuid().ToString("N"));
+string fixture = Path.Combine(TestWorkspace.RunDirectory, "fixture");
 Directory.CreateDirectory(fixture);
 int passed = 0;
 void Check(bool ok, string description)
@@ -22,7 +22,23 @@ void Check(bool ok, string description)
 
 try
 {
+    Check(TownAndCampModule.DefaultCampTentNpcImage == 164 && new SoloPlayerProfile().CampStyleImage == 164,
+        "new camps and profiles default to the animated red dragon banner");
+    Check(TownAndCampModule.NormalizeCampStyleImage(55) == 164 && TownAndCampModule.NormalizeCampStyleImage(42) == 164,
+        "legacy default and incomplete camp animations fall back to the red dragon banner");
+    Check(TownAndCampModule.NormalizeCampStyleImage(156) == 156 && TownAndCampModule.CampVisualStyles.Any(s => s.Image == 221),
+        "existing valid camp choices remain and a real canvas tent is available");
     Directory.SetCurrentDirectory(fixture);
+    var migration = typeof(SoloExtensionHost).Assembly.GetType("Server.SoloExtension.SoloNpcScriptText")!
+        .GetMethod("Migrate", BindingFlags.Static | BindingFlags.NonPublic)!;
+    string script = "00SoloQuartermaster.txt";
+    string legacyScript = "[@MAIN]\r\n#SAY\r\n对白\\\r\n\\\r\n<打开/@TOME_MAIN>\\\r\n";
+    File.WriteAllText(script, legacyScript);
+    migration.Invoke(null, [script]);
+    Check(File.ReadAllText(script) == "[@MAIN]\r\n#SAY\r\n对白\r\n\r\n<打开/@TOME_MAIN>\r\n", "owned NPC migration removes literal newline markers and preserves links/blank lines");
+    Check(File.ReadAllText(script + ".before-newline-fix.bak") == legacyScript, "owned NPC migration preserves the original script backup");
+    migration.Invoke(null, [script]);
+    Check(File.ReadAllText(script + ".before-newline-fix.bak") == legacyScript, "repeat migration leaves the original backup unchanged");
     var map = new Map(new MapInfo { Index = 1, Title = "TestField" }) { Width = 9, Height = 9, Cells = new Cell[9, 9] };
     for (int x = 0; x < 9; x++)
         for (int y = 0; y < 9; y++) map.Cells[x, y] = new Cell { Attribute = CellAttribute.Walk };

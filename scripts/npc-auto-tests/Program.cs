@@ -59,7 +59,7 @@ Check(multiPage.Pages.SequenceEqual(new[] { "@SELL" }), "same-NPC redirect befor
 // Exercise the server's real GOTO response sequence, rather than assuming every
 // merchant sends exactly one page. The fixture does not start a game server.
 string originalDirectory = Directory.GetCurrentDirectory();
-string dialogueFixture = Path.Combine(Path.GetTempPath(), "ai", DateTime.Now.ToString("yyyyMMdd"), "mir2-drapery-dialogue", Guid.NewGuid().ToString("N"));
+string dialogueFixture = Path.Combine(TestWorkspace.RunDirectory, "npc-script");
 Directory.CreateDirectory(Path.Combine(dialogueFixture, "Envir", "NPCs"));
 try
 {

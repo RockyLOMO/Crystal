@@ -624,44 +624,52 @@
             try 
             { 
                 int offset = 4;
-                if ((Bytes[0]!= 1) || (Bytes[1] != 0)) return;//only support version 1 atm
-                Width = BitConverter.ToInt16(Bytes, offset);
+                if ((Bytes[0] != 1) || (Bytes[1] != 0)) return;
+                Width = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
                 offset += 2;
-                Height = BitConverter.ToInt16(Bytes, offset);
+                Height = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                offset += 2;
                 MapCells = new CellInfo[Width, Height];
                 offset = 8;
                 for (int x = 0; x < Width; x++)
+                {
+                    if ((x & 31) == 0)
+                        MirNetwork.Network.SendKeepAliveDirect();
+
                     for (int y = 0; y < Height; y++)
                     {
-                        MapCells[x, y] = new CellInfo();
-                        MapCells[x, y].BackIndex = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].BackImage = (int)BitConverter.ToInt32(Bytes, offset);
-                        offset += 4;
-                        MapCells[x, y].MiddleIndex = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].MiddleImage = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].FrontIndex = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].FrontImage = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].DoorIndex = (byte)(Bytes[offset++] & 0x7F);
-                        MapCells[x, y].DoorOffset = Bytes[offset++];
-                        MapCells[x, y].FrontAnimationFrame = Bytes[offset++];
-                        MapCells[x, y].FrontAnimationTick = Bytes[offset++];
-                        MapCells[x, y].MiddleAnimationFrame = Bytes[offset++];
-                        MapCells[x, y].MiddleAnimationTick = Bytes[offset++];
-                        MapCells[x, y].TileAnimationImage = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].TileAnimationOffset = (short)BitConverter.ToInt16(Bytes, offset);
-                        offset += 2;
-                        MapCells[x, y].TileAnimationFrames = Bytes[offset++];
-                        MapCells[x, y].Light = Bytes[offset++];
+                        var cell = new CellInfo();
+                        MapCells[x, y] = cell;
 
-                        if (MapCells[x, y].Light >= 100 && MapCells[x, y].Light <= 119)
-                            MapCells[x, y].FishingCell = true;
+                        cell.BackIndex = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.BackImage = Bytes[offset] | (Bytes[offset + 1] << 8) | (Bytes[offset + 2] << 16) | (Bytes[offset + 3] << 24);
+                        offset += 4;
+                        cell.MiddleIndex = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.MiddleImage = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.FrontIndex = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.FrontImage = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.DoorIndex = (byte)(Bytes[offset++] & 0x7F);
+                        cell.DoorOffset = Bytes[offset++];
+                        cell.FrontAnimationFrame = Bytes[offset++];
+                        cell.FrontAnimationTick = Bytes[offset++];
+                        cell.MiddleAnimationFrame = Bytes[offset++];
+                        cell.MiddleAnimationTick = Bytes[offset++];
+                        cell.TileAnimationImage = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.TileAnimationOffset = (short)(Bytes[offset] | (Bytes[offset + 1] << 8));
+                        offset += 2;
+                        cell.TileAnimationFrames = Bytes[offset++];
+                        cell.Light = Bytes[offset++];
+
+                        if (cell.Light >= 100 && cell.Light <= 119)
+                            cell.FishingCell = true;
                     }
+                }
             }
             catch (Exception ex)
             {

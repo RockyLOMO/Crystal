@@ -12,6 +12,7 @@ internal static class Program
     private static void Main(string[] args)
     {
         if (args.Length != 2) throw new ArgumentException("Pass repository root and a client dependency directory (msvcr100.dll/msvcp100.dll). No game data is required.");
+        args = args.Select(TestWorkspace.ResolvePath).ToArray();
         foreach (string file in new[] { "msvcr100.dll", "msvcp100.dll", "d3dx9_43.dll", "d3dcompiler_43.dll" })
             File.Copy(Path.Combine(args[1], file), Path.Combine(AppContext.BaseDirectory, file), true);
         Run(Path.GetFullPath(args[0]));
@@ -20,7 +21,7 @@ internal static class Program
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void Run(string root)
     {
-        string fixture = Path.Combine(Path.GetTempPath(), "ai", DateTime.Now.ToString("yyyyMMdd"), "mir2-ui-overlay-tests-" + Guid.NewGuid().ToString("N"));
+        string fixture = Path.Combine(TestWorkspace.RunDirectory, "fixture");
         Directory.CreateDirectory(Path.Combine(fixture, "Localization"));
         File.Copy(Path.Combine(root, "Client", "Localization", "Overlay.zh-CN.json"), Path.Combine(fixture, "Localization", "Overlay.zh-CN.json"));
         Directory.SetCurrentDirectory(fixture);
@@ -77,14 +78,31 @@ internal static class Program
 
         var settings = typeof(OptionDialog).Assembly.GetType("Client.Settings")!;
         settings.GetMethod("Load")!.Invoke(null, null);
-        Check(settings.GetField("AutoPickUp") == null && typeof(OptionDialog).GetField("AutoPickUpBox") == null
-            && File.ReadAllText("Mir2Config.ini").Contains("AutoPickUp=True"),
-            "legacy AutoPickUp=true is harmless: the setting and standalone option no longer exist");
+        var stepSetting = settings.GetField("AutoPickUp")!;
+        Check((bool)stepSetting.GetValue(null)!, "step pickup restores the saved INI preference");
         var sellSetting = settings.GetField("AutoSellNormalEquipment")!;
         var repairSetting = settings.GetField("AutoSpecialRepairEquipment")!;
         var weightGuardSetting = settings.GetField("AutoPickWeightProtection")!;
         sellSetting.SetValue(null, true); repairSetting.SetValue(null, true); weightGuardSetting.SetValue(null, true);
         using var options = new OptionDialog();
+        options.AutoPickUpBox.Sound = SoundList.None;
+        options.AutoPickUpBox.Checked = true;
+        options.AutoPickUpBox.OnMouseClick(new MouseEventArgs(MouseButtons.Left, 1, 1, 1, 0));
+        Check(!(bool)stepSetting.GetValue(null)! && File.ReadAllText("Mir2Config.ini").Contains("AutoPickUp=False"),
+            "step pickup switch saves independently and immediately");
+        Check(options.AutoPickUpBox.Hint.Contains("手札") && options.AutoPickUpBox.Hint.Contains("脚下"),
+            "step pickup tooltip explains both independent pickup controls");
+        using var inventory = new InventoryDialog();
+        foreach (var (tab, indices, caption) in new[] {
+            (inventory.ItemButton, new[] { 197, 737 }, "物品一"),
+            (inventory.ItemButton2, new[] { 738, 169, 168 }, "物品二"),
+            (inventory.QuestButton, new[] { 739, 198 }, "任务物品") })
+            foreach (int index in indices)
+            {
+                tab.Index = index; Prepare(tab);
+                Check(tab.Controls.Last().Controls.OfType<MirLabel>().Single().Text == caption,
+                    $"inventory tab {caption} is localized in art state {index}");
+            }
         var services = options.Controls.OfType<NpcAutoServiceOptions>().Single();
         Check(services.AutoSellBox.Checked && services.AutoRepairBox.Checked && services.AutoPickWeightProtectBox.Checked, "NPC and pickup option switches reflect the existing enabled settings");
         Check(services.Location.Y >= 350 && services.Controls.All(c => c.Location.Y >= 0 && c.Location.Y + c.Size.Height <= services.Size.Height)

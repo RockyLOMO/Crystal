@@ -23,6 +23,7 @@ public static class Classic176HUDLayout
     private static readonly Color Ink = Color.FromArgb(235, 216, 173);
 
     public static bool IsClassicChat(ChatDialog chat) => chat?.Library == Libraries.Prguse176;
+    public static bool IsBottomExtension(MirControl control) => control is StoneWing or ExtensionDock;
     public static bool IsClassicBelt(BeltDialog belt) => belt?.Parent is GameScene scene &&
         scene.MainDialog.Library == Libraries.Prguse176;
 

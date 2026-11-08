@@ -16,7 +16,7 @@ namespace Client.MirScenes.Dialogs
     public sealed class NPCDialog : MirImageControl
     {
         public static Regex R = new Regex(@"<((.*?)\/(\@.*?))>");
-        public static Regex C = new Regex(@"{((.*?)\/(.*?))}");
+        public static Regex C = new Regex(@"{(([^{}]*)\/([^/{}]*))}");
         public static Regex L = new Regex(@"\(((.*?)\/(.*?))\)");
         public static Regex B = new Regex(@"<<((.*?)\/(\@.*?))>>");
 
@@ -438,7 +438,7 @@ namespace Client.MirScenes.Dialogs
 
                 int oldLength = currentLine.Length;
 
-                foreach (Match match in matchList.OrderBy(o => o.Index).ToList())
+                foreach (Match match in NpcInlineTextLayout.OuterMatches(matchList))
                 {
                     int offSet = oldLength - currentLine.Length;
 
@@ -488,14 +488,12 @@ namespace Client.MirScenes.Dialogs
                         currentLine = currentLine.Remove(capture.Index - 1 - offSet, capture.Length + 2).Insert(capture.Index - 1 - offSet, txt);
                         int start = capture.Index - 1 - offSet;
 
-                        if (R.Match(match.Value).Success)
-                            NewButton(txt, action, TextLabel[i].Location);
-
-                        if (C.Match(match.Value).Success)
-                            NewColour(txt, action, TextLabel[i].Location);
-
-                        if (L.Match(match.Value).Success)
-                            NewButton(txt, null, TextLabel[i].Location, action);
+                        switch (match.Value[0])
+                        {
+                            case '<': NewButton(txt, action, TextLabel[i].Location); break;
+                            case '{': NewColour(txt, action, TextLabel[i].Location); break;
+                            case '(': NewButton(txt, null, TextLabel[i].Location, action); break;
+                        }
                         styledSpans.Add(new NpcInlineTextLayout.Span(start, txt.Length, TextButtons[^1]));
                     }
                 }
@@ -1462,6 +1460,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 295,
                 Sound = SoundList.ButtonA,
+                Hint = DbLanguage.Chinese ? "连续处理：放入物品后自动确认，再次点击关闭。" : "Continuous processing: automatically confirm each item placed here. Click again to disable.",
             };
             HoldButton.Click += (o, e) => Hold = !Hold;
 

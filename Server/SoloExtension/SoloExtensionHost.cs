@@ -135,11 +135,11 @@ namespace Server.SoloExtension
                 File.WriteAllText(quartermasterPath,
                     "[@MAIN]\r\n" +
                     "#SAY\r\n" +
-                    "欢迎来到【玛法军需处】！独行玛法，后勤至关重要。\\\r\n" +
-                    "我可为你安全回收包袱中的白板杂物（自动保护精良以上、极品、铭文与名牌装备），\\\r\n" +
-                    "也可一键满耐久全身特修主将与英雄装备，或呼叫行军帐与猎魔手札。\\\r\n\\\r\n" +
-                    "<【一键安全回收杂物】/@Solo_QuickSell>    <【主将+英雄全身特修】/@Solo_QuickRepair>\\\r\n" +
-                    "<【打开玛法行军帐】/@CAMP_MENU>            <【翻阅玛法猎魔手札】/@TOME_MAIN>\\\r\n" +
+                    "欢迎来到【玛法军需处】！独行玛法，后勤至关重要。\r\n" +
+                    "我可为你安全回收包袱中的白板杂物（自动保护精良以上、极品、铭文与名牌装备），\r\n" +
+                    "也可一键满耐久全身特修主将与英雄装备，或呼叫行军帐与猎魔手札。\r\n\r\n" +
+                    "<【一键安全回收杂物】/@Solo_QuickSell>    <【主将+英雄全身特修】/@Solo_QuickRepair>\r\n" +
+                    "<【打开玛法行军帐】/@CAMP_MENU>            <【翻阅玛法猎魔手札】/@TOME_MAIN>\r\n" +
                     "<离开/@exit>\r\n");
             }
 
@@ -150,11 +150,11 @@ namespace Server.SoloExtension
                 File.WriteAllText(smithPath,
                     "[@MAIN]\r\n" +
                     "#SAY\r\n" +
-                    "老夫乃【盟重神匠】！打到多余的同名祖玛、赤月或沃玛装备莫要丢弃。\\\r\n" +
-                    "只需在背包中放入 3 件同名装备与 50,000 金币，\\\r\n" +
-                    "老夫便可为你三合一重铸，保底赋予【稀有】及以上极品词条，更有 20% 概率觉醒【神话・传世】特殊属性！\\\r\n\\\r\n" +
-                    "<【同名装备三合一重铸 (50,000金币)】/@Solo_Reforge3>\\\r\n" +
-                    "<【一键安全回收杂物】/@Solo_QuickSell>    <【主将+英雄全身特修】/@Solo_QuickRepair>\\\r\n" +
+                    "老夫乃【盟重神匠】！打到多余的同名祖玛、赤月或沃玛装备莫要丢弃。\r\n" +
+                    "只需在背包中放入 3 件同名装备与 50,000 金币，\r\n" +
+                    "老夫便可为你三合一重铸，保底赋予【稀有】及以上极品词条，更有 20% 概率觉醒【神话・传世】特殊属性！\r\n\r\n" +
+                    "<【同名装备三合一重铸 (50,000金币)】/@Solo_Reforge3>\r\n" +
+                    "<【一键安全回收杂物】/@Solo_QuickSell>    <【主将+英雄全身特修】/@Solo_QuickRepair>\r\n" +
                     "<离开/@exit>\r\n");
             }
 
@@ -164,10 +164,14 @@ namespace Server.SoloExtension
                 File.WriteAllText(campTentScriptPath,
                     "[@MAIN]\r\n" +
                     "#SAY\r\n" +
-                    "篝火正旺，行军大帐已稳固扎立。\\\r\n\\\r\n" +
-                    "<【打开玛法行军帐界面】/@Camp_Menu>\\\r\n" +
+                    "篝火正旺，行军大帐已稳固扎立。\r\n\r\n" +
+                    "<【打开玛法行军帐界面】/@Camp_Menu>\r\n" +
                     "<离开/@exit>\r\n");
             }
+
+            SoloNpcScriptText.Migrate(quartermasterPath);
+            SoloNpcScriptText.Migrate(smithPath);
+            SoloNpcScriptText.Migrate(campTentScriptPath);
 
             SpawnSoloNpcIfAbsent(envir, "0", "玛法军需官", quartermasterScript, new Point(328, 265), 15);
             SpawnSoloNpcIfAbsent(envir, "3", "玛法军需官", quartermasterScript, new Point(333, 325), 15);

@@ -1,4 +1,5 @@
 using Client.MirGraphics;
+using System.Text.RegularExpressions;
 
 namespace Client.MirControls;
 
@@ -7,6 +8,18 @@ internal static class NpcInlineTextLayout
 {
     internal readonly record struct Span(int Start, int Length, MirLabel Label);
     private const TextFormatFlags Format = TextFormatFlags.SingleLine | TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix;
+
+    internal static IEnumerable<Match> OuterMatches(IEnumerable<Match> matches)
+    {
+        int end = 0;
+        foreach (var match in matches.OrderBy(m => m.Index).ThenByDescending(m => m.Length))
+        {
+            // Brackets and slashes inside an outer color/link run are display text.
+            if (match.Index < end) continue;
+            end = match.Index + match.Length;
+            yield return match;
+        }
+    }
 
     internal static void Apply(MirLabel line, string text, List<Span> spans)
     {

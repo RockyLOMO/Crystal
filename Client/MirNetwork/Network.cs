@@ -251,5 +251,16 @@ namespace Client.MirNetwork
             if (_sendList != null && p != null)
                 _sendList.Enqueue(p);
         }
+
+        public static void SendKeepAliveDirect()
+        {
+            if (_client == null || !_client.Connected) return;
+            try
+            {
+                var p = new ClientPackets.KeepAlive();
+                BeginSend(new List<byte>(p.GetPacketBytes()));
+            }
+            catch { }
+        }
     }
 }

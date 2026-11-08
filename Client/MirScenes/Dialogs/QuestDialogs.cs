@@ -1225,7 +1225,8 @@ namespace Client.MirScenes.Dialogs
                 t.Dispose();
 
             foreach (MirLabel t in _textLabel.Where(t => t != null))
-                t.Text = "";
+                t.Dispose();
+            Array.Clear(_textLabel);
 
             _textButtons.Clear();
 
@@ -1257,7 +1258,7 @@ namespace Client.MirScenes.Dialogs
                     DrawFormat = TextFormatFlags.WordBreak,
                     Visible = true,
                     Parent = this,
-                    Size = new Size(Size.Width, 20),
+                    Size = new Size(Math.Max(1, Size.Width - (title ? 15 : 0)), 20),
                     Location = new Point(title ? 15 : 0, 0 + (i - TopLine) * 15 + adjust),
                     NotControl = true
                 };
@@ -1274,6 +1275,7 @@ namespace Client.MirScenes.Dialogs
                 }
 
                 string currentLine = lines[i];
+                var styledSpans = new List<NpcInlineTextLayout.Span>();
 
                 List<Match> matchList = C.Matches(currentLine).Cast<Match>().ToList();
 
@@ -1284,17 +1286,17 @@ namespace Client.MirScenes.Dialogs
                 
                 int oldLength = currentLine.Length;
 
-                foreach (Match match in matchList.OrderBy(o => o.Index).ToList())
+                foreach (Match match in NpcInlineTextLayout.OuterMatches(matchList))
                 {
                     int offSet = oldLength - currentLine.Length;
 
                     // Check if this is a link type
                     string linkType = null;
-                    if (NPCDialog.MonsterLink.Match(match.Value).Success)
+                    if (match.Groups["idx"].Success && NPCDialog.MonsterLink.Match(match.Value).Success)
                         linkType = "MONSTER";
-                    else if (NPCDialog.NPCLink.Match(match.Value).Success)
+                    else if (match.Groups["idx"].Success && NPCDialog.NPCLink.Match(match.Value).Success)
                         linkType = "NPC";
-                    else if (NPCDialog.ItemLink.Match(match.Value).Success)
+                    else if (match.Groups["idx"].Success && NPCDialog.ItemLink.Match(match.Value).Success)
                         linkType = "ITEM";
 
                     if (linkType != null)
@@ -1309,28 +1311,39 @@ namespace Client.MirScenes.Dialogs
                         int matchLength = match.Length;
 
                         currentLine = currentLine.Remove(matchStart, matchLength).Insert(matchStart, displayName);
-                        string text2 = currentLine.Substring(0, matchStart);
-                        Point offset = NPCDialog.CalculateLinkOffset(text2, _textLabel[i - TopLine]);
-
-                        Point anchorPoint = _textLabel[i - TopLine].Location.Add(offset);
-                        NewLink(displayName, linkType, linkIdx, anchorPoint);
+                        NewLink(displayName, linkType, linkIdx, _textLabel[i - TopLine].Location);
+                        MatchLineFont(_textButtons[^1], _textLabel[i - TopLine]);
+                        styledSpans.Add(new NpcInlineTextLayout.Span(matchStart, displayName.Length, _textButtons[^1]));
 
                         continue;
                     }
 
                     Capture capture = match.Groups[1].Captures[0];
-                    string[] values = capture.Value.Split('/');
-                    currentLine = currentLine.Remove(capture.Index - 1 - offSet, capture.Length + 2).Insert(capture.Index - 1 - offSet, values[0]);
-                    string text = currentLine.Substring(0, capture.Index - 1 - offSet) + " ";
-                    Size size = TextRenderer.MeasureText(CMain.Graphics, text, _textLabel[i - TopLine].Font, _textLabel[i - TopLine].Size, TextFormatFlags.TextBoxControl);
+                    int slash = capture.Value.LastIndexOf('/');
+                    string caption = capture.Value[..slash];
+                    string colour = capture.Value[(slash + 1)..];
+                    int start = capture.Index - 1 - offSet;
+                    currentLine = currentLine.Remove(start, capture.Length + 2).Insert(start, caption);
 
                     if (C.Match(match.Value).Success)
-                        NewColour(values[0], values[1], _textLabel[i - TopLine].Location.Add(new Point(size.Width - 10, 0)));
+                    {
+                        NewColour(caption, colour, _textLabel[i - TopLine].Location);
+                        MatchLineFont(_textButtons[^1], _textLabel[i - TopLine]);
+                        styledSpans.Add(new NpcInlineTextLayout.Span(start, caption.Length, _textButtons[^1]));
+                    }
                 }
 
-                _textLabel[i - TopLine].Text = currentLine;
+                NpcInlineTextLayout.Apply(_textLabel[i - TopLine], currentLine, styledSpans);
                 _textLabel[i - TopLine].MouseWheel += QuestMessage_MouseWheel;
             }
+        }
+
+        private static void MatchLineFont(MirLabel label, MirLabel line)
+        {
+            using var font = new Font(line.Font.Name, line.Font.Size * MirControl.FontDpiX / 96f, line.Font.Style);
+            var oldFont = label.Font;
+            label.Font = font;
+            oldFont.Dispose();
         }
 
         private void NewColour(string text, string colour, Point p)

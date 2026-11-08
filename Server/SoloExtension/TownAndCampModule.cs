@@ -12,18 +12,18 @@ namespace Server.SoloExtension
     public static class TownAndCampModule
     {
         public const uint CampSetGoldCost = 2000;
-        public const ushort DefaultCampTentNpcImage = 55; // Data\NPC\55.Lib 圣火营火盆(12帧动态火焰)
+        public const ushort DefaultCampTentNpcImage = 164; // Data\NPC\164.Lib 红龙战旗，11 帧飘动。
         public const string CampTentNpcScript = "00SoloCampTent";
 
         public static readonly (ushort Image, string Name)[] CampVisualStyles =
         {
-            (55, "圣火营火盆 (动态火焰)"),
+            (164, "红龙行军战旗 (动态飘扬)"),
             (85, "行军火盆与兵器架 (动态)"),
-            (42, "熊熊篝火堆 (动态火焰)"),
+            (221, "布制行军帐篷"),
             (156, "龙首圣火图腾柱"),
-            (175, "玛法龙纹大帅旗 (动态飘扬)"),
-            (214, "蓝晶传送祭坛"),
-            (215, "紫晶次元祭坛")
+            (175, "红色铭文战旗 (动态飘扬)"),
+            (214, "蓝晶传送大祭坛"),
+            (215, "紫晶次元大祭坛")
         };
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, NPCObject> ActiveCampTents =

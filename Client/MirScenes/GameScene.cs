@@ -1159,7 +1159,8 @@ namespace Client.MirScenes
 
         protected internal override void DrawControl()
         {
-            if (MapControl != null && !MapControl.IsDisposed)
+            if (MapControl == null || User == null) return;
+            if (!MapControl.IsDisposed)
                 MapControl.DrawControl();
             base.DrawControl();
 
@@ -11105,8 +11106,8 @@ namespace Client.MirScenes
                     light = ob.Light;
 
                     int lightRange = light % 15;
-                    if (lightRange >= DXManager.Lights.Count)
-                        lightRange = DXManager.Lights.Count - 1;
+                    lightRange = LocalNightVisibility.Range(lightRange, DXManager.Lights.Count, ob == MapObject.User,
+                        setting, MapObject.User.Poison.HasFlag(PoisonType.Blindness));
 
                     p = ob.DrawLocation;
 
@@ -11470,6 +11471,8 @@ namespace Client.MirScenes
 
             if (CMain.Time < InputDelay || User.Poison.HasFlag(PoisonType.Paralysis) || User.Poison.HasFlag(PoisonType.LRParalysis) || User.Poison.HasFlag(PoisonType.Frozen) || User.Fishing) return;
 
+            StepAutoPickup.Process(this);
+
             if (User.NextMagic != null && !User.RidingMount)
             {
                 UseMagic(User.NextMagic, User);
@@ -11534,10 +11537,12 @@ namespace Client.MirScenes
 
 
             MirDirection direction;
-            if (MouseControl == this)
+            bool throughBottomHud = BottomHudInput.CanContinue(GameScene.Scene, MouseControl, MapButtons);
+            if (MouseControl == this || throughBottomHud)
             {
+                if (throughBottomHud) MouseLocation = CMain.MPoint;
                 direction = MouseDirection();
-                if (AutoRun)
+                if (AutoRun && !throughBottomHud)
                 {
                     if (CanRun(direction, out direction) && CMain.Time > GameScene.NextRunTime && (!User.Sneaking || (User.Sneaking && User.Sprint))) //slow remove
                     {

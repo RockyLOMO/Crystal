@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup Condition="$([System.String]::Copy('$(MSBuildProjectDirectory)').EndsWith('-tests'))">
+    <Compile Include="$(MSBuildThisFileDirectory)TestWorkspace.cs" Link="TestWorkspace.cs" />
+  </ItemGroup>
+</Project>

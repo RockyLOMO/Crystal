@@ -1,0 +1,132 @@
+{
+  "CheckedAt": "2026-11-07T22:17:36.3810821+08:00",
+  "SourceCommit": "fe07f6ae61371bb626a9645bb8bcc16a1398556e",
+  "WorkingTreeChanges": "Uncommitted",
+  "Tests": {
+    "UiOverlay": 34,
+    "ClientInputAndTomePacket": 25,
+    "TomeRangeAndNpcMigration": 39,
+    "ClassicHudAndNpcRendering": 331,
+    "Total": 429,
+    "PlayerLocalizationEntries": 3340,
+    "OverlayProfiles": 93,
+    "OverlayContextMappings": 219,
+    "RuntimeDependencyCombinations": "PASS: published Client.dll/Server.Library.dll with preserved runtime Shared.dll"
+  },
+  "Build": {
+    "Client": "Release win-x64 self-contained PASS",
+    "Server": "Release win-x64 framework-dependent PASS",
+    "Warnings": "Existing WindowsBase/CS0168/CS0108/CA2200 warnings, no build errors"
+  },
+  "Deployment": {
+    "CheckedAt": "2026-11-07T22:16:14.7981588+08:00",
+    "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614",
+    "ChangedFiles": [
+      {
+        "Target": "D:\\private-server\\mir2-client\\Client.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\Client\\Client.dll",
+        "Before": "693E551B0446CE9CC0AB5F3353B56D182F72E97BD5C6592EF346EEFC6451A3EB",
+        "SHA256": "39FCE63020648CC9EED76B0FA211B8D154E08133DDF088F5E55C91499C6A2B86"
+      },
+      {
+        "Target": "D:\\private-server\\mir2-client\\Client.pdb",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\Client\\Client.pdb",
+        "Before": "7BC86BCDA222607D8FA82D9871E826186289B683B59FF39C8B05CDE29700D693",
+        "SHA256": "78BA32A8CDB4C38DCA34E9A5F0F7276F31AB90227D7B9933E24C7303D25C3E11"
+      },
+      {
+        "Target": "D:\\private-server\\mir2-client\\Localization\\Chinese.json",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\Client\\Localization\\Chinese.json",
+        "Before": "6D8DC653039F45727302F222BC55DF6B7BE134500438FE8DFCF00F7B9015A95E",
+        "SHA256": "7DA63580B2114D9B5EEDEA4353268A0CC0BAA3CD9B92EDE434192796BBFE9C47",
+        "PublishedSHA256": "FF2F4F89DB0882862DF579E1615F1163D7BA01D96AF51F01B19D867296AFED48",
+        "StartupNormalization": "Existing Shared/Language.cs SaveClientLanguage reserializes JSON; omits unsupported pre-existing HeroDesummonCountdown key. Other 1089 text values and all Enum entries are unchanged; updated Slaying hint retained."
+      },
+      {
+        "Target": "D:\\private-server\\mir2-client\\Localization\\Overlay.zh-CN.json",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\Client\\Localization\\Overlay.zh-CN.json",
+        "Before": "3A1DB2C617B43ADE1232A2F22F2D5EC6403D81B3D147859C14CF426FBBF7048B",
+        "SHA256": "7A7AAF96760D495B9FEDDA7489738A644A8CF0018E6EB4BA3DA73BA58085F6DF"
+      },
+      {
+        "Target": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\Server\\Server.Library.dll",
+        "Before": "0BAE98F663B9A7BEB043E0D6C86F42DC37599BA9168A1BECBCF05ABC2EA44E6A",
+        "SHA256": "F9368A3680E76280376810DD241E3F564A3D192695204A22D7019E46DA888EA5"
+      },
+      {
+        "Target": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\Server\\Server.Library.pdb",
+        "Before": "AF392876AFDA8A4E23B3BB1996EFCA8309BA2156E8A856B50FC5CF7CC47D871E",
+        "SHA256": "9AD60EE104E5308C942DF76CDDDD7C4366C390FE92622352B718D7220430EF92"
+      },
+      {
+        "Target": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\ClientVersion\\Client.dll",
+        "Before": "693E551B0446CE9CC0AB5F3353B56D182F72E97BD5C6592EF346EEFC6451A3EB",
+        "SHA256": "39FCE63020648CC9EED76B0FA211B8D154E08133DDF088F5E55C91499C6A2B86"
+      },
+      {
+        "Target": "D:\\private-server\\mir2\\Server\\Envir\\NPCs\\00SoloQuartermaster.txt",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\NPCs\\00SoloQuartermaster.txt",
+        "Before": "4070318891DB8EBC348FAA6762A11DC2E47A04A52D0AB2BEE83CA2707AD18F28",
+        "SHA256": "7BCD45259A7E8022D7001DEB20EADA35E813BA6931537A131B322618D24B4AE4"
+      },
+      {
+        "Target": "D:\\private-server\\mir2\\Server\\Envir\\NPCs\\00SoloMasterSmith.txt",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\NPCs\\00SoloMasterSmith.txt",
+        "Before": "54C76DBE1165DDE0CBEDDC30F147227B813E8BE54F25EE7998740A3C2A178F10",
+        "SHA256": "D89EC2F4B1768A8D4A42BABB77688D72EA60F765ABCAE7E64CD7E5000D39525C"
+      },
+      {
+        "Target": "D:\\private-server\\mir2\\Server\\Envir\\NPCs\\00SoloCampTent.txt",
+        "Backup": "D:\\private-server\\mir2\\backups\\gameplay-fixes-20261107-221614\\NPCs\\00SoloCampTent.txt",
+        "Before": "CB85029AEF8E63DDF265DCD987DB7FF62A5DA772C69FE3A0EF13370CCF91D4C7",
+        "SHA256": "9363FC9A39C2ED189C66198D683A30C535DD481DD0C9E6A644FCB3758628D5C7"
+      }
+    ],
+    "ProtectedFilesUnchanged": true,
+    "DistributionWrites": false,
+    "RealGameplay": "NOT VERIFIED"
+  },
+  "ConsistentDataBackup": "D:\\private-server\\mir2\\backups\\20261107-141609Z",
+  "Server": {
+    "ProcessId": 15404,
+    "Restarted": true,
+    "PreRestartConnections": 0,
+    "GracefulShutdown": true,
+    "Handshake": "PASS",
+    "Version": "PASS",
+    "Heartbeat": "PASS"
+  },
+  "ClientSmoke": {
+    "ClientResponding": true,
+    "ErrorBytesBefore": 709204,
+    "ErrorBytesAfter": 709204,
+    "NewErrorBytes": 0,
+    "ClientGracefulExit": true
+  },
+  "StepPickup": {
+    "Restored": true,
+    "ConfigKey": "Game/AutoPickUp",
+    "ExistingPreferencePreserved": true,
+    "RuntimePreference": false,
+    "IndependentOfTome": true
+  },
+  "SlayingDiagnosis": {
+    "Character": "女爆人",
+    "CharacterLevel": 16,
+    "SkillLevel": 1,
+    "Experience": 28,
+    "RequiredCharacterLevel": 17,
+    "TargetExperience": 1100,
+    "IsUpstreamRule": true,
+    "OfflineActualMethodLevel16Calls": 1000,
+    "OfflineActualMethodLevel16Result": 28,
+    "OfflineActualMethodLevel17Result": 40,
+    "CharacterDataModified": false
+  },
+  "RealGameplayAcceptance": "NOT VERIFIED",
+  "Rollback": "Exit client and gracefully stop server, then restore each Target from Backup in deployment manifest. Data backup kept separately; no rollback drill performed.",
+  "PostSmokeRuntimeHashVerification": "PASS: 10 targets, including known client startup localization serialization"
+}
