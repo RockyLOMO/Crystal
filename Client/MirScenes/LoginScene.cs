@@ -137,18 +137,16 @@ namespace Client.MirScenes
             C.ClientVersion p = new C.ClientVersion();
             try
             {
-                byte[] sum;
                 using (MD5 md5 = MD5.Create())
-                using (FileStream stream = File.OpenRead(Application.ExecutablePath))
-                    sum = md5.ComputeHash(stream);
-
-                p.VersionHash = sum;
-                    Network.Enqueue(p);
+                using (FileStream stream = new FileStream(Application.ExecutablePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    p.VersionHash = md5.ComputeHash(stream);
             }
             catch (Exception ex)
             {
+                p.VersionHash ??= new byte[16];
                 if (Settings.LogErrors) CMain.SaveError(ex.ToString());
             }
+            Network.Enqueue(p);
         }
         private void ClientVersion(S.ClientVersion p)
         {
