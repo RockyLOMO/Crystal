@@ -1,6 +1,6 @@
 {
-  "CheckedAtUtc": "2026-11-08T06:09:06.717716+00:00",
-  "Status": "deployed-running",
+  "CheckedAtUtc": "2026-11-08T12:26:56.574850+00:00",
+  "Status": "server-running-client-closed",
   "Source": {
     "Path": "D:\\projs\\mir2",
     "Repository": "https://github.com/Suprcode/Crystal",
@@ -8,9 +8,9 @@
     "Fork": "https://github.com/RockyLOMO/Crystal",
     "Branch": "rx-server",
     "CommitMeaning": "Commit is upstream base; local maintained changes are recorded in Git history.",
-    "DeployedSourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
+    "DeployedSourceHead": "41c91584e4ad8a6748f3ae3e2f587a4db4224e03",
     "IncludesUncommittedChanges": true,
-    "ClientDeployedSourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
+    "ClientDeployedSourceHead": "41c91584e4ad8a6748f3ae3e2f587a4db4224e03",
     "ClientIncludesUncommittedChanges": true
   },
   "Runtime": {
@@ -47,14 +47,17 @@
     "PlayerTextStructure": "PASS: 3340 entries",
     "LatestVersionHandshake": "PASS",
     "LatestKeepAlive": "PASS",
-    "LatestClientStartup": "Responding; initial 4-second smoke had no new errors, later two D3DERR_DEVICELOST entries (1028 bytes); visual recovery not verified",
+    "LatestClientStartup": "NOT RUN: user requested no automatic Client launch",
     "StartupMapWarnings": "None observed during this run",
     "LatestSoundHashCheck": "1608 unchanged",
     "LatestEnvirTextHashCheck": "2600 unchanged",
     "ClientSettingsIntegration": "PASS: 2 checks",
     "LatestLibMetadataCheck": "1440 unchanged",
     "UIOverlay": "PASS: 93 rules / 166 regions / 24 interaction checks",
-    "LordRunFrontEndChecks": 670
+    "LordRunFrontEndChecks": 670,
+    "QuestDropGatePolishChecks": 785,
+    "LatestClientBuild": "PASS",
+    "NativeRoleRestoreChecks": 863
   },
   "Content": {
     "DatabaseRelease": "29.01.25",
@@ -97,10 +100,9 @@
   },
   "CurrentProcessState": {
     "ServerRunning": true,
-    "ClientRunning": true,
-    "ServerProcessId": 12072,
-    "ClientProcessId": 19420,
-    "Reason": "Lord/night/obstacle-run/classic-front-end deployed and started; live gameplay awaiting user acceptance"
+    "ClientRunning": false,
+    "ServerProcessId": 25228,
+    "Reason": "Native role selection/creation deployed; client deliberately not launched per user instruction"
   },
   "Localization": {
     "DetailedReport": "README.md",
@@ -146,7 +148,7 @@
     "GracefulShutdown": "PASS",
     "FinalRunning": false
   },
-  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\lord-run-frontend-20261108-140602",
+  "LatestProgramBackup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516",
   "ClientUIOverlay": {
     "Evidence": "ui-overlay-validation.json",
     "ClientBackup": "D:\\private-server\\mir2\\backups\\before-ui-overlay-20261031-232845",
@@ -193,8 +195,8 @@
     "VersionMirrorsUpdated": true,
     "ServerStarted": true,
     "DistributionUpdated": false,
-    "ChecksPassed": 670,
-    "GameplayAcceptance": "Third night radius, immediate wall-parallel right run and classic front-end deployed; live recheck pending",
+    "ChecksPassed": 785,
+    "GameplayAcceptance": "Native opening and UI polish deployed; actual login and drops pending",
     "RuntimeAcceptance": "classic176-hud-validation.json#RuntimeAcceptance",
     "AlignmentBackup": "D:\\private-server\\mir2\\backups\\classic176-alignment-20261106-214255",
     "DetailLayoutBackup": "D:\\private-server\\mir2\\backups\\classic176-details-20261106-220426",
@@ -286,5 +288,28 @@
       "FullScreen": true,
       "Cause": "NOT VERIFIED; preserve existing fullscreen preference; no GPU recovery code changed in this deployment"
     }
+  },
+  "QuestDropGatePolish": {
+    "Evidence": "classic176-hud-validation.json#QuestDropGatePolish",
+    "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404",
+    "DataBackup": "D:\\private-server\\mir2\\backups\\20261108-104407Z",
+    "CheckedAt": "2026-11-08T18:46:39.4413226+08:00",
+    "ChecksPassed": 785,
+    "ClientProcessId": 20980,
+    "ServerProcessId": 25228,
+    "DistributionUpdated": false,
+    "GameplayAcceptance": "NOT VERIFIED"
+  },
+  "NativeRoleRestore": {
+    "Evidence": "classic176-hud-validation.json#NativeRoleRestore",
+    "Backup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516",
+    "CheckedAt": "2026-11-08T20:25:16.8111913+08:00",
+    "ChecksPassed": 863,
+    "ClientUpdated": true,
+    "ClientStarted": false,
+    "ServerRestarted": false,
+    "ServerProcessId": 25228,
+    "DistributionUpdated": false,
+    "GameplayAcceptance": "NOT VERIFIED"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "CheckedAt": "2026-11-08T14:09:06.680567+08:00",
-  "Status": "deployed-running-awaiting-live-gameplay",
-  "SourceHead": "6cbb0d5a77336c653624ef0752e352d77f38aaab",
+  "CheckedAt": "2026-11-08T20:25:16.8111913+08:00",
+  "Status": "deployed-client-closed-awaiting-manual-acceptance",
+  "SourceHead": "41c91584e4ad8a6748f3ae3e2f587a4db4224e03",
   "IncludesUncommittedChanges": true,
   "SourceArt": [
     {
@@ -1999,30 +1999,539 @@
     "InitialCandidateSourceHead": "556110b0b3df47056ae70a4c0f87d523ab96026f"
   },
   "CurrentAcceptance": {
-    "Evidence": "LordRunFrontEnd",
-    "Startup": {
-      "CheckedAt": "2026-11-08T14:07:43.4036715+08:00",
-      "ClientProcessId": 19420,
-      "ClientResponding": true,
-      "ServerProcessId": 12072,
-      "ErrorBytesBefore": 963161,
-      "ErrorBytesAfter": 963161,
-      "Gameplay": "NOT VERIFIED",
+    "Evidence": "NativeRoleRestore",
+    "ClientStarted": false,
+    "ClientRunning": false,
+    "ServerRunning": true,
+    "ServerProcessId": 25228,
+    "LiveRoleAcceptance": "NOT VERIFIED"
+  },
+  "QuestDropGatePolish": {
+    "CheckedAt": "2026-11-08T18:46:39.4413226+08:00",
+    "Status": "deployed-running-awaiting-live-acceptance",
+    "SourceHead": "41c91584e4ad8a6748f3ae3e2f587a4db4224e03",
+    "IncludesUncommittedChanges": true,
+    "Checks": {
+      "Frontend": 302,
+      "QuestDrop": 31,
+      "HUDAndGameplay": 367,
+      "ClientInput": 25,
+      "UIOverlay": 34,
+      "LordBalance": 26
+    },
+    "ChecksPassed": 785,
+    "PublishedDLLWithRuntimeShared": {
+      "Frontend": 302,
+      "QuestDrop": 31,
+      "HUDAndGameplay": 367,
+      "ClientInput": 25,
+      "UIOverlay": 34,
+      "LordBalance": 26
+    },
+    "ClientReleasePublish": "PASS",
+    "ServerReleasePublish": "PASS",
+    "QuestDrop": {
+      "Scope": "Item leaf with Q/QuestRequired or dedicated ItemType.Quest; no gold or group-parent multiplier",
+      "Formula": "winning rolls min(2,effective rate), compared with previous single winning roll; effective global/owner denominator unchanged",
+      "Example": "1/5 -> 2/5; 1/2 -> 100%; already guaranteed stays guaranteed",
+      "Unchanged": "ordinary item/gold probability formula, group rules, drop counts, Q task ownership/completion/quest bag checks",
+      "RuntimeAudit": {
+        "QuestItemTypes": 65,
+        "QuestTypedDropLinesWithQ": 203,
+        "QuestTypedDropLinesWithoutQ": 3,
+        "NonQLines": [
+          "Provinces/CannibalPlant.txt:7 CannibalPoison 1/20",
+          "TaoVillage/TreePath/RedValley/VenomSpider.txt:87 TraineeRing 1/180",
+          "TaoVillage/TreePath/RedValley/VenomSpider0.txt:99 TraineeRing 1/180"
+        ]
+      },
+      "LiveDropTableModified": false
+    },
+    "Gate": {
+      "Source": "ten-year ChrSel.wil:22 background,23..32 patches",
+      "Placement": [
+        153,
+        96
+      ],
+      "PatchSize": [
+        496,
+        361
+      ],
+      "AtlasFrames": "3..12 full 800x600 composites",
+      "AtlasCount": 13,
+      "FrameDelayMs": 120,
+      "PlaybackSteps": 12,
+      "DurationMs": 1440,
+      "FinalFrameHoldMs": 360,
+      "SelectionBackground": "opened final gate, atlas entry1",
+      "Trigger": "original successful LoginSuccess packet only",
+      "Completion": "original AfterAnimation event, once",
+      "DuplicateSuccessSuppressed": true,
+      "LegacyThreeImageFallback": "PASS: static gate, finite single transition",
+      "PreserveOpaqueNearBlack": [
+        8,
+        0,
+        0
+      ],
+      "PixelsRoundTripVerified": true
+    },
+    "UI": "cached gradient panels, fine double metal edges, narrow stone rims, four button states, class/gender selection highlighting retained",
+    "RoleRestorationReview": {
+      "Requested": "selection and creation after login",
+      "ImplementedOriginalRestoration": false,
+      "Current": "four-card adaptation, original five classes/both genders/events retained",
+      "References": [
+        "classic176-original-select-reference.png",
+        "classic176-original-create-reference.png"
+      ],
+      "SourceSelect": "ten-year Prguse65,800x600,two slots",
+      "SourceCreate": "ten-year Prguse73,300x417",
+      "Recommendation": "native two-slot cave with two pages to preserve four roles; original stone create frame adapted for five classes; do not truncate/save-migrate roles"
+    },
+    "Deployment": {
+      "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404",
+      "DataBackup": "D:\\private-server\\mir2\\backups\\20261108-104407Z",
+      "Files": [
+        {
+          "Source": "D:\\projs\\mir2\\Build\\QuestGatePolish-20261108\\Client\\Client.dll",
+          "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404\\Client\\Client.dll",
+          "BeforeHash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE",
+          "AfterHash": "69A238CD24037269B9C263486F5A8A3082B914E6FB2378DA66E0AED5F89D5F95"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\QuestGatePolish-20261108\\Client\\Client.pdb",
+          "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404\\Client\\Client.pdb",
+          "BeforeHash": "4A129610281C08374F2B1DB0C87FB2834DF18C18AC213C8216E5D89674DB5945",
+          "AfterHash": "3A885F1239AABF062F3BA656C31CFAFBD2DD27502D3EC14832DACD395AB3C593"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\QuestGatePolish-20261108\\Server\\Server.Library.dll",
+          "Destination": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404\\Server\\Server.Library.dll",
+          "BeforeHash": "B60A7CD3FE9544FD51A0B2AE7193F941033B3B5F1883BF0027A70C78B43F04B4",
+          "AfterHash": "619BC731B1B61315BBC24AF1F2FA5B13D02F2B0DE3EF10AA4EE8634D931810CE"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\QuestGatePolish-20261108\\Server\\Server.Library.pdb",
+          "Destination": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404\\Server\\Server.Library.pdb",
+          "BeforeHash": "EF2FD8DF96A00CC045D7B376E2C8CC49D7DF6D9F50ACE02722681E2B706B14D8",
+          "AfterHash": "B6067F472585884978FFC617DB5409054E3D7ED5927D11C17A55A4A53227DB3F"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\QuestGatePolish-20261108\\Client\\Client.dll",
+          "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404\\ClientVersion\\Client.dll",
+          "BeforeHash": "50D75A51BF195FDC9B77BDAAED8F45565FD25FFDA4E5C0A755C97C9A1B9F0BEE",
+          "AfterHash": "69A238CD24037269B9C263486F5A8A3082B914E6FB2378DA66E0AED5F89D5F95"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\QuestGatePolish-20261108\\Assets\\Classic176FrontEnd.Lib",
+          "Destination": "D:\\private-server\\mir2-client\\Data\\Classic176FrontEnd.Lib",
+          "Existed": true,
+          "Backup": "D:\\private-server\\mir2\\backups\\quest-gate-polish-20261108-184404\\Client\\Data\\Classic176FrontEnd.Lib",
+          "BeforeHash": "86E3354E4B592FE2D6D2B1CD51A69595E692844D1C3A7E57C997A6C144A98233",
+          "AfterHash": "686634085B2ACF8DF0EAF8104CB59EF523A966939BA457754C808C41D4E12D39"
+        }
+      ],
+      "Protected": [
+        {
+          "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini",
+          "Hash": "5D68D97A6536709AA510DB46A9A9EBF5DB1E5BC4EAED8AAB7EA558897598AAA3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Client.exe",
+          "Hash": "366A7047B41A7CF4BD828B76FF9E060B162468DF0792B6F23659013DD8C7FFC3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Shared.dll",
+          "Hash": "59284BF57A8F3DE1B7B0DCB9635B46A0926E1BB1B4BD66DBD30B52C8417F66FB"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.exe",
+          "Hash": "9816A37C2377D1868C3D02F1A4AB16E469CD316A3C447C042D85D61ED71788A3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.dll",
+          "Hash": "E11957D8A0653C9FEE67052F714A429B9FC64AD2C8F3897A1FE8ECDB771F6B35"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
+          "Hash": "3CCBE3B598B46D89269FDA10C98327A30113A3677A3423DC7A79D4ED067CBAA8"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+          "Hash": "366A7047B41A7CF4BD828B76FF9E060B162468DF0792B6F23659013DD8C7FFC3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib",
+          "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Title.Lib",
+          "Hash": "BD3E9485548E9B3CB5D4CB261C9A01A07752FB41FCEA7F5D8569E602FEAED648"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\ChrSel.Lib",
+          "Hash": "4BE898A0DAE083802959EE4B1D2C093320FBC0A46EC68B30AC5FC856744A8197"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+          "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Envir\\LineMessage.txt",
+          "Hash": "FAB9F762A58D63E314942B2C0AD2313B62B4B4164636ADE476C6D9E09630F96B"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Envir\\Notice.txt",
+          "Hash": "636C3CA2D150D54586410C0C7690CDCB8E3EE2E5C0039B4DCA4EC7FFA19BB4D2"
+        }
+      ],
+      "DeployedMatches": 6,
+      "ProtectedMatches": 13,
+      "Startup": {
+        "CheckedAt": "2026-11-08T18:46:39.4413226+08:00",
+        "ClientProcessId": 20980,
+        "ClientResponding": true,
+        "ServerProcessId": 25228,
+        "ErrorBytesBefore": 964189,
+        "ErrorBytesAfter": 964189,
+        "VersionHandshake": "PASS",
+        "KeepAlive": "PASS",
+        "Gameplay": "NOT VERIFIED",
+        "ActualLoginOpening": "NOT VERIFIED",
+        "OriginalRoleRestoration": "Investigated only; current four-card adaptation retained",
+        "ProbeRelativeDataCorrection": "D:\\projs\\mir2\\.ai\\test-runs\\QuestDropInspection\\20261108-audit-relative-path-correction\\Configs"
+      },
+      "PostStartupHashes": {
+        "Files": [
+          {
+            "Path": "D:\\private-server\\mir2-client\\Client.dll",
+            "Hash": "69A238CD24037269B9C263486F5A8A3082B914E6FB2378DA66E0AED5F89D5F95",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Client.pdb",
+            "Hash": "3A885F1239AABF062F3BA656C31CFAFBD2DD27502D3EC14832DACD395AB3C593",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+            "Hash": "619BC731B1B61315BBC24AF1F2FA5B13D02F2B0DE3EF10AA4EE8634D931810CE",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+            "Hash": "B6067F472585884978FFC617DB5409054E3D7ED5927D11C17A55A4A53227DB3F",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+            "Hash": "69A238CD24037269B9C263486F5A8A3082B914E6FB2378DA66E0AED5F89D5F95",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Classic176FrontEnd.Lib",
+            "Hash": "686634085B2ACF8DF0EAF8104CB59EF523A966939BA457754C808C41D4E12D39",
+            "Matches": true
+          }
+        ],
+        "Protected": [
+          {
+            "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Client.exe",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Shared.dll",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.exe",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Server.dll",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Title.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\ChrSel.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Envir\\LineMessage.txt",
+            "Matches": true
+          },
+          {
+            "Path": "D:\\private-server\\mir2\\Server\\Envir\\Notice.txt",
+            "Matches": true
+          }
+        ],
+        "RootConfigsExists": false,
+        "RootEnvirExists": false
+      }
+    },
+    "Acceptance": {
+      "ActualLoginOpening": "NOT VERIFIED",
+      "InGameQuestDrops": "NOT VERIFIED",
+      "FullScreenDeviceReset": "NOT VERIFIED",
+      "AndroidWine": "NOT VERIFIED"
+    },
+    "DistributionUpdated": false,
+    "AccountOrCharacterEditsByTests": false,
+    "AnimationPreview": "classic176-gate-opening-preview.gif",
+    "AssetMapping": "classic176-gate-assets.json",
+    "ProbeIsolationCorrection": "initial one-off DB-copy probe created relative Configs inside its own TEMP directory; moved intact into repo .ai/test-runs/QuestDropInspection; no D:\\projs root dirs generated"
+  },
+  "Classic176SelectionReferenceReview": {
+    "Date": "2026-11-08",
+    "Status": "feasibility-reviewed-no-implementation",
+    "UserReference": "classic176-selection-user-reference.png",
+    "VerifiedAssets": [
+      "Prguse65 800x600 two-slot layout",
+      "Prguse2 206/480 and Prguse3 400/ui3 2 variants",
+      "Prguse73 300x417 creation frame",
+      "ChrSel40..272 multiple 16/13-frame character families"
+    ],
+    "Feasible": "two simultaneous role previews, left/right metadata and central buttons",
+    "FourRoleCompatibility": "two slots per page, preserve all four roles",
+    "ExactSpriteMapping": "NOT VERIFIED",
+    "ExactLogoAndSideDecoration": "NOT VERIFIED",
+    "CodeChanged": false,
+    "ClientStarted": false,
+    "RuntimeUpdated": false,
+    "ClientLifecycleRule": "AGENTS.md: start only for necessary validation; close agent validation instance afterwards; no automatic reopen after deployment"
+  },
+  "NativeRoleRestore": {
+    "CheckedAt": "2026-11-08T20:25:16.8111913+08:00",
+    "Status": "deployed-client-closed-awaiting-manual-acceptance",
+    "SourceHead": "41c91584e4ad8a6748f3ae3e2f587a4db4224e03",
+    "IncludesUncommittedChanges": true,
+    "Checks": {
+      "FrontendAndNativeRoles": 437,
+      "HUDAndGameplay": 367,
+      "Input": 25,
+      "Overlay": 34
+    },
+    "ChecksPassed": 863,
+    "ReleasePublish": "PASS",
+    "PublishedDLLWithRuntimeShared": {
+      "FrontendAndNativeRoles": 437,
+      "HUDAndGameplay": 367,
+      "Input": 25,
+      "Overlay": 34
+    },
+    "UserReference": "classic176-selection-user-reference.png",
+    "Changes": [
+      "Native two-slot 800x600 stone cave and side metadata",
+      "Two pages preserve all four original roles and original packet IDs",
+      "Two independent old three-class/gender portraits",
+      "Stone statue reveals once for13x80ms then16x120ms color action loops",
+      "Female reveal frames padded into action canvas with foot alignment",
+      "Native300x417 creation stone frame with all five class controls and both genders",
+      "Class/gender descriptions retained as hints; original validation/events unchanged",
+      "Additional Assassin/Archer previews use the original available Crystal model family",
+      "Late server reply cannot enable enter/delete on a page hiding the selected role"
+    ],
+    "NativeSources": {
+      "Background": "Prguse65; central baked captions cleared with local stone tiles",
+      "Creation": "Prguse73",
+      "ClassicPortraits": "ChrSel40..272; atlas=source-25",
+      "Families": {
+        "WarriorMale": [
+          40,
+          60
+        ],
+        "WizardMale": [
+          80,
+          100
+        ],
+        "TaoistMale": [
+          120,
+          140
+        ],
+        "WarriorFemale": [
+          160,
+          180
+        ],
+        "WizardFemale": [
+          200,
+          220
+        ],
+        "TaoistFemale": [
+          240,
+          260
+        ]
+      },
+      "RevealType": "13-frame stone-to-color transition, not an idle loop",
+      "FemalePadding": {
+        "Wizard": [
+          30,
+          14
+        ],
+        "Taoist": [
+          23,
+          20
+        ]
+      },
+      "Buttons": "Prguse66/67,79/80,74/55,75/56,76/57,77/58,78/59; Prguse3:2/3 neutral stone buttons",
+      "AtlasCount": 265,
+      "PixelRoundTrip": "PASS, includes empty placeholder entries"
+    },
+    "Compatibility": {
+      "Previous13EntryAtlas": "four-card fallback, existing gate tests passed",
+      "Previous3EntryAtlas": "static gate and finite login transition passed",
+      "ResolutionGeometry": [
+        "800x600",
+        "1024x768",
+        "1280x720",
+        "1366x768",
+        "1920x1080"
+      ],
+      "Original4Roles": "preserved, no save migration",
+      "Original5Classes": "preserved",
+      "NativeMouseRouting": "PASS: role selectors, page buttons, class buttons after every class/gender change"
+    },
+    "AssetMapping": "classic176-restored-role-assets.json",
+    "Previews": [
+      "classic176-restored-select-page1.png",
+      "classic176-restored-select-page2.png",
+      "classic176-restored-create.png",
+      "classic176-restored-extra-classes.png"
+    ],
+    "Deployment": {
+      "Backup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516",
+      "Files": [
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NativeRoleRestore-20261108\\Client\\Client.dll",
+          "Destination": "D:\\private-server\\mir2-client\\Client.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516\\Client\\Client.dll",
+          "BeforeHash": "69A238CD24037269B9C263486F5A8A3082B914E6FB2378DA66E0AED5F89D5F95",
+          "AfterHash": "33553C9D6483BDEC8D08C2054AA568D54E00A07F0794DE8817B60F46059905F0"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NativeRoleRestore-20261108\\Client\\Client.pdb",
+          "Destination": "D:\\private-server\\mir2-client\\Client.pdb",
+          "Backup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516\\Client\\Client.pdb",
+          "BeforeHash": "3A885F1239AABF062F3BA656C31CFAFBD2DD27502D3EC14832DACD395AB3C593",
+          "AfterHash": "E1255B4C751511B94F11C79F6BED01579FAE044A332C675D02ACA82956BF6EAD"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NativeRoleRestore-20261108\\Client\\Client.dll",
+          "Destination": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.dll",
+          "Backup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516\\ClientVersion\\Client.dll",
+          "BeforeHash": "69A238CD24037269B9C263486F5A8A3082B914E6FB2378DA66E0AED5F89D5F95",
+          "AfterHash": "33553C9D6483BDEC8D08C2054AA568D54E00A07F0794DE8817B60F46059905F0"
+        },
+        {
+          "Source": "D:\\projs\\mir2\\Build\\NativeRoleRestore-20261108\\Assets\\Classic176FrontEnd.Lib",
+          "Destination": "D:\\private-server\\mir2-client\\Data\\Classic176FrontEnd.Lib",
+          "Backup": "D:\\private-server\\mir2\\backups\\native-role-restore-20261108-202516\\Client\\Data\\Classic176FrontEnd.Lib",
+          "BeforeHash": "686634085B2ACF8DF0EAF8104CB59EF523A966939BA457754C808C41D4E12D39",
+          "AfterHash": "E7E2ADD6E8E08BDF596826558A5321CBECB0E01156EBB4CE290DAA281F50D74E"
+        }
+      ],
+      "Protected": [
+        {
+          "Path": "D:\\private-server\\mir2-client\\Client.exe",
+          "Hash": "366A7047B41A7CF4BD828B76FF9E060B162468DF0792B6F23659013DD8C7FFC3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Shared.dll",
+          "Hash": "59284BF57A8F3DE1B7B0DCB9635B46A0926E1BB1B4BD66DBD30B52C8417F66FB"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Mir2Config.ini",
+          "Hash": "5D68D97A6536709AA510DB46A9A9EBF5DB1E5BC4EAED8AAB7EA558897598AAA3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse.Lib",
+          "Hash": "584B67694A420A29C98F51B04CDF681ACF1ED071C15C57014FDFD59C762A3C96"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Title.Lib",
+          "Hash": "BD3E9485548E9B3CB5D4CB261C9A01A07752FB41FCEA7F5D8569E602FEAED648"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\ChrSel.Lib",
+          "Hash": "4BE898A0DAE083802959EE4B1D2C093320FBC0A46EC68B30AC5FC856744A8197"
+        },
+        {
+          "Path": "D:\\private-server\\mir2-client\\Data\\Prguse176.Lib",
+          "Hash": "91B8A83D02C89449261E7DACE2E773A6B34658301298940FC90F0492CF1F106B"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.exe",
+          "Hash": "9816A37C2377D1868C3D02F1A4AB16E469CD316A3C447C042D85D61ED71788A3"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.dll",
+          "Hash": "E11957D8A0653C9FEE67052F714A429B9FC64AD2C8F3897A1FE8ECDB771F6B35"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.Library.dll",
+          "Hash": "619BC731B1B61315BBC24AF1F2FA5B13D02F2B0DE3EF10AA4EE8634D931810CE"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Server.Library.pdb",
+          "Hash": "B6067F472585884978FFC617DB5409054E3D7ED5927D11C17A55A4A53227DB3F"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\Shared.dll",
+          "Hash": "3CCBE3B598B46D89269FDA10C98327A30113A3677A3423DC7A79D4ED067CBAA8"
+        },
+        {
+          "Path": "D:\\private-server\\mir2\\Server\\ClientVersion\\Client.exe",
+          "Hash": "366A7047B41A7CF4BD828B76FF9E060B162468DF0792B6F23659013DD8C7FFC3"
+        }
+      ],
+      "DeployedHashesMatched": 4,
+      "ProtectedHashesUnchanged": 13,
+      "ServerProcessId": 25228,
+      "ServerRestarted": false,
+      "ClientStarted": false,
       "VersionHandshake": "PASS",
       "KeepAlive": "PASS"
     },
-    "Gameplay": "NOT VERIFIED",
-    "ActualAccountLogin": "NOT VERIFIED",
-    "Followup": {
-      "CheckedAt": "2026-11-08T14:09:44.8495266+08:00",
-      "ErrorBytesBefore": 963161,
-      "ErrorBytesAfter": 964189,
-      "DeviceLostEvents": 2,
-      "ClientResponding": true,
-      "ServerResponding": true,
-      "ErrorTail": "[2026-11-08 06:08:03] SlimDX.Direct3D9.Direct3D9Exception: D3DERR_DEVICELOST: Device lost (-2005530520)\r\n   at SlimDX.Result.Throw[T](Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 119\r\n   at SlimDX.Result.Record[T](Int32 hr, Boolean failed, Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 125\r\n   at Client.CMain.RenderEnvironment() in D:\\projs\\mir2\\Client\\Forms\\CMain.cs:line 406\r\n[2026-11-08 06:08:27] SlimDX.Direct3D9.Direct3D9Exception: D3DERR_DEVICELOST: Device lost (-2005530520)\r\n   at SlimDX.Result.Throw[T](Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 119\r\n   at SlimDX.Result.Record[T](Int32 hr, Boolean failed, Object dataKey, Object dataValue) in c:\\users\\promit\\documents\\projects\\slimdx\\main\\trunk\\source\\result.cpp:line 125\r\n   at Client.CMain.RenderEnvironment() in D:\\projs\\mir2\\Client\\Forms\\CMain.cs:line 406\r\n",
-      "FullScreen": true,
-      "Cause": "NOT VERIFIED; preserve existing fullscreen preference; no GPU recovery code changed in this deployment"
-    }
+    "Acceptance": {
+      "OfflineDXRendering": "PASS",
+      "LiveAccountSelectionAndCreation": "NOT VERIFIED",
+      "DeviceReset": "NOT VERIFIED",
+      "AndroidWine": "NOT VERIFIED",
+      "ExactPixelMatch": "Not claimed: side stone extensions and logo differ from supplied screenshot"
+    },
+    "DistributionUpdated": false,
+    "AccountOrCharacterMutationsByTests": false
   }
 }

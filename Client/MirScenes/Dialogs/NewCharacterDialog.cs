@@ -341,6 +341,7 @@ namespace Client.MirScenes.Dialogs
             }
 
             //CharacterDisplay.Index = ((byte)_class + 1) * 20 + (byte)_gender * 280;
+            Classic176SelectLayout.RefreshCreation(this);
         }
 
         protected override void Dispose(bool disposing)

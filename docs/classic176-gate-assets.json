@@ -1,0 +1,61 @@
+{
+  "Kind": "local ten-year art adapted for Crystal\u0027s four character slots; not an original two-slot reconstruction",
+  "SourceGate": {
+    "Path": "E:\\rxdev\\10\u5468\u5E74\\\u70ED\u8840\u4F20\u5947\\Data\\ChrSel.wil",
+    "SHA256": "4BAC812AAE60E0638B9FF38518F3FCDB6C284EFBE55430F5AEF737CF2C8E6B4D",
+    "Index": 22,
+    "Width": 800,
+    "Height": 600
+  },
+  "SourceStone": {
+    "Path": "E:\\rxdev\\10\u5468\u5E74\\\u70ED\u8840\u4F20\u5947\\Data\\Prguse.wil",
+    "SHA256": "6D29C4D5662B6547044C204C72592049EE5AA0C801B18790D47A9E5F50FA810B",
+    "Index": 1,
+    "Rect": [
+      666,
+      109,
+      43,
+      26
+    ]
+  },
+  "SourceDoor": {
+    "Indices": [
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "Position": [
+      153,
+      96
+    ],
+    "PatchSize": [
+      496,
+      361
+    ],
+    "PreserveOpaqueNearBlack": true
+  },
+  "Entries": [
+    "0: closed login gate",
+    "1: opened select gate (22 \u002B patch32)",
+    "2: unlabelled stone",
+    "3..12: full 800x600 composites (22 \u002B patches23..32)"
+  ],
+  "Playback": {
+    "FrameDelayMs": 120,
+    "PlaybackSteps": 12,
+    "DurationMs": 1440,
+    "FinalFrameHoldMs": 360,
+    "Loop": false
+  },
+  "Offset": "all destination offsets reset to zero; source WIL (7,-44) is not carried into the background",
+  "License": "user-provided local client; redistribution rights not established by this tool",
+  "PixelRoundTripVerified": true,
+  "AtlasSHA256": "686634085B2ACF8DF0EAF8104CB59EF523A966939BA457754C808C41D4E12D39"
+}
